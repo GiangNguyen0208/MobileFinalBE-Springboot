@@ -60,6 +60,28 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.33</version> <!-- Phiên bản này có thể thay đổi tùy theo MySQL Connector mới nhất -->
 		</dependency>
+
+		<!-- Spring Security dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-crypto</artifactId>
+			<version>5.8.0</version> <!-- Use the version compatible with your Spring setup -->
+		</dependency>
+		
 	</dependencies>
 
 	<build>
