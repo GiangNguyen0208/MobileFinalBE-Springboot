@@ -1,6 +1,6 @@
 package com.example.mobile.entity;
 
-import com.example.mobile.config.MethodType;
+import com.example.mobile.constant.MethodType;
 import jakarta.persistence.*;
 import lombok.*;
 

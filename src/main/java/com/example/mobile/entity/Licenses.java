@@ -1,6 +1,6 @@
 package com.example.mobile.entity;
 
-import com.example.mobile.config.LicensesStatus;
+import com.example.mobile.constant.LicensesStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

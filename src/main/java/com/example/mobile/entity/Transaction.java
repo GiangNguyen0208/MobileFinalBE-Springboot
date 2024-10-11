@@ -1,6 +1,6 @@
 package com.example.mobile.entity;
 
-import com.example.mobile.config.TransactionStatus;
+import com.example.mobile.constant.TransactionStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

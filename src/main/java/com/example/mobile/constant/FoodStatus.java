@@ -1,4 +1,4 @@
-package com.example.mobile.config;
+package com.example.mobile.constant;
 
 public enum FoodStatus {
     SOLD_OUT("SOLD_OUT"),
