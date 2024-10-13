@@ -4,6 +4,7 @@ import com.example.mobile.dto.LoginDTO;
 import com.example.mobile.dto.RegisterDTO;
 import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
+import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.repository.UserRepository;
 import com.example.mobile.service.imp.IUser;
 import jakarta.validation.Valid;
@@ -25,8 +26,10 @@ public class UserController {
     private IUser userService;
 
     @PostMapping("/create")
-    User createUser(@RequestBody @Valid UserCreationReq userCreationReq) {
-        return userService.createUser(userCreationReq);
+    ApiResponse<User> createUser(@RequestBody @Valid UserCreationReq userCreationReq) {
+        ApiResponse<User> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.createUser(userCreationReq));
+        return apiResponse;
     }
     @GetMapping("/listUser")
     List<User> getListUser() {

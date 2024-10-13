@@ -7,6 +7,8 @@ import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
 import com.example.mobile.entity.Role;
 import com.example.mobile.entity.User;
+import com.example.mobile.exception.AddException;
+import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.repository.RoleRepository;
 import com.example.mobile.repository.UserRepository;
 
@@ -92,7 +94,7 @@ public class UserService implements IUser {
     public User createUser(UserCreationReq req) {
         Date currentTime = new Date();
         if (userRepository.existsByUsername(req.getUsername())) {
-            throw new RuntimeException("User existed!");
+            throw new AddException(ErrorCode.USER_EXISTED);
         }
         User user = User.builder()
                 .username(req.getUsername())
