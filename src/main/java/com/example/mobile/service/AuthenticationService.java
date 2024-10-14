@@ -15,12 +15,9 @@ import javax.management.RuntimeErrorException;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class AuthenticationService implements IAuthentication {
-    @Autowired
     UserRepository userRepository;
-
     @Override
     public boolean authentication(AuthenticationReq req) {
-
         return false;
     }
 }

@@ -1,18 +1,17 @@
 package com.example.mobile.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Data
 @Builder
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApiResponse <T> {
-    private int code = 1000;
-    private String mesg;
-    private T result;
+    int code = 1000;
+    String mesg;
+    T result;
 }

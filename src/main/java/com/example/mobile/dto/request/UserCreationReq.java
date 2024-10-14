@@ -17,17 +17,17 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserCreationReq {
-    private String firstName;
-    private String lastName;
-    private Date createAt;
-    private String phone;
+    String firstname;
+    String lastname;
+    Date createAt;
+    String phone;
 
     @Size(min = 6, message = "USERNAME_INVALID")
-    private String username;
+    String username;
 
     @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "EMAIL_INVALID")
-    private String email;
+    String email;
 
     @Size(min = 8, message = "PASSWORD_INVALID")
-    private String password;
+    String password;
 }

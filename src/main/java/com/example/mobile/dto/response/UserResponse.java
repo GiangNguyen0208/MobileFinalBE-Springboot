@@ -1,6 +1,7 @@
-package com.example.mobile.dto.request;
+package com.example.mobile.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -13,12 +14,12 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserUpdateRequest {
+public class UserResponse {
     String firstname;
     String lastname;
-    String phone;
     Date createAt;
-
-    @Size(min = 8, message = "Password must be at least 8 characters!")
+    String phone;
+    String username;
+    String email;
     String password;
 }
