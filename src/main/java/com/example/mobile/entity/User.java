@@ -30,7 +30,7 @@ public class User {
 
     private String email;
 
-    private String status;
+    private boolean status;
 
     private String avatar;
 

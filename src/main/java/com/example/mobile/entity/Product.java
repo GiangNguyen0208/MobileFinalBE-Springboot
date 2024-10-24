@@ -1,6 +1,6 @@
 package com.example.mobile.entity;
 
-import com.example.mobile.config.FoodStatus;
+import com.example.mobile.constant.FoodStatus;
 import jakarta.persistence.*;
 import lombok.*;
 

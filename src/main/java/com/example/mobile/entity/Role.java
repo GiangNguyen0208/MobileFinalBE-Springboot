@@ -1,6 +1,6 @@
 package com.example.mobile.entity;
 
-import com.example.mobile.config.RolePlay;
+import com.example.mobile.constant.RolePlay;
 import jakarta.persistence.*;
 import lombok.*;
 

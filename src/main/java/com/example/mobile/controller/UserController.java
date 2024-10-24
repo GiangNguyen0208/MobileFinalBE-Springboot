@@ -1,33 +1,49 @@
 package com.example.mobile.controller;
 
+import com.example.mobile.dto.request.UserCreationReq;
+import com.example.mobile.dto.request.UserUpdateRequest;
+import com.example.mobile.dto.response.ApiResponse;
+import com.example.mobile.dto.response.UserResponse;
+import com.example.mobile.service.imp.IUser;
+import jakarta.validation.Valid;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.mobile.entity.User;
-import com.example.mobile.service.UserService;
+
+import java.util.List;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/v1/users")
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
+    IUser userService;
 
-    @Autowired
-    private UserService userService;
-
-    @PostMapping("/api/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User registeredUser = userService.registerUser(user);
-        return ResponseEntity.ok(registeredUser);
+    @PostMapping("/create")
+    ApiResponse<User> createUser(@RequestBody @Valid UserCreationReq userCreationReq) {
+        ApiResponse<User> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(userService.createUser(userCreationReq));
+        return apiResponse;
     }
-
-    @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestParam String username, @RequestParam String password) {
-        return userService.loginUser(username, password)
-                .map(user -> ResponseEntity.ok("Login successful"))
-                .orElse(ResponseEntity.status(401).body("Invalid credentials"));
+    @GetMapping("/listUser")
+    List<User> getListUser() {
+        return userService.getListUser();
+    }
+    @GetMapping("/{userId}")
+    UserResponse getUser(@PathVariable("userId") int userId) {
+        return userService.findUserById(userId);
+    }
+    @PutMapping("/{userId}")
+    UserResponse updateUser(@PathVariable("userId") int userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        return userService.userUpdate(userId, userUpdateRequest);
+    }
+    @DeleteMapping("/{userId}")
+    String deleteUser(@PathVariable("userId") int userId) {
+        userService.deleteUser(userId);
+        return "User has been deleted!";
     }
 }

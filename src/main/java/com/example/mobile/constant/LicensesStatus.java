@@ -1,4 +1,4 @@
-package com.example.mobile.config;
+package com.example.mobile.constant;
 
 public enum LicensesStatus {
     VALID("VALID"),
