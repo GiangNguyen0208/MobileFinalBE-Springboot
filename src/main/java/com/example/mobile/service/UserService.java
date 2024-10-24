@@ -10,11 +10,13 @@ import com.example.mobile.mapper.IUserMapper;
 import com.example.mobile.repository.RoleRepository;
 import com.example.mobile.repository.UserRepository;
 
+import com.example.mobile.service.imp.IPasswordEncode;
 import com.example.mobile.service.imp.IUser;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -26,7 +28,6 @@ import java.util.List;
 public class UserService implements IUser {
 
     UserRepository userRepository;
-    RoleRepository rolesRepository;
     IUserMapper userMapper;
 
     @Override
@@ -54,6 +55,8 @@ public class UserService implements IUser {
                 .orElseThrow(() -> new RuntimeException("User not found!"));
 
         userMapper.updateUser(user, req);   // Use MappingTarget to mapping data update from req (new info) into old info
+        PasswordEncoder passwordEncoder = new BCryptPasswordEncoder(10);
+        user.setPassword(passwordEncoder.encode(req.getPassword()));
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
