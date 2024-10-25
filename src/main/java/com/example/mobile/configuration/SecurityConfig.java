@@ -1,54 +1,49 @@
-//package com.example.mobile.security;
-//
-//import com.example.mobile.config.RolePlay;
-//import com.example.mobile.service.UserService;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-//import org.springframework.context.annotation.Bean;
-//import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-//import org.springframework.security.config.http.SessionCreationPolicy;
-//import org.springframework.security.crypto.password.PasswordEncoder;
-//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-//import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-//import org.springframework.security.web.SecurityFilterChain;
-//
-//// ... existing imports ...
-//@EnableWebSecurity
-//public class SecurityConfig {
-//
-//    @Bean
-//    public PasswordEncoder passwordEncoder() {
-//        return new BCryptPasswordEncoder();
-//    }
-//
-//    @Bean
-//    @Override
-//    public UserService userDetailsService() {
-//        // Tạo ra user trong bộ nhớ
-//        // lưu ý, chỉ sử dụng cách này để minh họa
-//        // Còn thực tế chúng ta sẽ kiểm tra user trong csdl
-//        InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
-//        manager.createUser(
-//                User.withDefaultPasswordEncoder() // Sử dụng mã hóa password đơn giản
-//                        .username("loda")
-//                        .password("loda")
-//                        .roles("USER") // phân quyền là người dùng.
-//                        .build()
-//        );
-//        return manager;
-//    }
-//
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-////        http
-////                .authorizeHttpRequests((requests) -> requests
-////                .requestMatchers("/api/v1/users/register", "/api/v1/users/register").permitAll()
-////                .anyRequest().authenticated()
-////                );
-////        return http.build();
-//
-//
-//
-//        return http.build();
-//    }
-//}
+package com.example.mobile.configuration;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
+import org.springframework.security.oauth2.jwt.JwtDecoder;
+import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
+import org.springframework.security.web.SecurityFilterChain;
+
+import javax.crypto.spec.SecretKeySpec;
+
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    private final String[] PUBLIC_ENDPOINT = {"/api/v1/users", "/api/v1/auth/token", "/api/v1/auth/introspect"};
+    @Value("${jwt.signerKey}")
+    private String SIGNER_KEY;
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity.authorizeHttpRequests(request ->
+                request.requestMatchers(HttpMethod.POST, PUBLIC_ENDPOINT).permitAll()
+                        .anyRequest().authenticated());
+
+        httpSecurity.oauth2ResourceServer(oauth2 ->
+                oauth2.jwt(jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
+        );  //
+
+//        httpSecurity.csrf(httpSecurityCsrfConfigurer -> httpSecurityCsrfConfigurer.disable());
+        httpSecurity.csrf(AbstractHttpConfigurer::disable);
+
+        return httpSecurity.build();
+    }
+
+    @Bean
+    JwtDecoder jwtDecoder() {
+        SecretKeySpec secretKeySpec = new SecretKeySpec(SIGNER_KEY.getBytes(), "HS512");
+        return NimbusJwtDecoder
+                .withSecretKey(secretKeySpec)
+                .macAlgorithm(MacAlgorithm.HS512)
+                .build();
+    }
+
+
+}

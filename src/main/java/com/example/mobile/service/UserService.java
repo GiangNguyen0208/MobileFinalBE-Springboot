@@ -7,10 +7,8 @@ import com.example.mobile.entity.User;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IUserMapper;
-import com.example.mobile.repository.RoleRepository;
 import com.example.mobile.repository.UserRepository;
 
-import com.example.mobile.service.imp.IPasswordEncode;
 import com.example.mobile.service.imp.IUser;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

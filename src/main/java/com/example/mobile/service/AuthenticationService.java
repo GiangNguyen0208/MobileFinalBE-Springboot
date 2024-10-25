@@ -8,7 +8,6 @@ import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.repository.UserRepository;
 import com.example.mobile.service.imp.IAuthentication;
-import com.example.mobile.service.imp.IPasswordEncode;
 import com.nimbusds.jose.*;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
@@ -19,14 +18,12 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
-import javax.management.RuntimeErrorException;
 import java.text.ParseException;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
@@ -41,7 +38,7 @@ public class AuthenticationService implements IAuthentication {
     UserRepository userRepository;
     @NonFinal
     @Value("${jwt.signerKey}")
-    protected String SIGNER_KEY;
+    private String SIGNER_KEY;
     @Override
     public AuthenticationRes authentication(AuthenticationReq req) {
         var user = userRepository.findByUsername(req.getUsername())
