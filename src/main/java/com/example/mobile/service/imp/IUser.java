@@ -8,8 +8,8 @@ import com.example.mobile.entity.User;
 import java.util.List;
 
 public interface IUser {
-    User createUser(UserCreationReq req);
-    List<User> getListUser();
+    UserResponse createUser(UserCreationReq req);
+    List<UserResponse> getListUser();
     UserResponse findUserById(int id);
     UserResponse userUpdate(int id, UserUpdateRequest req);
     void deleteUser(int id);
