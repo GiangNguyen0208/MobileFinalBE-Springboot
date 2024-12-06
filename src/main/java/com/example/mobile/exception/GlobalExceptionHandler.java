@@ -1,7 +1,9 @@
 package com.example.mobile.exception;
 
 import com.example.mobile.dto.response.ApiResponse;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,36 +12,61 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception) {
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setCode(ErrorCode.UNCATEGORIZED_EXCEPTION.getCode());
-        apiResponse.setMesg(ErrorCode.UNCATEGORIZED_EXCEPTION.getMesg());
-        return ResponseEntity.badRequest().body(apiResponse);
+        ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .mesg(errorCode.getMesg())
+                .build();
+
+        return ResponseEntity
+                .status(errorCode.getStatusCode())
+                .body(apiResponse);
     }
 
     @ExceptionHandler(value = AddException.class)
     ResponseEntity<ApiResponse> handlingAddException(AddException exception) {
         ErrorCode errorCode = exception.getErrorCode();
-        ApiResponse apiResponse = new ApiResponse();
-        apiResponse.setCode(errorCode.getCode());
-        apiResponse.setMesg(errorCode.getMesg());
-        return ResponseEntity.badRequest().body(apiResponse);
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .mesg(errorCode.getMesg())
+                .build();
+
+        return ResponseEntity
+                .status(errorCode.getStatusCode())
+                .body(apiResponse);
     }
+
+    @ExceptionHandler(value = AccessDeniedException.class)
+    ResponseEntity<ApiResponse> handlingAccessDeniedException(AddException exception) {
+        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+
+        ApiResponse apiResponse = ApiResponse.builder()
+                .code(errorCode.getCode())
+                .mesg(errorCode.getMesg())
+                .build();
+
+        return ResponseEntity
+                .status(errorCode.getStatusCode())
+                .body(apiResponse);
+    }
+
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
         ResponseEntity<ApiResponse> handlingValidation(MethodArgumentNotValidException exception) {
             String enumkey = exception.getFieldError().getDefaultMessage();
             ErrorCode errorCode = ErrorCode.KEY_INVALID;
 
-            try {
-                errorCode = ErrorCode.valueOf(enumkey);
-            }   catch (IllegalArgumentException e) {
+            try {errorCode = ErrorCode.valueOf(enumkey);}
+            catch (IllegalArgumentException e) { e.getMessage(); }
 
-            }
+            ApiResponse apiResponse = ApiResponse.builder()
+                    .code(errorCode.getCode())
+                    .mesg(errorCode.getMesg())
+                    .build();
 
-            ApiResponse apiResponse = new ApiResponse();
-
-            apiResponse.setCode(errorCode.getCode());
-            apiResponse.setMesg(errorCode.getMesg());
-
-            return ResponseEntity.badRequest().body(apiResponse);
+            return ResponseEntity.status(errorCode
+                    .getStatusCode())
+                    .body(apiResponse);
     }
 }

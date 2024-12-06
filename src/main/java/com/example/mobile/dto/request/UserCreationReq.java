@@ -1,6 +1,8 @@
 package com.example.mobile.dto.request;
 
+import com.example.mobile.constant.RolePlay;
 import com.example.mobile.exception.ErrorCode;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -29,5 +31,8 @@ public class UserCreationReq {
     String email;
 
     @Size(min = 8, message = "PASSWORD_INVALID")
+    @JsonIgnore
     String password;
+
+    private RolePlay role;
 }

@@ -7,11 +7,13 @@ import lombok.experimental.FieldDefaults;
 @Data
 @Builder
 @AllArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ApiResponse <T> {
+    @Builder.Default
     int code = 1000;
+
     String mesg;
     T result;
 }

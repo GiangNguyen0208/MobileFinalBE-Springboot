@@ -24,14 +24,16 @@ public class UserController {
     IUser userService;
 
     @PostMapping("/create")
-    ApiResponse<User> createUser(@RequestBody @Valid UserCreationReq userCreationReq) {
-        ApiResponse<User> apiResponse = new ApiResponse<>();
+    ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationReq userCreationReq) {
+        ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.createUser(userCreationReq));
         return apiResponse;
     }
     @GetMapping("/listUser")
-    List<User> getListUser() {
-        return userService.getListUser();
+    ApiResponse<List<UserResponse>> getListUser() {
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getListUser())
+                .build();
     }
     @GetMapping("/{userId}")
     UserResponse getUser(@PathVariable("userId") int userId) {

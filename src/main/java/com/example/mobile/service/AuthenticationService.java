@@ -1,5 +1,21 @@
 package com.example.mobile.service;
 
+import java.text.ParseException;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.Collection;
+import java.util.Date;
+import java.util.StringJoiner;
+
+import com.example.mobile.entity.Role;
+import com.example.mobile.entity.User;
+import com.example.mobile.repository.RoleRepository;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import com.example.mobile.dto.request.AuthenticationReq;
 import com.example.mobile.dto.request.IntrospectReq;
 import com.example.mobile.dto.response.AuthenticationRes;
@@ -8,29 +24,23 @@ import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.repository.UserRepository;
 import com.example.mobile.service.imp.IAuthentication;
-import com.example.mobile.service.imp.IPasswordEncode;
-import com.nimbusds.jose.*;
+import com.nimbusds.jose.JOSEException;
+import com.nimbusds.jose.JWSAlgorithm;
+import com.nimbusds.jose.JWSHeader;
+import com.nimbusds.jose.JWSObject;
+import com.nimbusds.jose.JWSVerifier;
+import com.nimbusds.jose.Payload;
 import com.nimbusds.jose.crypto.MACSigner;
 import com.nimbusds.jose.crypto.MACVerifier;
 import com.nimbusds.jwt.JWTClaimsSet;
 import com.nimbusds.jwt.SignedJWT;
+
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.experimental.NonFinal;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-
-import javax.management.RuntimeErrorException;
-import java.text.ParseException;
-import java.time.Instant;
-import java.time.temporal.ChronoUnit;
-import java.util.Date;
+import org.springframework.util.CollectionUtils;
 
 @Service
 @Slf4j
@@ -38,10 +48,12 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Component
 public class AuthenticationService implements IAuthentication {
+    RoleRepository roleRepository;
     UserRepository userRepository;
     @NonFinal
     @Value("${jwt.signerKey}")
-    protected String SIGNER_KEY;
+    private String SIGNER_KEY;
+
     @Override
     public AuthenticationRes authentication(AuthenticationReq req) {
         var user = userRepository.findByUsername(req.getUsername())
@@ -49,9 +61,10 @@ public class AuthenticationService implements IAuthentication {
         PasswordEncoder passwordEncode = new BCryptPasswordEncoder(10);
         boolean authenticated = passwordEncode.matches(req.getPassword(), user.getPassword());
 
-        if (!authenticated) throw new AddException(ErrorCode.UNAUTHENTICATED);
+        if (!authenticated)
+            throw new AddException(ErrorCode.UNAUTHENTICATED);
 
-        var token = generateToken(req.getUsername());
+        var token = generateToken(user);
 
         return AuthenticationRes.builder()
                 .token(token)
@@ -65,10 +78,9 @@ public class AuthenticationService implements IAuthentication {
 
         JWSVerifier verifier = new MACVerifier(SIGNER_KEY.getBytes());  // Nimbus provide JWSVerifier class.
 
-        SignedJWT signedJWT = SignedJWT.parse(token) ; // This is an object.
+        SignedJWT signedJWT = SignedJWT.parse(token); // This is an object.
 
 //      signedJWT.verify(verifier); // return true or false (true if token content not change).
-
         Date expirationTime = signedJWT.getJWTClaimsSet().getExpirationTime();
 
         var verified = signedJWT.verify(verifier);
@@ -80,16 +92,16 @@ public class AuthenticationService implements IAuthentication {
     }
 
     @Override
-    public String generateToken(String username) {
-        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS256);
+    public String generateToken(User user) {
+        JWSHeader jwsHeader = new JWSHeader(JWSAlgorithm.HS512);
         Date expirationTime = new Date(Instant.now().plus(1, ChronoUnit.HOURS).toEpochMilli());     // Time Expiration in 1 hour start now.
 
         JWTClaimsSet jwtClaimsSet = new JWTClaimsSet.Builder()
-                .subject(username)
-                .issuer("devteria.com")   // Confirm token was issue from ???
+                .subject(user.getUsername())
+                .issuer("devteria.com") // Confirm token was issue from ???
                 .issueTime(new Date())
                 .expirationTime(expirationTime)
-                .claim("userId", "Custom")
+                .claim("scope", buildScope(user))
                 .build();
 
         Payload payload = new Payload(jwtClaimsSet.toJSONObject());
@@ -104,5 +116,15 @@ public class AuthenticationService implements IAuthentication {
             log.error("Cannot create token.!za");
             throw new RuntimeException(e);
         }
+    }
+
+    private String buildScope(User user) {
+        StringJoiner stringJoiner = new StringJoiner(" ");
+        if (user.getRole() != null) {
+            stringJoiner.add(user.getRole().getRoleName().getRole());
+        } else {
+            throw  new RuntimeException("ROLE IS NOT VALID");
+        }
+        return stringJoiner.toString();
     }
 }
