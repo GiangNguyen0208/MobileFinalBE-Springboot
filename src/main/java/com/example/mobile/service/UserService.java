@@ -50,7 +50,6 @@ public class UserService implements IUser {
         Role role = roleRepository.findByRoleName(rolePlay)
                         .orElseThrow(() -> new RuntimeException(("Role not found!")));
         user.setRole(role);
-
         return userMapper.toUserResponse(userRepository.save(user));
     }
     @Override

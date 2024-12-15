@@ -11,6 +11,8 @@ public class ApiEndPoint {
     public static final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/users",
             "/api/v1/auth/token",
-            "/api/v1/auth/introspect"
+            "/api/v1/auth/introspect",
+            "/api/v1/orders/listOrder",
+            "/api/v1/carts/orderDetail"
     };
 }
