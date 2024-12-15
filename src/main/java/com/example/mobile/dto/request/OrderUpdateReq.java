@@ -18,20 +18,10 @@ import java.util.Date;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserCreationReq {
-    String firstname;
-    String lastname;
+public class OrderUpdateReq {
+   int cart;
+    int discount;
     Date createAt;
-    String phone;
+    int paymentMethod;
 
-    @Size(min = 6, message = "USERNAME_INVALID")
-    String username;
-
-    @Email(regexp = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,6}$", message = "EMAIL_INVALID")
-    String email;
-
-    @Size(min = 8, message = "PASSWORD_INVALID")
-    String password;
-
-    private RolePlay role;
 }
