@@ -24,7 +24,7 @@ public class OrderService implements IOrder {
     @Override
     public List<OrderResponse> getOrders() {
         return orderRepository.findAll().stream()
-              git  .map(orderMapper::toOrderResponse) // Ánh xạ từ Order sang OrderResponse
+                .map(orderMapper::toOrderResponse) // Ánh xạ từ Order sang OrderResponse
                 .collect(Collectors.toList());
     }
 }
