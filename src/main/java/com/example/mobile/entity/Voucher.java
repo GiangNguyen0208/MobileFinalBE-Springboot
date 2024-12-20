@@ -6,13 +6,13 @@ import lombok.*;
 import java.util.HashSet;
 import java.util.Set;
 
-@Entity(name = "discounts")
+@Entity(name = "vouchers")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-public class Discount {
+public class Voucher {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -21,6 +21,6 @@ public class Discount {
 
     private double valueDiscount;
 
-    @OneToMany(mappedBy = "discount")
+    @OneToMany(mappedBy = "voucher")
     private Set<Order> orderSet = new HashSet<>();
 }

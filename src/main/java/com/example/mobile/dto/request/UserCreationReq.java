@@ -31,7 +31,6 @@ public class UserCreationReq {
     String email;
 
     @Size(min = 8, message = "PASSWORD_INVALID")
-    @JsonIgnore
     String password;
 
     private RolePlay role;
