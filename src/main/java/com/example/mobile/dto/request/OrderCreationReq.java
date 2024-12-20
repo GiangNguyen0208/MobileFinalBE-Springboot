@@ -20,7 +20,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderCreationReq {
     private int cart;
-    private int discount;
+    private int voucher;
     private int paymentMethod;
     private Date createAt;
 }

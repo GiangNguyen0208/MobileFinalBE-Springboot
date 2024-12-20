@@ -16,7 +16,7 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderUpdateReq {
    int cart;
-    int discount;
+   int voucher;
     Date createAt;
     int paymentMethod;
 
