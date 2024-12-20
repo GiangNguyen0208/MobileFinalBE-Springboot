@@ -1,28 +1,41 @@
 package com.example.mobile.exception;
 
 import com.example.mobile.dto.response.ApiResponse;
+import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(value = Exception.class)
-    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception) {
-        ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
+//    @ExceptionHandler(value = Exception.class)
+//    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception) {
+//        ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
+//
+//        ApiResponse apiResponse = ApiResponse.builder()
+//                .code(errorCode.getCode())
+//                .mesg(errorCode.getMesg())
+//                .build();
+//
+//        return ResponseEntity
+//                .status(errorCode.getStatusCode())
+//                .body(apiResponse);
+//    }
+@ExceptionHandler(value = DataAccessException.class)
+public ResponseEntity<ApiResponse> handleDatabaseException(DataAccessException exception) {
+    ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
 
-        ApiResponse apiResponse = ApiResponse.builder()
-                .code(errorCode.getCode())
-                .mesg(errorCode.getMesg())
-                .build();
+    ApiResponse apiResponse = ApiResponse.builder()
+            .code(errorCode.getCode())
+            .mesg("Database error: " + exception.getMessage())
+            .build();
 
-        return ResponseEntity
-                .status(errorCode.getStatusCode())
-                .body(apiResponse);
-    }
+    return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
+}
 
     @ExceptionHandler(value = AddException.class)
     ResponseEntity<ApiResponse> handlingAddException(AddException exception) {
@@ -38,18 +51,30 @@ public class GlobalExceptionHandler {
                 .body(apiResponse);
     }
 
-    @ExceptionHandler(value = AccessDeniedException.class)
-    ResponseEntity<ApiResponse> handlingAccessDeniedException(AddException exception) {
+//    @ExceptionHandler(value = AccessDeniedException.class)
+//    ResponseEntity<ApiResponse> handlingAccessDeniedException(AddException exception) {
+//        ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
+//
+//        ApiResponse apiResponse = ApiResponse.builder()
+//                .code(errorCode.getCode())
+//                .mesg(errorCode.getMesg())
+//                .build();
+//
+//        return ResponseEntity
+//                .status(errorCode.getStatusCode())
+//                .body(apiResponse);
+//    }
+
+    @ExceptionHandler(value = JwtException.class)
+    public ResponseEntity<ApiResponse> handleJwtException(JwtException exception) {
         ErrorCode errorCode = ErrorCode.UNAUTHORIZED;
 
         ApiResponse apiResponse = ApiResponse.builder()
                 .code(errorCode.getCode())
-                .mesg(errorCode.getMesg())
+                .mesg(errorCode.getMesg() + ": " + exception.getMessage())
                 .build();
 
-        return ResponseEntity
-                .status(errorCode.getStatusCode())
-                .body(apiResponse);
+        return ResponseEntity.status(errorCode.getStatusCode()).body(apiResponse);
     }
 
     @ExceptionHandler(value = MethodArgumentNotValidException.class)

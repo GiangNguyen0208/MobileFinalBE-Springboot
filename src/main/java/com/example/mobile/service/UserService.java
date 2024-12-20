@@ -1,42 +1,40 @@
 package com.example.mobile.service;
-
 import com.example.mobile.constant.RolePlay;
+import com.example.mobile.dto.request.CartItemReq;
 import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
+import com.example.mobile.dto.response.CartItemResponse;
 import com.example.mobile.dto.response.UserResponse;
+import com.example.mobile.entity.Product;
 import com.example.mobile.entity.Role;
 import com.example.mobile.entity.User;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IUserMapper;
+import com.example.mobile.repository.ProductRepository;
 import com.example.mobile.repository.RoleRepository;
 import com.example.mobile.repository.UserRepository;
-
 import com.example.mobile.service.imp.IUser;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import java.util.Date;
-import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class UserService implements IUser {
-
     UserRepository userRepository;
     RoleRepository roleRepository;
     IUserMapper userMapper;
     PasswordEncoder passwordEncoder;
-
     @Override
     public UserResponse createUser(UserCreationReq req) {
         Date currentTime = new Date();
@@ -50,7 +48,6 @@ public class UserService implements IUser {
         Role role = roleRepository.findByRoleName(rolePlay)
                         .orElseThrow(() -> new RuntimeException(("Role not found!")));
         user.setRole(role);
-
         return userMapper.toUserResponse(userRepository.save(user));
     }
     @Override
@@ -84,4 +81,5 @@ public class UserService implements IUser {
     public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
+
 }

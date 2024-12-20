@@ -5,8 +5,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 
 @Getter
-@NoArgsConstructor
-@AllArgsConstructor
 public enum ErrorCode {
     UNCATEGORIZED_EXCEPTION(9999, "Uncategorized error", HttpStatus.INTERNAL_SERVER_ERROR),
     KEY_INVALID(1001, "Invalid message key", HttpStatus.BAD_REQUEST),
@@ -18,6 +16,12 @@ public enum ErrorCode {
     UNAUTHENTICATED(1007, "Unauthenticated!.", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1008, "You do not have permission!.", HttpStatus.FORBIDDEN),
     ;
+
+    ErrorCode(int code, String mesg, HttpStatusCode statusCode) {
+        this.code = code;
+        this.mesg = mesg;
+        this.statusCode = statusCode;
+    }
 
     private int code;
     private String mesg;
