@@ -51,7 +51,9 @@ public class UserService implements IUser {
                         .orElseThrow(() -> new RuntimeException(("Role not found!")));
         user.setRole(role);
         return userMapper.toUserResponse(userRepository.save(user));
+
     }
+
     @Override
     public List<UserResponse> getListUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();

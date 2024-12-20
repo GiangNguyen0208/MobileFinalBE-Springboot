@@ -21,8 +21,8 @@ public class Order {
     private Date createAt;
 
     @ManyToOne
-    @JoinColumn(name = "discount_id")
-    private Discount discount;
+    @JoinColumn(name = "voucher_id")
+    private Voucher voucher;
 
     @ManyToOne
     @JoinColumn(name = "paymentMethod_id")
