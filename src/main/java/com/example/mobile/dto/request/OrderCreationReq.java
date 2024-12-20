@@ -19,9 +19,8 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderCreationReq {
-    int cart;
-    int discount;
-    Date createAt;
-    int paymentMethod;
-
+    private int cart;
+    private int discount;
+    private int paymentMethod;
+    private Date createAt;
 }

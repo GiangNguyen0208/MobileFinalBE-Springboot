@@ -13,6 +13,9 @@ public class ApiEndPoint {
             "/api/v1/auth/token",
             "/api/v1/auth/introspect",
             "/api/v1/orders/listOrder",
-            "/api/v1/carts/orderDetail"
+            "/api/v1/carts/orderDetail",
+            "/api/v1/admin/listShop",
+            "/api/v1/admin/addShop"
+
     };
 }

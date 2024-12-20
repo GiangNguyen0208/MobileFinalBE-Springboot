@@ -1,9 +1,11 @@
 package com.example.mobile.mapper;
 
+
+import com.example.mobile.dto.request.OrderDetailCreationReq;
 import com.example.mobile.dto.response.OrderDetailResponse;
-import com.example.mobile.dto.response.OrderResponse;
+
 import com.example.mobile.entity.Cart;
-import com.example.mobile.entity.Order;
+
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -15,4 +17,5 @@ public interface IOrderDetailMapper {
     @Mapping(target = "user", source = "user.id") // ánh xạ cart từ Order sang OrderResponse
     @Mapping(target = "product", source = "product.id") // ánh xạ paymentMethod từ Order sang OrderResponse
     OrderDetailResponse toOrderDetailResponse(Cart cart);
+//    Cart toOrderDetail(OrderDetailCreationReq req);
 }
