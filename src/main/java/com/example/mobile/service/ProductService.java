@@ -79,12 +79,15 @@ public class ProductService implements IProduct {
 
     @Override
     public List<ProductResponse> getListProductByCategory() {
-        return List.of();
+        return productRepository.findAllProductsByCategoryAndId().stream()
+                .map(productMapper::toProductResponse).toList();
     }
 
     @Override
-    public ProductResponse findProductByName(int id) {
-        return null;
+    public ProductResponse findProductByName(String name) {
+        Product product = productRepository.findByName(name)
+                .orElseThrow(() -> new RuntimeException("Product not found!"));
+        return productMapper.toProductResponse(product);
     }
 
 }

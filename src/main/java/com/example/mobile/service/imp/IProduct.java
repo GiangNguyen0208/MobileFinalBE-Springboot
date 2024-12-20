@@ -12,5 +12,5 @@ public interface IProduct {
     ProductResponse productUpdate(int id, ProductUpdateReq req);
     void deleteProduct(int id);
     List<ProductResponse> getListProductByCategory();
-    ProductResponse findProductByName(int id);
+    ProductResponse findProductByName(String name);
 }
