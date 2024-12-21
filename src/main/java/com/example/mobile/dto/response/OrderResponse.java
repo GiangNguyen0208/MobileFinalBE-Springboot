@@ -4,14 +4,18 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.Date;
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class VoucherResponse {
-    int id;
-    double priceMin;
-    double valueDiscount;
+public class OrderResponse {
+    int cart;
+    int voucher;
+    Date createAt;
+    int paymentMethod;
 }
+

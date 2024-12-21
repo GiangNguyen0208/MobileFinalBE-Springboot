@@ -1,0 +1,13 @@
+[33mfd81c26[m[33m ([m[1;36mHEAD -> [m[1;32m21130551[m[33m)[m HEAD@{0}: reset: moving to HEAD
+[33mfd81c26[m[33m ([m[1;36mHEAD -> [m[1;32m21130551[m[33m)[m HEAD@{1}: commit (merge): Merge branch 'main' into 21130551
+[33mfe0fc8b[m[33m ([m[1;31morigin/21130551[m[33m)[m HEAD@{2}: checkout: moving from main to 21130551
+[33mdddffbb[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m, [m[1;32mmain[m[33m)[m HEAD@{3}: merge origin/main: Fast-forward
+[33mc354ad0[m HEAD@{4}: checkout: moving from 21130551 to main
+[33mfe0fc8b[m[33m ([m[1;31morigin/21130551[m[33m)[m HEAD@{5}: commit: add AdminController cover ShopManager and UserManager
+[33m7a0d38a[m HEAD@{6}: commit: add orderDetailController
+[33mffb39ec[m HEAD@{7}: checkout: moving from main to 21130551
+[33mc354ad0[m HEAD@{8}: checkout: moving from 21130551 to main
+[33mffb39ec[m HEAD@{9}: commit: add orderController
+[33m823c720[m HEAD@{10}: Branch: renamed refs/heads/main to refs/heads/21130551
+[33m823c720[m HEAD@{12}: commit: add orderController
+[33mc354ad0[m HEAD@{13}: clone: from https://github.com/GiangNguyen0208/MobileFinalBE-Springboot.git
