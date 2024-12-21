@@ -13,4 +13,5 @@ public interface IUser {
     UserResponse findUserById(int id);
     UserResponse userUpdate(int id, UserUpdateRequest req);
     void deleteUser(int id);
+
 }
