@@ -2,6 +2,8 @@ package com.example.mobile.dto.request;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -17,6 +19,8 @@ import java.awt.*;
 public class ProductCreationReq {
     String name;
     Double price;
-    int amount;
+    @Min(1)
+    @NotNull
+    int quantity;
 
 }

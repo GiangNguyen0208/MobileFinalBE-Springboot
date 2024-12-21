@@ -38,12 +38,15 @@ public class ProductService implements IProduct {
 
     @Override
     public ProductResponse addProduct(ProductCreationReq req) {
-
-        if (productRepository.existsByName(req.getName())) {
-            throw new AddException(ErrorCode.USER_EXISTED);
-        }
+        System.out.println("Before mapping: " + req);
         Product product = productMapper.toProduct(req);
-        return productMapper.toProductResponse(productRepository.save(product));
+        System.out.println("After mapping: " + product);
+        if (productRepository.existsByName(req.getName())) {
+            throw new AddException(ErrorCode.PRODUCT_EXISTED);
+        }
+        Product savedProduct = productRepository.save(product);
+        System.out.println("Saved product: " + savedProduct);
+        return productMapper.toProductResponse(savedProduct);
 
     }
 
