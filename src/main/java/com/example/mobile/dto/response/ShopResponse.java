@@ -10,8 +10,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class VoucherResponse {
-    int id;
-    double priceMin;
-    double valueDiscount;
+public class ShopResponse {
+    private int id;
+
+    private String name;
+
+    private String address;
+
 }
