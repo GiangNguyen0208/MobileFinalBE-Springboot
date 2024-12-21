@@ -21,7 +21,7 @@ import java.util.Date;
 public class UserCreationReq {
     String firstname;
     String lastname;
-    Date createAt;
+    Date createAt = new Date();
     String phone;
 
     @Size(min = 6, message = "USERNAME_INVALID")

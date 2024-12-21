@@ -39,16 +39,12 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/{productId}")
-    ProductResponse ProductResponse(@PathVariable("productId") int productId) {
-        return productService.findProductById(productId);
+    @GetMapping("/byId/{productId}")
+    ApiResponse<ProductResponse> ProductResponse(@PathVariable("productId") int productId) {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.findProductById(productId))
+                .build();
     }
-
-    @GetMapping("/{productName}")
-    ProductResponse ProductResponse(@PathVariable("productName") String name) {
-        return productService.findProductByName(name);
-    }
-
     @PutMapping("/{productId}")
     ProductResponse updateProduct(@PathVariable("productId") int productId, @RequestBody ProductUpdateReq productUpdateReq) {
         return productService.productUpdate(productId, productUpdateReq);

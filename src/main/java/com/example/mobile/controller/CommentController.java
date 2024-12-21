@@ -19,44 +19,5 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class CommentController {
     IProduct productService;
-    @PostMapping("/add")
-    ApiResponse<ProductResponse> addProduct(@RequestBody @Valid ProductCreationReq productCreationReq) {
-        ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(productService.addProduct(productCreationReq));
-        return apiResponse;
-    }
-    @GetMapping("/listProduct")
-    ApiResponse<List<ProductResponse>> getListProduct() {
-        return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.getListProduct())
-                .build();
-    }
-
-    @GetMapping("/listProductByCategory")
-    ApiResponse<List<ProductResponse>> getListProductByCategory() {
-        return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.getListProductByCategory())
-                .build();
-    }
-
-    @GetMapping("/{productId}")
-    ProductResponse ProductResponse(@PathVariable("productId") int productId) {
-        return productService.findProductById(productId);
-    }
-
-    @GetMapping("/{productName}")
-    ProductResponse ProductResponse(@PathVariable("productName") String name) {
-        return productService.findProductByName(name);
-    }
-
-    @PutMapping("/{productId}")
-    ProductResponse updateProduct(@PathVariable("productId") int productId, @RequestBody ProductUpdateReq productUpdateReq) {
-        return productService.productUpdate(productId, productUpdateReq);
-    }
-    @DeleteMapping("/{productId}")
-    String deleteProduct(@PathVariable("productId") int productId) {
-        productService.deleteProduct(productId);
-        return "Product has been deleted!";
-    }
 
 }
