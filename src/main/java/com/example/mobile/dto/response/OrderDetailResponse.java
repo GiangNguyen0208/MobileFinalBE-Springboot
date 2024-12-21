@@ -1,9 +1,10 @@
 package com.example.mobile.dto.response;
 
-
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+
 
 @Data
 @Builder
@@ -11,10 +12,11 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class VoucherResponse {
-
-
-
-    double priceMin;
-    double valueDiscount;
+public class OrderDetailResponse {
+    int id;
+    double totalPrice;
+    int quantity;
+    int user;
+    int product;
 }
+
