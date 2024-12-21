@@ -99,6 +99,4 @@ public class CartController {
         response.setMesg("Decreased quantity successfully.");
         return response;
     }
-
-
 }
