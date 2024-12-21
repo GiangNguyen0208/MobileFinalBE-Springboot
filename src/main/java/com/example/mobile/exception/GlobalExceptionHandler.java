@@ -9,22 +9,11 @@ import org.springframework.security.oauth2.jwt.JwtException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
-//    @ExceptionHandler(value = Exception.class)
-//    ResponseEntity<ApiResponse> handlingRuntimeException(RuntimeException exception) {
-//        ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
-//
-//        ApiResponse apiResponse = ApiResponse.builder()
-//                .code(errorCode.getCode())
-//                .mesg(errorCode.getMesg())
-//                .build();
-//
-//        return ResponseEntity
-//                .status(errorCode.getStatusCode())
-//                .body(apiResponse);
-//    }
+
 @ExceptionHandler(value = DataAccessException.class)
 public ResponseEntity<ApiResponse> handleDatabaseException(DataAccessException exception) {
     ErrorCode errorCode = ErrorCode.UNCATEGORIZED_EXCEPTION;
@@ -64,6 +53,15 @@ public ResponseEntity<ApiResponse> handleDatabaseException(DataAccessException e
 //                .status(errorCode.getStatusCode())
 //                .body(apiResponse);
 //    }
+
+    @ExceptionHandler(RuntimeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ApiResponse<String> handleRuntimeException(RuntimeException ex) {
+        ApiResponse<String> response = new ApiResponse<>();
+        response.setMesg(ex.getMessage());
+        response.setResult("Error");
+        return response;
+    }
 
     @ExceptionHandler(value = JwtException.class)
     public ResponseEntity<ApiResponse> handleJwtException(JwtException exception) {

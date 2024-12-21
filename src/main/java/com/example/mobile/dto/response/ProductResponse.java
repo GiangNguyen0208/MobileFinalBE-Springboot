@@ -1,21 +1,20 @@
 package com.example.mobile.dto.response;
 
-import com.example.mobile.constant.FoodStatus;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartItemResponse {
-    int idProduct;
-    int idUser;
+public class ProductResponse {
     String name;
-    String des;
-    double price;
-    double rating;
-    int quantity;
-    double totalPrice;
+    Double price;
+    int amount;
 }
+
+
