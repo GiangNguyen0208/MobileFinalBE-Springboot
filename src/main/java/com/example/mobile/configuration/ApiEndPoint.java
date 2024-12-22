@@ -13,11 +13,16 @@ public class ApiEndPoint {
 
             //voucher crud
             "/api/v1/vouchers/add",
-
             "/api/v1/vouchers/update/{voucherId}",
             "/api/v1/vouchers/delete/{voucherId}",
 
+            "/api/v1/categories/add",
+            "/api/v1/categories/update/{categoryId}",
+            "/api/v1/categories/delete/{categoryId}",
 
+            "/api/v1/notifications/add",
+            "/api/v1/notifications/update/{categoryId}",
+            "/api/v1/notifications/delete/{categoryId}",
     };
 
     public static final String[] PUBLIC_ENDPOINTS = {
@@ -36,6 +41,14 @@ public class ApiEndPoint {
             "/api/v1/vouchers/listVoucher",
             "/api/v1/vouchers/findId/{voucherId}",
 
+            "/api/v1/categories/listCategory",
+            "/api/v1/categories/findId/{categoryId}",
+            "/api/v1/categories/findName/{categoryName}",
+
+            "/api/v1/notifications/listCategory",
+            "/api/v1/notifications/listCategory/{shopId}",
+            "/api/v1/notifications/findId/{categoryId}",
+            "/api/v1/notifications/findTitle/{categoryTitle}",
 
             "/api/v1/orders/listOrder",
             "/api/v1/carts/orderDetail",
