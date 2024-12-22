@@ -16,5 +16,5 @@ import java.util.Date;
 public class ProductUpdateReq {
     String name;
     double price;
-    int amount;
+    int quantity;
 }

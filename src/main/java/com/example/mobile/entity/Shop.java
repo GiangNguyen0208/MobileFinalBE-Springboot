@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity(name = "shops")
@@ -33,4 +34,7 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop")
     private Set<Category> categoryList = new HashSet<>();
+
+    @OneToMany(mappedBy = "shop")
+    private List<Notification> notificationList;
 }

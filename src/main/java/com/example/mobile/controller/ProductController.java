@@ -21,6 +21,7 @@ public class ProductController {
     IProduct productService;
     @PostMapping("/add")
     ApiResponse<ProductResponse> addProduct(@RequestBody @Valid ProductCreationReq productCreationReq) {
+        System.out.println("Request payload: " + productCreationReq);
         ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(productService.addProduct(productCreationReq));
         return apiResponse;
@@ -39,21 +40,23 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/{productId}")
+    @GetMapping("/findId/{productId}")
     ProductResponse ProductResponse(@PathVariable("productId") int productId) {
         return productService.findProductById(productId);
     }
 
-    @GetMapping("/{productName}")
+    @GetMapping("/findName/{productName}")
     ProductResponse ProductResponse(@PathVariable("productName") String name) {
         return productService.findProductByName(name);
     }
 
-    @PutMapping("/{productId}")
-    ProductResponse updateProduct(@PathVariable("productId") int productId, @RequestBody ProductUpdateReq productUpdateReq) {
-        return productService.productUpdate(productId, productUpdateReq);
+    @PutMapping("/update/{productId}")
+    ApiResponse<ProductResponse> updateProduct(@PathVariable("productId") int productId, @RequestBody ProductUpdateReq productUpdateReq) {
+        return ApiResponse.<ProductResponse>builder()
+                .result(productService.productUpdate(productId,productUpdateReq)).build();
     }
-    @DeleteMapping("/{productId}")
+
+    @DeleteMapping("/delete/{productId}")
     String deleteProduct(@PathVariable("productId") int productId) {
         productService.deleteProduct(productId);
         return "Product has been deleted!";
