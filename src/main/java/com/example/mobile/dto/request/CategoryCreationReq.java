@@ -18,5 +18,6 @@ import java.awt.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryCreationReq {
      String name;
+     int shopId;
 
 }

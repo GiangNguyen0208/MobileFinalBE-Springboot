@@ -13,6 +13,7 @@ import org.mapstruct.MappingTarget;
 public interface IProductMapper {
     @Mapping(target = "quantity", source = "quantity")
     Product toProduct(ProductCreationReq req);
+    @Mapping(target = "categoryId", source = "category.id")
     ProductResponse toProductResponse(Product product);
     void updateProduct(@MappingTarget Product product, ProductUpdateReq req);
 

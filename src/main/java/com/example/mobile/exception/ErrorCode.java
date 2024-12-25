@@ -20,6 +20,7 @@ public enum ErrorCode {
     SHOP_EXISTED(1009, "Shop existed", HttpStatus.BAD_REQUEST),
     PRODUCT_EXISTED(1010, "Product existed!.", HttpStatus.BAD_REQUEST),
     VOUCHER_EXISTED(1011, "Voucher existed!.", HttpStatus.BAD_REQUEST),
+    CATEGORY_EXISTED(1012, "CATEGORY existed!.", HttpStatus.BAD_REQUEST),
     ;
 
     private int code;

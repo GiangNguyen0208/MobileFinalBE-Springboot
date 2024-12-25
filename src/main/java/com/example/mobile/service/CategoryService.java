@@ -5,9 +5,14 @@ import com.example.mobile.dto.request.CategoryUpdateReq;
 import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.CategoryResponse;
 import com.example.mobile.entity.Category;
+import com.example.mobile.entity.Notification;
+import com.example.mobile.entity.Shop;
 import com.example.mobile.entity.Voucher;
+import com.example.mobile.exception.AddException;
+import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.ICategoryMapper;
 import com.example.mobile.repository.CategoryRepository;
+import com.example.mobile.repository.ShopRepository;
 import com.example.mobile.service.imp.ICategory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -24,10 +29,15 @@ import java.util.List;
 public class CategoryService implements ICategory {
     ICategoryMapper categoryMapper;
     CategoryRepository categoryRepository;
+    ShopRepository shopRepository;
 
     @Override
     public CategoryResponse addCategory(CategoryCreationReq req) {
-        Category category = categoryMapper.toCategory(req);
+        Category category = new Category();
+        Shop shop = shopRepository.findById(req.getShopId())
+                .orElseThrow(() -> new RuntimeException("Shop not found!"));
+        category.setName(req.getName());
+        category.setShop(shop);
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 
@@ -44,7 +54,10 @@ public class CategoryService implements ICategory {
     @Override
     public CategoryResponse categoryUpdate(int id, CategoryUpdateReq req) {
         Category category = categoryRepository.findById(id).orElseThrow(()-> new RuntimeException("Category not found!"));
-        categoryMapper.updateCategory(category,req);
+        Shop shop = shopRepository.findById(req.getShopId())
+                .orElseThrow(() -> new RuntimeException("Shop not found!"));
+        category.setName(req.getName());
+        category.setShop(shop);
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 

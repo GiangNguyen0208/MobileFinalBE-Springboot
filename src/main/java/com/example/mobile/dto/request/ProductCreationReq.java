@@ -22,5 +22,6 @@ public class ProductCreationReq {
     @Min(1)
     @NotNull
     int quantity;
+    int categoryId;
 
 }

@@ -27,6 +27,7 @@ public class ApiEndPoint {
 
     public static final String[] PUBLIC_ENDPOINTS = {
             "/api/v1/users",
+            "/api/v1/users/findId/{userId}",
             "/api/v1/auth/token",
             "/api/v1/auth/introspect",
 
@@ -36,6 +37,7 @@ public class ApiEndPoint {
             "/api/v1/products/findId/{productId}",
             "/api/v1/products/findName/{productName}",
             "/api/v1/products/listProductByCategory",
+            "/api/v1/products/listProduct/shop/{shopName}",
 
 
             "/api/v1/vouchers/listVoucher",
@@ -53,8 +55,15 @@ public class ApiEndPoint {
             "/api/v1/orders/listOrder",
             "/api/v1/carts/orderDetail",
             "/api/v1/admin/listShop",
-            "/api/v1/admin/addShop"
+            "/api/v1/admin/addShop",
 
+//            "/api/v1/ratings/add",
+//            "/api/v1/ratings/delete/{ratingId}",
+//            "/api/v1/ratings/update/{productId}",
+//            "/api/v1/ratings/findId/{ratingId}",
+//            "/api/v1/ratings/listRating/user/{userId}",
+//            "/api/v1/ratings/listRating/product/{productId}",
+//            "/api/v1/ratings/listRating/shop/{shopId}",
 
     };
 }

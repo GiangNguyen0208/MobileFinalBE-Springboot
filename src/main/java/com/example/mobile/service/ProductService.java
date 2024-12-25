@@ -1,33 +1,29 @@
 package com.example.mobile.service;
 
-import com.example.mobile.constant.RolePlay;
 import com.example.mobile.dto.request.ProductCreationReq;
 import com.example.mobile.dto.request.ProductUpdateReq;
-import com.example.mobile.dto.request.UserCreationReq;
-import com.example.mobile.dto.request.UserUpdateRequest;
 import com.example.mobile.dto.response.ProductResponse;
-import com.example.mobile.dto.response.UserResponse;
+import com.example.mobile.dto.response.ProductWithShop;
+import com.example.mobile.entity.Category;
+import com.example.mobile.entity.Notification;
 import com.example.mobile.entity.Product;
-import com.example.mobile.entity.Role;
-import com.example.mobile.entity.User;
+import com.example.mobile.entity.Shop;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IProductMapper;
-import com.example.mobile.mapper.IUserMapper;
+import com.example.mobile.repository.CategoryRepository;
 import com.example.mobile.repository.ProductRepository;
-import com.example.mobile.repository.RoleRepository;
-import com.example.mobile.repository.UserRepository;
 import com.example.mobile.service.imp.IProduct;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -35,15 +31,20 @@ import java.util.List;
 public class ProductService implements IProduct {
     ProductRepository productRepository;
     IProductMapper productMapper;
+    CategoryRepository categoryRepository;
 
     @Override
     public ProductResponse addProduct(ProductCreationReq req) {
-        System.out.println("Before mapping: " + req);
-        Product product = productMapper.toProduct(req);
-        System.out.println("After mapping: " + product);
         if (productRepository.existsByName(req.getName())) {
             throw new AddException(ErrorCode.PRODUCT_EXISTED);
         }
+        Product product = new Product();
+        Category category = categoryRepository.findById(req.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Category not found!"));
+        product.setName(req.getName());
+        product.setPrice(req.getPrice());
+        product.setQuantity(req.getQuantity());
+        product.setCategory(category);
         Product savedProduct = productRepository.save(product);
         System.out.println("Saved product: " + savedProduct);
         return productMapper.toProductResponse(savedProduct);
@@ -69,9 +70,12 @@ public class ProductService implements IProduct {
     public ProductResponse productUpdate(int id, ProductUpdateReq req) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
-
-        productMapper.updateProduct(product, req);   // Use MappingTarget to mapping data update from req (new info) into old info
-
+        Category category = categoryRepository.findById(req.getCategoryId())
+                .orElseThrow(() -> new RuntimeException("Shop not found!"));
+        product.setName(req.getName());
+        product.setPrice(req.getPrice());
+        product.setQuantity(req.getQuantity());
+        product.setCategory(category);
         return productMapper.toProductResponse(productRepository.save(product));
     }
 
@@ -92,5 +96,33 @@ public class ProductService implements IProduct {
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
         return productMapper.toProductResponse(product);
     }
+
+    @Override
+    public List<ProductWithShop> getListByShopName(String shopName) {
+        // Lấy kết quả từ repository
+        List<Object[]> results = productRepository.findProductsByShopName(shopName);
+        List<ProductWithShop> productWithShopList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            ProductWithShop productWithShop = getProductWithShop(result);
+            productWithShopList.add(productWithShop);
+        }
+        return productWithShopList;
+    }
+
+    private static ProductWithShop getProductWithShop(Object[] result) {
+        String productName = (String) result[0];
+        Double productPrice = (Double) result[1]; // product price
+        Integer productQuantity = (Integer) result[2]; // product quantity
+        String shopNameFromResult = (String) result[3]; // shop name
+
+        ProductWithShop productWithShop = new ProductWithShop();
+        productWithShop.setName(productName);
+        productWithShop.setPrice(productPrice);
+        productWithShop.setQuantity(productQuantity);
+        productWithShop.setShopName(shopNameFromResult);
+        return productWithShop;
+    }
+
 
 }
