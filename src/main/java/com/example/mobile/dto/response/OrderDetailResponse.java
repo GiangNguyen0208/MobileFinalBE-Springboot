@@ -4,15 +4,19 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+
+
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ApiResponse <T> {
-    @Builder.Default
-    int code = 1000;
-    String mesg;
-    T result;
+public class OrderDetailResponse {
+    int id;
+    double totalPrice;
+    int quantity;
+    int user;
+    int product;
 }
+

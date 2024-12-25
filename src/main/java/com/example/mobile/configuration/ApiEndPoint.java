@@ -41,6 +41,9 @@ public class ApiEndPoint {
             "/api/v1/users/register",
             "/api/v1/auth/token",
             "/api/v1/auth/introspect",
+            "/api/v1/location/save-location",
+            "/api/v1/shop/uploadData",
+
 
             // Add, Deleted Cart
             "/api/v1/cart/add/",
@@ -61,14 +64,6 @@ public class ApiEndPoint {
 
             // Role
             "/api/v1/roles/getAll",
-    };
-    public static final String[] PUBLIC_DELETE_ENDPOINTS = {
-            // Permission
-            "/api/v1/permissions/{permissionId}",
-
-            // Role
-            "/api/v1/roles/{roleId}",
 
     };
-
 }

@@ -15,8 +15,9 @@ public enum ErrorCode {
     EMAIL_INVALID(1006, "Email must be correctly syntax", HttpStatus.BAD_REQUEST),
     UNAUTHENTICATED(1007, "Unauthenticated!.", HttpStatus.UNAUTHORIZED),
     UNAUTHORIZED(1008, "You do not have permission!.", HttpStatus.FORBIDDEN),
-    PRODUCT_EXISTED(1009, "Product existed!.", HttpStatus.BAD_REQUEST),
-    VOUCHER_EXISTED(1009, "Voucher existed!.", HttpStatus.BAD_REQUEST),
+    SHOP_EXISTED(1009, "Shop existed", HttpStatus.BAD_REQUEST),
+    PRODUCT_EXISTED(1010, "Product existed!.", HttpStatus.BAD_REQUEST),
+    VOUCHER_EXISTED(1011, "Voucher existed!.", HttpStatus.BAD_REQUEST),
     ;
 
     ErrorCode(int code, String mesg, HttpStatusCode statusCode) {

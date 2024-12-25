@@ -1,29 +1,69 @@
 package com.example.mobile.controller;
 
+import com.example.mobile.dto.request.ShopCreationReq;
+import com.example.mobile.dto.request.ShopUpdateReq;
 import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
 import com.example.mobile.dto.response.ApiResponse;
+import com.example.mobile.dto.response.ShopResponse;
 import com.example.mobile.dto.response.UserResponse;
+import com.example.mobile.service.imp.IShop;
 import com.example.mobile.service.imp.IUser;
-import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
-
-import com.example.mobile.entity.User;
 
 import java.util.List;
 
+
 @RestController
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/v1/admin")
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-public class UserController {
+public class AdminController {
+    IShop shopService;
     IUser userService;
 
-    @PostMapping("/register")
+    @PostMapping("/addShop")
+    ApiResponse<ShopResponse> createShop(@RequestBody @Valid ShopCreationReq shopCreationReq) {
+        ApiResponse<ShopResponse> apiResponse = new ApiResponse<>();
+        apiResponse.setResult(shopService.createShop(shopCreationReq));
+        return apiResponse;
+    }
+
+    @GetMapping("/listShop")
+    ApiResponse<List<ShopResponse>> getListShop() {
+        return ApiResponse.<List<ShopResponse>>builder()
+                .result(shopService.getListShop())
+                .build();
+    }
+
+
+    @GetMapping("/{shopId}")
+    ShopResponse ShopResponse(@PathVariable("shopId") int shopId) {
+        return shopService.findShopById(shopId);
+    }
+
+    @GetMapping("/{shopName}")
+    ShopResponse ShopResponse(@PathVariable("shopName") String name) {
+        return shopService.findShopByName(name);
+    }
+
+    @PutMapping("/{shopId}")
+    ShopResponse updateShop(@PathVariable("shopId") int shopId, @RequestBody ShopUpdateReq shopUpdateReq) {
+        return shopService.shopUpdate(shopId, shopUpdateReq);
+    }
+    @DeleteMapping("/{shopId}")
+    String deleteShop(@PathVariable("shopId") int shopId) {
+        shopService.deleteShop(shopId);
+        return "Shop has been deleted!";
+    }
+
+
+    //user
+    @PostMapping("/addUser")
     ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationReq userCreationReq) {
         ApiResponse<UserResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(userService.createUser(userCreationReq));
