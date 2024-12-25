@@ -83,5 +83,4 @@ public class UserService implements IUser {
     public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
-
 }

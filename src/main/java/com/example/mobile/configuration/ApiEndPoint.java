@@ -6,7 +6,6 @@ import org.springframework.context.annotation.Configuration;
 public class ApiEndPoint {
     public static final String[] ADMIN_ENDPOINTS = {
             "/api/v1/users/listUser",
-
             // product crud
             "/api/v1/products/byId/*",
             "/api/v1/products/listProduct",
@@ -32,11 +31,20 @@ public class ApiEndPoint {
             "/api/v1/auth/introspect",
             "/api/v1/cart/add/",
             "/api/v1/cart/clear/",
+            "/api/v1/location/save-location",
+            
+            "/api/v1/orders/listOrder",
+            "/api/v1/shop/uploadData",
     };
+
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/v1/cart/view",
             "/api/v1/cart/increase/{productId}",
             "/api/v1/cart/decrease/{productId}",
+      
+      
+            "/api/v1/admin/listShop",
+            "/api/v1/admin/addShop"
     };
 
 }
