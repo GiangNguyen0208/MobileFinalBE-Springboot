@@ -39,8 +39,10 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers(HttpMethod.GET, ApiEndPoint.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, ApiEndPoint.PUBLIC_POST_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.DELETE, ApiEndPoint.PUBLIC_DELETE_ENDPOINTS).permitAll()
                         // Admin and other endpoints that require authentication
-                        .requestMatchers(HttpMethod.GET, ApiEndPoint.ADMIN_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
+                        .requestMatchers(HttpMethod.GET, ApiEndPoint.ADMIN_GET_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
+                        .requestMatchers(HttpMethod.POST, ApiEndPoint.ADMIN_POST_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

@@ -19,10 +19,12 @@ import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,18 +39,20 @@ public class UserService implements IUser {
     PasswordEncoder passwordEncoder;
     @Override
     public UserResponse createUser(UserCreationReq req) {
-        Date currentTime = new Date();
-        if (userRepository.existsByUsername(req.getUsername())) {
-            throw new AddException(ErrorCode.USER_EXISTED);
-        }
         User user = userMapper.toUser(req);
         user.setPassword(passwordEncoder.encode(req.getPassword()));
 
-        RolePlay rolePlay = req.getRole() != null ? req.getRole() : RolePlay.USER;
-        Role role = roleRepository.findByRoleName(rolePlay)
-                        .orElseThrow(() -> new RuntimeException(("Role not found!")));
-        user.setRole(role);
-        return userMapper.toUserResponse(userRepository.save(user));
+        HashSet<Role> roles = new HashSet<>();
+        roleRepository.findById(RolePlay.USER.getRole()).ifPresent(roles::add);
+
+        user.setRoles(roles);
+
+        try {
+            user = userRepository.save(user);
+        } catch (DataIntegrityViolationException exception) {
+            throw new AddException(ErrorCode.USER_EXISTED);
+        }
+        return userMapper.toUserResponse(user);
 
     }
 

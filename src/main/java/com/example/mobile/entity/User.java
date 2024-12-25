@@ -40,6 +40,9 @@ public class User {
 
     private Date createAt;
 
+    @ManyToMany
+    private Set<Role> roles;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
