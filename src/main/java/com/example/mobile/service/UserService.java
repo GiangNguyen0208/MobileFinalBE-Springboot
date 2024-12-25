@@ -85,4 +85,12 @@ public class UserService implements IUser {
     public void deleteUser(int id) {
         userRepository.deleteById(id);
     }
+
+
+
+
+    public User getUserById(int id){
+        User user = userRepository.findUserById(id);
+        return user;
+    }
 }
