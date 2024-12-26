@@ -21,7 +21,7 @@ import java.util.List;
 public class OrderDetailController {
    IOrderDetail orderDetailService;
 
-    @GetMapping("/orderDetail")
+    @GetMapping("/listOrderDetail")
     public ApiResponse<List<OrderDetailResponse>> getOrderDetail() {
         // Lấy danh sách các đơn hàng đã được ánh xạ thành OrderResponse
         List<OrderDetailResponse> orderDetailResponses = orderDetailService.getOrderDetail();
