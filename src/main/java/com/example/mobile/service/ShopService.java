@@ -1,60 +1,77 @@
 package com.example.mobile.service;
 
-import com.example.mobile.dto.request.ShopRequest;
+import com.example.mobile.dto.request.ShopCreationReq;
+import com.example.mobile.dto.request.ShopUpdateReq;
+import com.example.mobile.dto.response.ShopResponse;
 import com.example.mobile.entity.Shop;
-import com.example.mobile.entity.User;
+import com.example.mobile.exception.AddException;
+import com.example.mobile.exception.ErrorCode;
+import com.example.mobile.mapper.IShopMapper;
 import com.example.mobile.repository.ShopRepository;
 import com.example.mobile.service.imp.IShop;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class ShopService implements IShop {
-    @Autowired
-    private ShopRepository shopRepository;
-    private UserService userService;
+    ShopRepository shopRepository;
+    IShopMapper shopMapper;
 
     @Override
-    public Shop addShop(ShopRequest shopRequest) {
-        User user = userService.getUserById(shopRequest.getUserId());
-        Shop shop = new Shop();
-        shop.setName(shopRequest.getName());
-        shop.setAddress(shopRequest.getAddress());
-        shop.setStatus(shopRequest.getStatus());
-        shop.setRating(shopRequest.getRating());
-        shop.setUser(user);
-        return shopRepository.save(shop);
+    public ShopResponse createShop(ShopCreationReq req) {
+        if (shopRepository.existsByName(req.getName())) {
+            throw new AddException(ErrorCode.SHOP_EXISTED);
+        }
+        Shop shop = shopMapper.toShop(req);
+        return shopMapper.toShopResponse(shopRepository.save(shop));
     }
 
     @Override
-    public Shop updateShop(int id, ShopRequest shopRequest) {
-        Shop existingShop = shopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Shop not found with id "));
+    public List<ShopResponse> getListShop() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
 
-        User user = userService.getUserById(shopRequest.getUserId());
-        existingShop.setName(shopRequest.getName());
-        existingShop.setAddress(shopRequest.getAddress());
-        existingShop.setStatus(shopRequest.getStatus());
-        existingShop.setRating(shopRequest.getRating());
-        existingShop.setUser(user);
-        return shopRepository.save(existingShop);
+        return shopRepository.findAll().stream()
+                .map(shopMapper::toShopResponse).toList();
     }
+
+    @Override
+    public ShopResponse findShopById(int id) {
+        return shopMapper.toShopResponse(shopRepository.findById(id).orElseThrow(() -> new RuntimeException("Shop not found!")));
+
+    }
+
+    @Override
+    public ShopResponse shopUpdate(int id, ShopUpdateReq req) {
+        Shop shop = shopRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found!"));
+
+        shopMapper.updateShop(shop, req);   // Use MappingTarget to mapping data update from req (new info) into old info
+
+        return shopMapper.toShopResponse(shopRepository.save(shop));
+    }
+
 
     @Override
     public void deleteShop(int id) {
-        if (!shopRepository.existsById(id)) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Shop not found with id " + id);
-        }
         shopRepository.deleteById(id);
     }
 
+    @Override
+    public ShopResponse findShopByName(String name) {
+            Shop shop = shopRepository.findByName(name)
+                    .orElseThrow(() -> new RuntimeException("Shop not found!"));
+            return shopMapper.toShopResponse(shop);
+
+    }
 }
