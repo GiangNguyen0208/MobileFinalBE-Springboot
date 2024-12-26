@@ -1,5 +1,6 @@
 package com.example.mobile.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -7,9 +8,9 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class AuthenticationRes {
-    String token;
-    boolean authenticated;
-    String clientType;
+public class PermissionRes {
+    String name;
+    String description;
 }
