@@ -69,7 +69,7 @@ public class ShopService implements IShop {
 
     @Override
     public ShopResponse findShopByName(String name) {
-            Shop shop = shopRepository.findByName(name)
+            Shop shop = (Shop) shopRepository.findByName(name)
                     .orElseThrow(() -> new RuntimeException("Shop not found!"));
             return shopMapper.toShopResponse(shop);
 

@@ -11,4 +11,7 @@ import java.util.Optional;
 public interface ShopRepository extends JpaRepository<Shop,Integer> {
 
 
+    boolean existsByName(String name);
+
+    Optional<Object> findByName(String name);
 }

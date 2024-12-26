@@ -14,21 +14,21 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ShopController {
-    ShopService shopService;
-
-    @PostMapping("/add-shop")
-    public ResponseEntity<Shop> addShop(@RequestBody ShopRequest shopRequest) {
-        Shop shop = shopService.addShop(shopRequest);
-        return ResponseEntity.ok(shop);
-    }
-    @PutMapping("/update-information-shop")
-    public ResponseEntity<Shop>updateShop (@RequestParam int id, @RequestBody ShopRequest shopRequest){
-        Shop shop = shopService.updateShop(id,shopRequest);
-        return ResponseEntity.ok(shop);
-    }
-    @DeleteMapping("/delete-shop")
-    public ResponseEntity<String> updateShop (@RequestParam int id){
-        shopService.deleteShop(id);
-        return ResponseEntity.ok("Shop with id " + id + " has been deleted.");
-    }
+//    ShopService shopService;
+//
+//    @PostMapping("/add-shop")
+//    public ResponseEntity<Shop> addShop(@RequestBody ShopRequest shopRequest) {
+//        Shop shop = shopService.addShop(shopRequest);
+//        return ResponseEntity.ok(shop);
+//    }
+//    @PutMapping("/update-information-shop")
+//    public ResponseEntity<Shop>updateShop (@RequestParam int id, @RequestBody ShopRequest shopRequest){
+//        Shop shop = shopService.updateShop(id,shopRequest);
+//        return ResponseEntity.ok(shop);
+//    }
+//    @DeleteMapping("/delete-shop")
+//    public ResponseEntity<String> updateShop (@RequestParam int id){
+//        shopService.deleteShop(id);
+//        return ResponseEntity.ok("Shop with id " + id + " has been deleted.");
+//    }
 }
