@@ -22,6 +22,22 @@ public class ApiEndPoint {
             // search product
             "/api/v1/products/{productName}",
 
+            // admin/shop
+            "/api/v1/admin/shop/add",
+            "/api/v1/admin/shop/list",
+            "/api/v1/admin/shop/id/{shopId}",
+            "/api/v1/admin/shop/name/{shopName}",
+            "/api/v1/admin/shop/update/{shopId}",
+            "/api/v1/admin/shop/delete/{shopId}",
+
+            // admin/user
+
+            "/api/v1/admin/user/add",
+            "/api/v1/admin/user/list",
+            "/api/v1/admin/user/id/{userId}",
+            "/api/v1/admin/user/name/{userName}",
+            "/api/v1/admin/user/update/{userId}",
+            "/api/v1/admin/user/delete/{userId}",
     };
 
     public static final String[] PUBLIC_ENDPOINTS = {
