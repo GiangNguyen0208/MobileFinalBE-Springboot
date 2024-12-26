@@ -4,12 +4,14 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ApiEndPoint {
-    public static final String[] ADMIN_ENDPOINTS = {
+    public static final String[] ADMIN_GET_ENDPOINTS = {
             "/api/v1/users/listUser",
+
 
             "/api/v1/products/add",
             "/api/v1/products/update/{productId}",
             "/api/v1/products/delete/{productId}",
+
 
             //voucher crud
             "/api/v1/vouchers/add",
@@ -19,6 +21,7 @@ public class ApiEndPoint {
             "/api/v1/categories/add",
             "/api/v1/categories/update/{categoryId}",
             "/api/v1/categories/delete/{categoryId}",
+
 
             "/api/v1/notifications/add",
             "/api/v1/notifications/update/{categoryId}",
@@ -57,13 +60,50 @@ public class ApiEndPoint {
             "/api/v1/admin/listShop",
             "/api/v1/admin/addShop",
 
-//            "/api/v1/ratings/add",
-//            "/api/v1/ratings/delete/{ratingId}",
-//            "/api/v1/ratings/update/{productId}",
-//            "/api/v1/ratings/findId/{ratingId}",
-//            "/api/v1/ratings/listRating/user/{userId}",
-//            "/api/v1/ratings/listRating/product/{productId}",
-//            "/api/v1/ratings/listRating/shop/{shopId}",
+
+            // Get List User
+            "/api/v1/users/getAllUser",
+
+
+
+
+    };
+
+    public static final String[] ADMIN_POST_ENDPOINTS = {
+            //Role
+//            "/api/v1/roles/create",
+
+    };
+
+    public static final String[] PUBLIC_POST_ENDPOINTS = {
+            // Login vs Register
+            "/api/v1/users/register",
+            "/api/v1/auth/token",
+            "/api/v1/auth/introspect",
+            "/api/v1/location/save-location",
+            "/api/v1/shop/uploadData",
+
+
+            // Add, Deleted Cart
+            "/api/v1/cart/add/",
+            "/api/v1/cart/clear/",
+
+            // Permission
+            "/api/v1/permissions/create",
+
+            // Role
+    };
+    public static final String[] PUBLIC_GET_ENDPOINTS = {
+            "/api/v1/cart/view",
+            "/api/v1/cart/increase/{productId}",
+            "/api/v1/cart/decrease/{productId}",
+
+            // Permission
+            "/api/v1/permissions/getAll",
+
+            // Role
+            "/api/v1/roles/getAll",
+
 
     };
 }

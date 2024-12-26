@@ -97,6 +97,7 @@ public class ProductService implements IProduct {
         return productMapper.toProductResponse(product);
     }
 
+
     @Override
     public List<ProductWithShop> getListByShopName(String shopName) {
         // Lấy kết quả từ repository
@@ -123,6 +124,7 @@ public class ProductService implements IProduct {
         productWithShop.setShopName(shopNameFromResult);
         return productWithShop;
     }
+
 
 
 }

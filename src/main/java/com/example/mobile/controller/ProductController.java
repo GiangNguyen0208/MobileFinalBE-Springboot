@@ -55,6 +55,7 @@ public class ProductController {
     ApiResponse<ProductResponse> updateProduct(@PathVariable("productId") int productId, @RequestBody ProductUpdateReq productUpdateReq) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.productUpdate(productId,productUpdateReq)).build();
+
     }
 
     @DeleteMapping("/delete/{productId}")

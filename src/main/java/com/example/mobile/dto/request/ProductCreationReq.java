@@ -1,5 +1,6 @@
 package com.example.mobile.dto.request;
 
+import com.example.mobile.constant.FoodStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import jakarta.validation.constraints.Min;
@@ -18,10 +19,13 @@ import java.awt.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCreationReq {
     String name;
+    String categoryName;
+    String description;
     Double price;
     @Min(1)
     @NotNull
     int quantity;
     int categoryId;
+
 
 }

@@ -1,5 +1,6 @@
 package com.example.mobile.dto.request;
 
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import jakarta.validation.constraints.Min;
@@ -21,3 +22,4 @@ public class CategoryCreationReq {
      int shopId;
 
 }
+
