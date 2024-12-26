@@ -65,11 +65,17 @@ public class AuthenticationService implements IAuthentication {
             throw new AddException(ErrorCode.UNAUTHENTICATED);
 
         var token = generateToken(user);
+        var role = getRoleUser(user);
 
         return AuthenticationRes.builder()
                 .token(token)
                 .authenticated(true)
+                .clientType(role)
                 .build();
+    }
+
+    private String getRoleUser(User user) {
+        return user.getRole().getName();
     }
 
     @Override
