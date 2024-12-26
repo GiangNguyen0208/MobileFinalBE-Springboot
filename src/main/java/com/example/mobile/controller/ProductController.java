@@ -4,7 +4,6 @@ import com.example.mobile.dto.request.ProductCreationReq;
 import com.example.mobile.dto.request.ProductUpdateReq;
 import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.ProductResponse;
-import com.example.mobile.dto.response.ProductWithShop;
 import com.example.mobile.service.imp.IProduct;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -22,7 +21,6 @@ public class ProductController {
     IProduct productService;
     @PostMapping("/add")
     ApiResponse<ProductResponse> addProduct(@RequestBody @Valid ProductCreationReq productCreationReq) {
-        System.out.println("Request payload: " + productCreationReq);
         ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
         apiResponse.setResult(productService.addProduct(productCreationReq));
         return apiResponse;
@@ -41,23 +39,17 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/findId/{productId}")
-    ProductResponse ProductResponse(@PathVariable("productId") int productId) {
-        return productService.findProductById(productId);
-    }
-
-    @GetMapping("/findName/{productName}")
-    ProductResponse ProductResponse(@PathVariable("productName") String name) {
-        return productService.findProductByName(name);
-    }
-
-    @PutMapping("/update/{productId}")
-    ApiResponse<ProductResponse> updateProduct(@PathVariable("productId") int productId, @RequestBody ProductUpdateReq productUpdateReq) {
+    @GetMapping("/{productId}")
+    ApiResponse<ProductResponse> ProductResponse(@PathVariable("productId") int productId) {
         return ApiResponse.<ProductResponse>builder()
-                .result(productService.productUpdate(productId,productUpdateReq)).build();
+                .result(productService.findProductById(productId))
+                .build();
     }
-
-    @DeleteMapping("/delete/{productId}")
+    @PutMapping("/{productId}")
+    ProductResponse updateProduct(@PathVariable("productId") int productId, @RequestBody ProductUpdateReq productUpdateReq) {
+        return productService.productUpdate(productId, productUpdateReq);
+    }
+    @DeleteMapping("/{productId}")
     String deleteProduct(@PathVariable("productId") int productId) {
         productService.deleteProduct(productId);
         return "Product has been deleted!";

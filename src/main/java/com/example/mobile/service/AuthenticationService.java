@@ -120,11 +120,12 @@ public class AuthenticationService implements IAuthentication {
 
     private String buildScope(User user) {
         StringJoiner stringJoiner = new StringJoiner(" ");
-        if (user.getRole() != null) {
-            stringJoiner.add(user.getRole().getRoleName().getRole());
-        } else {
-            throw  new RuntimeException("ROLE IS NOT VALID");
-        }
+//        if (user.getRole() != null) {
+//            stringJoiner.add(user.getRole().getRoleName().getRole());
+//        } else {
+//            throw  new RuntimeException("ROLE IS NOT VALID");
+//        }
+        
         return stringJoiner.toString();
     }
 }

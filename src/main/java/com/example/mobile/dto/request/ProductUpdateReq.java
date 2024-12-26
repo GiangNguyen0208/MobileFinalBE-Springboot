@@ -17,5 +17,4 @@ public class ProductUpdateReq {
     String name;
     double price;
     int quantity;
-    int categoryId;
 }
