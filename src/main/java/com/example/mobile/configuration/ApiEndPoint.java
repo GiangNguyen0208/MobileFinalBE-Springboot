@@ -17,5 +17,10 @@ public class ApiEndPoint {
             "/api/v1/carts/add-to-cart",
             "/api/v1/location/save-location",
             "/api/v1/shop/uploadData",
+            "/api/v1/comments/comment",
+            "/api/v1/comments/show-all-comment",
+            "/api/v1/shop/add-shop",
+            "/api/v1/shop/update-information-shop",
+            "/api/v1/shop/delete-shop",
     };
 }

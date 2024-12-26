@@ -1,11 +1,10 @@
 package com.example.mobile.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name = "users")
 @Data
@@ -39,6 +38,9 @@ public class User {
     private boolean deleted;
 
     private Date createAt;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "role_id")
