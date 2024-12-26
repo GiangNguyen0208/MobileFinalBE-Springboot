@@ -42,6 +42,9 @@ public class User {
     @JsonManagedReference
     private List<Comment> comments = new ArrayList<>();
 
+    @ManyToMany
+    private Set<Role> roles;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

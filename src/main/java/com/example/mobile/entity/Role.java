@@ -15,11 +15,14 @@ import java.util.Set;
 @ToString
 public class Role {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private String name;
+
+    private String description;
+
     @Enumerated(EnumType.STRING)
     private RolePlay roleName;
 
-    @OneToMany(mappedBy = "role")
-    private Set<User> userList = new HashSet<>();
+    @ManyToMany
+    private Set<Permissions> permissions;
+
 }
