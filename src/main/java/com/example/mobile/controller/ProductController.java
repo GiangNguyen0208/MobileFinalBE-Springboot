@@ -4,6 +4,7 @@ import com.example.mobile.dto.request.ProductCreationReq;
 import com.example.mobile.dto.request.ProductUpdateReq;
 import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.ProductResponse;
+import com.example.mobile.dto.response.ProductWithShop;
 import com.example.mobile.service.imp.IProduct;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;

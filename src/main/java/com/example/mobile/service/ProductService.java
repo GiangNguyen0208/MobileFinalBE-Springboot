@@ -38,16 +38,10 @@ public class ProductService implements IProduct {
         if (productRepository.existsByName(req.getName())) {
             throw new AddException(ErrorCode.PRODUCT_EXISTED);
         }
-        Product product = new Product();
-        Category category = categoryRepository.findById(req.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Category not found!"));
-        product.setName(req.getName());
-        product.setPrice(req.getPrice());
-        product.setQuantity(req.getQuantity());
+        Category category = categoryRepository.findById(req.getCategoryId()).orElseThrow(()-> new RuntimeException("Category not found"));
+        Product product = productMapper.toProduct(req);
         product.setCategory(category);
-        Product savedProduct = productRepository.save(product);
-        System.out.println("Saved product: " + savedProduct);
-        return productMapper.toProductResponse(savedProduct);
+        return productMapper.toProductResponse(productRepository.save(product));
 
     }
 
@@ -68,14 +62,8 @@ public class ProductService implements IProduct {
 
     @Override
     public ProductResponse productUpdate(int id, ProductUpdateReq req) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found!"));
-        Category category = categoryRepository.findById(req.getCategoryId())
-                .orElseThrow(() -> new RuntimeException("Shop not found!"));
-        product.setName(req.getName());
-        product.setPrice(req.getPrice());
-        product.setQuantity(req.getQuantity());
-        product.setCategory(category);
+        Product product = productRepository.findById(id).orElseThrow(()-> new RuntimeException("Product not found!"));
+        productMapper.updateProduct(product,req);
         return productMapper.toProductResponse(productRepository.save(product));
     }
 

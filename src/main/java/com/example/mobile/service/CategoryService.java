@@ -33,10 +33,8 @@ public class CategoryService implements ICategory {
 
     @Override
     public CategoryResponse addCategory(CategoryCreationReq req) {
-        Category category = new Category();
-        Shop shop = shopRepository.findById(req.getShopId())
-                .orElseThrow(() -> new RuntimeException("Shop not found!"));
-        category.setName(req.getName());
+        Shop shop = shopRepository.findById(req.getShopId()).orElseThrow(()->new RuntimeException("Shop not found"));
+        Category category = categoryMapper.toCategory(req);
         category.setShop(shop);
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
@@ -54,10 +52,7 @@ public class CategoryService implements ICategory {
     @Override
     public CategoryResponse categoryUpdate(int id, CategoryUpdateReq req) {
         Category category = categoryRepository.findById(id).orElseThrow(()-> new RuntimeException("Category not found!"));
-        Shop shop = shopRepository.findById(req.getShopId())
-                .orElseThrow(() -> new RuntimeException("Shop not found!"));
-        category.setName(req.getName());
-        category.setShop(shop);
+        categoryMapper.updateCategory(category,req);
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
     }
 

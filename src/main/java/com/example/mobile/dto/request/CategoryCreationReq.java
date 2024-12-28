@@ -12,5 +12,6 @@ import lombok.experimental.FieldDefaults;
 public class CategoryCreationReq {
     String name;
     String status;
-    String shopName;
+    int shopId;
+
 }

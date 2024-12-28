@@ -10,10 +10,12 @@ import org.mapstruct.MappingTarget;
 
 @Mapper(componentModel = "spring")
 public interface ICategoryMapper {
-    Category toCategory(CategoryCreationReq req);
-    @Mapping(target = "shopId", source = "shop.id")
-    CategoryResponse toCategoryResponse(Category category);
 
+    @Mapping(target = "name", source = "name")
+    Category toCategory(CategoryCreationReq req);
+    @Mapping(target = "name", source = "name")
+    @Mapping(target = "shopName", source = "shop.name")
+    CategoryResponse toCategoryResponse(Category category);
     void updateCategory(@MappingTarget Category category, CategoryUpdateReq req);
 
 }

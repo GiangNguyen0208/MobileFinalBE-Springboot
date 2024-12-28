@@ -1,4 +1,4 @@
-package com.example.mobile.dto.request;
+package com.example.mobile.dto.response;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
@@ -10,6 +10,10 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NotificationUpdateReq {
-    String message; // Nội dung thông báo
+public class CommentResponse {
+    String shopName;
+    String productName;
+    String userName;
+    double rating;
+    String message;
 }

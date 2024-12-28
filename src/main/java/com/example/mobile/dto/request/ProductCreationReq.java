@@ -16,9 +16,10 @@ import java.awt.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCreationReq {
     String name;
-    String categoryName;
+    int categoryId;
     String description;
     Double price;
     int quantity;
+    double rating;
     String status;
 }

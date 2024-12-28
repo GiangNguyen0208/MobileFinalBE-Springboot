@@ -12,8 +12,9 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface IProductMapper {
     @Mapping(target = "quantity", source = "quantity")
+    @Mapping(target = "rating", source = "rating")
     Product toProduct(ProductCreationReq req);
-    @Mapping(target = "categoryId", source = "category.id")
+    @Mapping(target = "categoryName", source = "category.name")
     ProductResponse toProductResponse(Product product);
     void updateProduct(@MappingTarget Product product, ProductUpdateReq req);
 

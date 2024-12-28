@@ -12,6 +12,5 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryUpdateReq {
-    private String name;
-    int shopId;
+    String name;
 }

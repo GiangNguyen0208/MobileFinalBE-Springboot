@@ -30,14 +30,11 @@ public class NotificationService implements INotification {
 
     @Override
     public NotificationResponse addNotification(NotificationCreationReq req) {
-        Notification notification = new Notification();
+        Notification notification = notificationMapper.toNotification(req);
         Shop shop = shopRepository.findById(req.getShopId())
                 .orElseThrow(() -> new RuntimeException("Shop not found!"));
         notification.setShop(shop);
-        notification.setTitle(req.getTitle());
-        notification.setMessage(req.getMessage());
-        Notification savedNotification = notificationRepository.save(notification);
-        return notificationMapper.toCategoryResponse(savedNotification);
+        return notificationMapper.toCategoryResponse(notificationRepository.save(notification));
     }
 
     @Override

@@ -10,6 +10,8 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class NotificationUpdateReq {
-    String message; // Nội dung thông báo
+public class CommentUpdateReq {
+    double rating;
+    String imgUrl;
+    String message;
 }
