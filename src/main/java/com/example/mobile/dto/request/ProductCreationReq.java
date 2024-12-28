@@ -1,6 +1,5 @@
 package com.example.mobile.dto.request;
 
-import com.example.mobile.constant.FoodStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.*;
@@ -17,9 +16,10 @@ import java.awt.*;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductCreationReq {
     String name;
-    String categoryName;
+    int categoryId;
     String description;
     Double price;
     int quantity;
-    FoodStatus status;
+    double rating;
+    String status;
 }

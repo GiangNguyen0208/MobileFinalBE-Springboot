@@ -25,21 +25,28 @@ public class VoucherController {
         apiResponse.setResult(voucherService.addVoucher(voucherCreationReq));
         return apiResponse;
     }
+
     @GetMapping("/listVoucher")
     ApiResponse<List<VoucherResponse>> getListVoucher() {
         return ApiResponse.<List<VoucherResponse>>builder()
                 .result(voucherService.getListVoucher())
                 .build();
     }
-    @GetMapping("/{voucherId}")
+
+    @GetMapping("/findId/{voucherId}")
     VoucherResponse getUser(@PathVariable("voucherId") int voucherId) {
         return voucherService.findVoucherById(voucherId);
     }
-    @PutMapping("/{voucherId}")
-    VoucherResponse updateVoucher(@PathVariable("voucherId") int voucherId, @RequestBody VoucherUpdateReq voucherUpdateReq) {
-        return voucherService.voucherUpdate(voucherId,voucherUpdateReq);
+
+    @PutMapping("/update/{voucherId}")
+    ApiResponse<VoucherResponse> updateVoucher(@PathVariable("voucherId") int voucherId, @RequestBody VoucherUpdateReq voucherUpdateReq) {
+        return ApiResponse.<VoucherResponse>builder()
+                .result(voucherService.voucherUpdate(voucherId,voucherUpdateReq))
+                .build();
+
     }
-    @DeleteMapping("/{voucherId}")
+
+    @DeleteMapping("/delete/{voucherId}")
     String deleteVoucher(@PathVariable("voucherId") int voucherId) {
         voucherService.deleteVoucher(voucherId);
         return "Voucher has been deleted!";

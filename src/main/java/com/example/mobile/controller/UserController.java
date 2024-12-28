@@ -35,7 +35,7 @@ public class UserController {
                 .result(userService.getListUser())
                 .build();
     }
-    @GetMapping("/{userId}")
+    @GetMapping("/findId/{userId}")
     UserResponse getUser(@PathVariable("userId") int userId) {
         return userService.findUserById(userId);
     }

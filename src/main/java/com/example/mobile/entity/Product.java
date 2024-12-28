@@ -21,7 +21,7 @@ public class Product {
     private String name;
 
     private double price;
-
+    @Column(nullable = false)
     private int quantity;
 
     private int position;

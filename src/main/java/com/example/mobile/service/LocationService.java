@@ -22,16 +22,17 @@ public class LocationService implements ILocation {
 
     @Override
     public Location saveLocation(LocationRequest locationRequest) {
-        User user = userService.getUserById(locationRequest.getUserId());
-        Location location = new Location();
-        location.setLocation_line1(locationRequest.getLocation_line1());
-        location.setLocation_line2(locationRequest.getLocation_line2());
-        location.setCity(locationRequest.getCity());
-        location.setDistrict(locationRequest.getDistrict());
-        location.setLatitude(locationRequest.getLatitude());
-        location.setLongtitude(locationRequest.getLongtitude());
-        location.setCountry(locationRequest.getCountry());
-        location.setUser(user);
-        return locationRepository.save(location);
+//        User user = userService.getUserById(locationRequest.getUserId());
+//        Location location = new Location();
+//        location.setLocation_line1(locationRequest.getLocation_line1());
+//        location.setLocation_line2(locationRequest.getLocation_line2());
+//        location.setCity(locationRequest.getCity());
+//        location.setDistrict(locationRequest.getDistrict());
+//        location.setLatitude(locationRequest.getLatitude());
+//        location.setLongtitude(locationRequest.getLongtitude());
+//        location.setCountry(locationRequest.getCountry());
+//        location.setUser(user);
+//        return locationRepository.save(location);
+        return null;
     }
 }

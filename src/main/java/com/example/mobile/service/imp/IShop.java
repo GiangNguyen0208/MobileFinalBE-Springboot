@@ -8,9 +8,15 @@ import java.util.List;
 
 public interface IShop {
     ShopResponse createShop(ShopCreationReq req);
+
     List<ShopResponse> getListShop();
+
     ShopResponse findShopById(int id);
+
     ShopResponse shopUpdate(int id, ShopUpdateReq req);
+
     void deleteShop(int id);
+
     ShopResponse findShopByName(String name);
+
 }
