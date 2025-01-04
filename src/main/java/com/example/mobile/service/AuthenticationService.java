@@ -56,10 +56,10 @@ public class AuthenticationService implements IAuthentication {
 
     @Override
     public AuthenticationRes authentication(AuthenticationReq req) {
-        var user = userRepository.findByUsername(req.getUsername())
+        var user = userRepository.findByUsername(req.getUsername().toLowerCase())
                 .orElseThrow(() -> new AddException(ErrorCode.USER_NOT_EXISTED));
         PasswordEncoder passwordEncode = new BCryptPasswordEncoder(10);
-        boolean authenticated = passwordEncode.matches(req.getPassword(), user.getPassword());
+        boolean authenticated = passwordEncode.matches(req.getPassword().toLowerCase(), user.getPassword());
 
         if (!authenticated)
             throw new AddException(ErrorCode.UNAUTHENTICATED);
