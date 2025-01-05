@@ -33,15 +33,20 @@ public class ApiEndPoint {
     public static final String[] ADMIN_POST_ENDPOINTS = {
             //Role
 
+            // Product upload image
+            "/api/v1/product/images/upload/*",
+            "/api/v1/shop/images/*",
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             // Login vs Register
+
             "/api/v1/users/register",
             "/api/v1/auth/token",
             "/api/v1/auth/introspect",
             "/api/v1/location/save-location",
             "/api/v1/shop/uploadData",
+
 
 
             // Add, Deleted Cart
@@ -62,10 +67,14 @@ public class ApiEndPoint {
             // Permission
             "/api/v1/permissions/getAll",
 
+            // Image Product Show
+            "/api/v1/product/images/show-list/*",   // Show List Image
+            "/api/v1/product/images/show/*",    // Show one Image
 
     };
 
     public static final String[] PUBLIC_DELETE_ENDPOINTS = {
             "/api/v1/roles/{role}",
+            "/api/v1/product/images/{productId}",
     };
 }
