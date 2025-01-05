@@ -1,6 +1,7 @@
 package com.example.mobile.service;
 
 import com.example.mobile.configuration.ImageUpload;
+import com.example.mobile.dto.response.ImageProductResponse;
 import com.example.mobile.entity.ImageProduct;
 import com.example.mobile.entity.Product;
 import com.example.mobile.mapper.IProductMapper;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -54,14 +56,20 @@ public class ImageProductService implements IImageProduct {
     }
 
     @Override
-    public List<byte[]> showProductImage(int idProduct) {
+    public List<ImageProductResponse> showProductImage(int idProduct) {
         Product product = productRepository.findById(idProduct)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + idProduct));
         List<ImageProduct> images = imageProductRepository.findAllByProduct(product);
-
-        return images.stream()
-                .map(imageProduct -> ImageUpload.decompressImage(imageProduct.getLinkImage()))
-                .toList();
+        List<ImageProductResponse> listResponseImages = new ArrayList<>();
+        for (ImageProduct imageProduct : images) {
+            ImageProductResponse imageProductResponse = ImageProductResponse.builder()
+                    .imageName(imageProduct.getName())
+                    .imageUrl(ImageUpload.decompressImage(imageProduct.getLinkImage()))
+                    .type(imageProduct.getType())
+                    .build();
+            listResponseImages.add(imageProductResponse);
+        }
+        return listResponseImages;
     }
 
     @Override

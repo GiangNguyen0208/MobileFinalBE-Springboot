@@ -1,6 +1,7 @@
 package com.example.mobile.controller;
 
 import com.example.mobile.dto.response.ApiResponse;
+import com.example.mobile.dto.response.ImageProductResponse;
 import com.example.mobile.service.imp.IImageProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,9 +36,9 @@ public class ImageProductController {
 
     // Get List Image Product
     @GetMapping("/show-list/{productId}")
-    ApiResponse<List<byte[]>> downloadImageProduct(@PathVariable("productId") int productId) {
-        List<byte[]> imageData = imageProductService.showProductImage(productId);
-        return ApiResponse.<List<byte[]>>builder()
+    ApiResponse<List<ImageProductResponse>> downloadImageProduct(@PathVariable("productId") int productId) {
+        List<ImageProductResponse> imageData = imageProductService.showProductImage(productId);
+        return ApiResponse.<List<ImageProductResponse>>builder()
                 .mesg("Show List Image Product")
                 .result(imageData)
                 .build();

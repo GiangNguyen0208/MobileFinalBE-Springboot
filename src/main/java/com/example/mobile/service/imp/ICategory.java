@@ -1,5 +1,10 @@
 package com.example.mobile.service.imp;
 
-public interface ICategory {
+import com.example.mobile.dto.response.CategoryResponse;
+import com.example.mobile.entity.Category;
 
+import java.util.List;
+
+public interface ICategory {
+    List<CategoryResponse> getListCategory(int shopID);
 }
