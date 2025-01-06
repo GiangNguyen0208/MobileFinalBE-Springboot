@@ -11,5 +11,5 @@ import lombok.experimental.FieldDefaults;
 public class ImageProductResponse {
     private String imageName;
     private String type;
-    private byte[] imageUrl;
+    private String imageUrl;
 }

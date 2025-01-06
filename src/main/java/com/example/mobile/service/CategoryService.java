@@ -43,4 +43,19 @@ public class CategoryService  implements ICategory {
         }
         return  categoryResponseList;
     }
+
+    @Override
+    public List<CategoryResponse> getListCategory() {
+        List<CategoryResponse> categoryResponseList = new ArrayList<>();
+        List<Category> categories = categoryRepository.findAll();
+        for (Category category : categories) {
+            CategoryResponse categoryResponse = CategoryResponse.builder()
+                    .id(category.getId())
+                    .name(category.getName())
+                    .status(category.getStatus())
+                    .build();
+            categoryResponseList.add(categoryResponse);
+        }
+        return  categoryResponseList;
+    }
 }

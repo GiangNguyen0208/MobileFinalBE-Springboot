@@ -5,18 +5,19 @@ import com.example.mobile.dto.request.ProductCreationReq;
 import com.example.mobile.dto.request.ProductUpdateReq;
 import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
+import com.example.mobile.dto.response.ImageProductResponse;
 import com.example.mobile.dto.response.ProductResponse;
 import com.example.mobile.dto.response.UserResponse;
-import com.example.mobile.entity.Product;
-import com.example.mobile.entity.Role;
-import com.example.mobile.entity.User;
+import com.example.mobile.entity.*;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IProductMapper;
 import com.example.mobile.mapper.IUserMapper;
+import com.example.mobile.repository.CategoryRepository;
 import com.example.mobile.repository.ProductRepository;
 import com.example.mobile.repository.RoleRepository;
 import com.example.mobile.repository.UserRepository;
+import com.example.mobile.service.imp.IImageProduct;
 import com.example.mobile.service.imp.IProduct;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -26,6 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 @Service
@@ -35,6 +37,8 @@ import java.util.List;
 public class ProductService implements IProduct {
     ProductRepository productRepository;
     IProductMapper productMapper;
+    CategoryRepository categoryRepository;
+    IImageProduct imageProductService;
 
     @Override
     public ProductResponse addProduct(ProductCreationReq req) {
@@ -50,16 +54,37 @@ public class ProductService implements IProduct {
     @Override
     public List<ProductResponse> getListProduct() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
+        List<ProductResponse> productResponseList = new ArrayList<>();
         log.info("Username: {}", authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
 
-        return productRepository.findAll().stream()
-                .map(productMapper::toProductResponse).toList();
+//        return productRepository.findAll().stream()
+//                .map(productMapper::toProductResponse).toList();
+        List<Product> productList = productRepository.findAll();
+        for (Product p : productList) {
+            ProductResponse productResponse = ProductResponse.builder()
+                    .name(p.getName())
+                    .price(p.getPrice())
+                    .des(p.getDescription())
+                    .amount(p.getQuantity())
+                    .images(imageProductService.showProductImage(p.getId()))
+                    .build();
+            productResponseList.add(productResponse);
+        }
+        return  productResponseList;
     }
 
     @Override
     public ProductResponse findProductById(int id) {
-        return productMapper.toProductResponse(productRepository.findById(id).orElseThrow(() -> new RuntimeException("Product not found!")));
+        Product p = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Product not found!"));
+        return ProductResponse.builder()
+                .name(p.getName())
+                .price(p.getPrice())
+                .des(p.getDescription())
+                .amount(p.getQuantity())
+                .images(imageProductService.showProductImage(p.getId()))
+                .build();
     }
 
     @Override
@@ -78,9 +103,21 @@ public class ProductService implements IProduct {
     }
 
     @Override
-    public List<ProductResponse> getListProductByCategory() {
-        return productRepository.findAllProductsByCategoryAndId().stream()
-                .map(productMapper::toProductResponse).toList();
+    public List<ProductResponse> getListProductByCategory(int id) {
+        List<ProductResponse> productResponseList = new ArrayList<>();
+        Category category = categoryRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Category not found!"));;
+        List<Product> productList = productRepository.findAllByCategory(category);
+        for (Product product : productList) {
+            ProductResponse productResponse = ProductResponse.builder()
+                    .name(product.getName())
+                    .price(product.getPrice())
+                    .des(product.getDescription())
+                    .amount(product.getQuantity())
+                    .build();
+            productResponseList.add(productResponse);
+        }
+        return productResponseList;
     }
 
     @Override

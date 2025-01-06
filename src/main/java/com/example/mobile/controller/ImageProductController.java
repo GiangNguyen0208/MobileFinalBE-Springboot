@@ -19,17 +19,17 @@ import java.util.List;
 public class ImageProductController {
     private final IImageProduct imageProductService;
     @PostMapping("/upload/{productId}")
-    public ApiResponse<String> uploadImageProduct(
-            @RequestParam("image") MultipartFile file,
+    public ApiResponse<List<String>> uploadImageProduct(
+            @RequestParam("image") List<MultipartFile> files,
             @PathVariable("productId") int id) throws IOException {
-        if (file.isEmpty()) {
+        if (files.isEmpty()) {
             throw new RuntimeException("File is empty!");
         }
         // Gọi service upload
-        String uploadImage = imageProductService.uploadImage(file, id);
-        return ApiResponse.<String>builder()
+        List<String> uploadImages = imageProductService.uploadImage(files, id);
+        return ApiResponse.<List<String>>builder()
                 .mesg("Upload Image Status")
-                .result(uploadImage)
+                .result(uploadImages)
                 .build();
     }
 

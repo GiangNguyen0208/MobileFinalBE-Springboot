@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,20 +34,39 @@ public class ImageProductService implements IImageProduct {
     ProductRepository productRepository;
 
     @Override
-    public String uploadImage(MultipartFile file, int productId) throws IOException {
+    public List<String> uploadImage(List<MultipartFile> files, int productId) throws IOException {
+        // Kiểm tra xem sản phẩm có tồn tại hay không
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
 
-        ImageProduct imageProduct = imageProductRepository.save(
-                ImageProduct.builder()
-                        .name(file.getOriginalFilename())
-                        .type(file.getContentType())
-                        .linkImage(ImageUpload.compressImage(file.getBytes()))
-                        .product(product)
-                        .build()
-        );
-        return imageProduct != null ? "Upload Image Success: " + file.getOriginalFilename() : "Upload Image Fail";
+        // Duyệt qua danh sách file và lưu từng ảnh
+        List<String> uploadedImages = new ArrayList<>();
+        for (MultipartFile file : files) {
+            if (file.isEmpty()) {
+                throw new RuntimeException("File is empty: " + file.getOriginalFilename());
+            }
+
+            // Lưu ảnh vào cơ sở dữ liệu
+            ImageProduct imageProduct = imageProductRepository.save(
+                    ImageProduct.builder()
+                            .name(file.getOriginalFilename())
+                            .type(file.getContentType())
+                            .linkImage(ImageUpload.compressImage(file.getBytes()))
+                            .product(product)
+                            .build()
+            );
+
+            // Thêm kết quả vào danh sách
+            if (imageProduct != null) {
+                uploadedImages.add("Uploaded: " + file.getOriginalFilename());
+            } else {
+                uploadedImages.add("Failed to upload: " + file.getOriginalFilename());
+            }
+        }
+
+        return uploadedImages;
     }
+
 
     @Override
     public byte[] downloadImage(String filename) {
@@ -64,7 +84,7 @@ public class ImageProductService implements IImageProduct {
         for (ImageProduct imageProduct : images) {
             ImageProductResponse imageProductResponse = ImageProductResponse.builder()
                     .imageName(imageProduct.getName())
-                    .imageUrl(ImageUpload.decompressImage(imageProduct.getLinkImage()))
+                    .imageUrl(Base64.getUrlEncoder().encodeToString(ImageUpload.decompressImage(imageProduct.getLinkImage())))
                     .type(imageProduct.getType())
                     .build();
             listResponseImages.add(imageProductResponse);

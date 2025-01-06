@@ -40,7 +40,7 @@ public class ApiEndPoint {
     };
     public static final String[] SHOP_GET_ENDPOINTS = {
             // Product
-            "/api/v1/products/listProduct",           // Lấy danh sách sản phẩm
+
             "/api/v1/products/{productId}",           // Cập nhật sản phẩm
 
             // Category
@@ -77,6 +77,9 @@ public class ApiEndPoint {
             "/api/v1/roles",
     };
     public static final String[] PUBLIC_GET_ENDPOINTS = {
+            // Product
+            "/api/v1/products/listProduct",           // Lấy danh sách sản phẩm
+
             // Cart
             "/api/v1/cart/view",
             "/api/v1/cart/increase/{productId}",
