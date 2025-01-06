@@ -4,9 +4,15 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ApiEndPoint {
-    public static final String[] ADMIN_GET_ENDPOINTS = {
+    public static final String[] ADMIN_ENDPOINTS = {
             "/api/v1/users/listUser",
 
+
+            // product crud
+            "/api/v1/products/add",
+            "/api/v1/products/listProduct",
+            "/api/v1/products/{productId}",
+            "/api/v1/products/listProductByCategory",
 
             //voucher crud
             "/api/v1/vouchers/add",
@@ -17,86 +23,33 @@ public class ApiEndPoint {
             // search product
             "/api/v1/products/{productName}",
 
-            // Get List User
-            "/api/v1/users/getAllUser",
 
+            // admin/shop
+            "/api/v1/admin/shop/add",
+            "/api/v1/admin/shop/list",
+            "/api/v1/admin/shop/id/{shopId}",
+            "/api/v1/admin/shop/name/{shopName}",
+            "/api/v1/admin/shop/update/{shopId}",
+            "/api/v1/admin/shop/delete/{shopId}",
 
+            // admin/user
 
-
+            "/api/v1/admin/user/add",
+            "/api/v1/admin/user/list",
+            "/api/v1/admin/user/id/{userId}",
+            "/api/v1/admin/user/name/{userName}",
+            "/api/v1/admin/user/update/{userId}",
+            "/api/v1/admin/user/delete/{userId}",
     };
 
-    public static final String[] ADMIN_POST_ENDPOINTS = {
-            //Role
-
-            // Shop upload image
-//            "/api/v1/shop/images/upload/*",
-    };
-
-    public static final String[] SHOP_POST_ENDPOINTS = {
-            //Role
-
-            // Product upload image
-            "/api/v1/product/images/upload/*",
-    };
-    public static final String[] SHOP_GET_ENDPOINTS = {
-            // Product
-
-            "/api/v1/products/{productId}",           // Cập nhật sản phẩm
-
-            // Category
-            "/api/v1/shop/{shopID}/categories",      // Lấy danh sách category của shop
-
-            // Image
-            "/api/v1/product/images/show-list/{productId}",  // Lấy danh sách hình ảnh của sản phẩm
-            "/api/v1/product/images/show/{filename}",       // Lấy hình ảnh của sản phẩm theo tên file
-    };
-
-    public static final String[] SHOP_DELETE_ENDPOINTS = {
-            "/api/v1/product/images/{idImage}"
-    };
-
-    public static final String[] PUBLIC_POST_ENDPOINTS = {
-            // Login vs Register
-
-            "/api/v1/users/register",
+    public static final String[] PUBLIC_ENDPOINTS = {
+            "/api/v1/users",
             "/api/v1/auth/token",
             "/api/v1/auth/introspect",
-            "/api/v1/location/save-location",
-            "/api/v1/shop/uploadData",
-
-
-
-            // Add, Deleted Cart
-            "/api/v1/cart/add/",
-            "/api/v1/cart/clear/",
-
-            // Permission
-            "/api/v1/permissions/create",
-
-            // Role
-            "/api/v1/roles",
-    };
-    public static final String[] PUBLIC_GET_ENDPOINTS = {
-            // Product
-            "/api/v1/products/listProduct",           // Lấy danh sách sản phẩm
-
-            // Cart
-            "/api/v1/cart/view",
-            "/api/v1/cart/increase/{productId}",
-            "/api/v1/cart/decrease/{productId}",
-
-            // Permission
-            "/api/v1/permissions/getAll",
-
-            // Image Product Show
-            "/api/v1/product/images/show-list/*",   // Show List Image
-            "/api/v1/product/images/show/*",    // Show one Image
-
-            // product
-            "/api/v1/products/byId/*",  // Xem chi tiet
-            "/api/v1/products/listProductByCategory",   // Lay danh sach theo category
-
-    };
+            "/api/v1/orders/listOrder",
+            "/api/v1/carts/orderDetail",
+            "/api/v1/admin/listShop",
+            "/api/v1/admin/addShop"
 
     public static final String[] PUBLIC_DELETE_ENDPOINTS = {
             "/api/v1/roles/{role}",
