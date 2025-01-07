@@ -11,5 +11,8 @@ import lombok.experimental.FieldDefaults;
 public class CategoryResponse {
     int id;
     String name;
+    double rating;
+    String imageLink;
+
     String status;
 }

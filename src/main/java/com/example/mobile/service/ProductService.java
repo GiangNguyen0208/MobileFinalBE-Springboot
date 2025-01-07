@@ -5,6 +5,7 @@ import com.example.mobile.dto.request.ProductCreationReq;
 import com.example.mobile.dto.request.ProductUpdateReq;
 import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
+import com.example.mobile.dto.response.CategoryResponse;
 import com.example.mobile.dto.response.ImageProductResponse;
 import com.example.mobile.dto.response.ProductResponse;
 import com.example.mobile.dto.response.UserResponse;
@@ -61,10 +62,13 @@ public class ProductService implements IProduct {
         List<Product> productList = productRepository.findAll();
         for (Product p : productList) {
             ProductResponse productResponse = ProductResponse.builder()
+                    .id(p.getId())
                     .name(p.getName())
                     .price(p.getPrice())
                     .des(p.getDescription())
+                    .category(p.getCategory().getName())
                     .amount(p.getQuantity())
+                    .rating(p.getRating())
                     .images(imageProductService.showProductImage(p.getId()))
                     .build();
             productResponseList.add(productResponse);

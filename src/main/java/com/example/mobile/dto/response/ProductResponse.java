@@ -13,10 +13,13 @@ import java.util.Set;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
+    int id;
     String name;
     Double price;
     String des;
+    String category;
     int amount;
+    double rating;
     List<ImageProductResponse> images;
 }
 
