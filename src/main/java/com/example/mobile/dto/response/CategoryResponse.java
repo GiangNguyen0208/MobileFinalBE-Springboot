@@ -11,6 +11,5 @@ import lombok.experimental.FieldDefaults;
 public class CategoryResponse {
     int id;
     String name;
-    String shopName;
     String status;
 }

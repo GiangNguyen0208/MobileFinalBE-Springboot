@@ -81,16 +81,23 @@ public class ImageProductService implements IImageProduct {
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + idProduct));
         List<ImageProduct> images = imageProductRepository.findAllByProduct(product);
         List<ImageProductResponse> listResponseImages = new ArrayList<>();
+
         for (ImageProduct imageProduct : images) {
+            byte[] decompressedImage = ImageUpload.decompressImage(imageProduct.getLinkImage());
+
+            // Chuyển đổi ảnh đã giải nén thành Base64
+            String base64Image = Base64.getEncoder().encodeToString(decompressedImage);
+
             ImageProductResponse imageProductResponse = ImageProductResponse.builder()
                     .imageName(imageProduct.getName())
-                    .imageUrl(Base64.getUrlEncoder().encodeToString(ImageUpload.decompressImage(imageProduct.getLinkImage())))
+                    .imageUrl("data:image/jpeg;base64," + base64Image) // Đảm bảo base64 có tiền tố đúng
                     .type(imageProduct.getType())
                     .build();
             listResponseImages.add(imageProductResponse);
         }
         return listResponseImages;
     }
+
 
     @Override
     public void remove(int id) {

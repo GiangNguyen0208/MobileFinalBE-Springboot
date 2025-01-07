@@ -31,7 +31,6 @@ public class ShopController {
                 .result(categoryService.getListCategory(shopId))
                 .build();
     }
-
     @GetMapping("/{categoryId}/listProduct/")
     ApiResponse<List<ProductResponse>> getProductList(@PathVariable("categoryId") int id) {
         return ApiResponse.<List<ProductResponse>>builder()

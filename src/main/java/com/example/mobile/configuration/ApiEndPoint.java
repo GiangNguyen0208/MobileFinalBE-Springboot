@@ -13,7 +13,6 @@ public class ApiEndPoint {
             "/api/v1/vouchers/listVoucher",
             "/api/v1/vouchers/{voucherId}",
 
-
             // search product
             "/api/v1/products/{productName}",
 
@@ -77,8 +76,12 @@ public class ApiEndPoint {
             "/api/v1/roles",
     };
     public static final String[] PUBLIC_GET_ENDPOINTS = {
+            // Category
+            "/api/v1/categories/list",
+
+
             // Product
-            "/api/v1/products/listProduct",           // Lấy danh sách sản phẩm
+            "/api/v1/products/listProduct",
 
             // Cart
             "/api/v1/cart/view",

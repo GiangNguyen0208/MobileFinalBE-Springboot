@@ -58,8 +58,6 @@ public class ProductService implements IProduct {
         log.info("Username: {}", authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
 
-//        return productRepository.findAll().stream()
-//                .map(productMapper::toProductResponse).toList();
         List<Product> productList = productRepository.findAll();
         for (Product p : productList) {
             ProductResponse productResponse = ProductResponse.builder()
