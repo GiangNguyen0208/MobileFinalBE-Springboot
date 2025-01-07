@@ -40,7 +40,7 @@ public class User {
     private Date createAt;
     @OneToMany(mappedBy = "user")
     @JsonManagedReference
-    private List<Comment> comments = new ArrayList<>();
+    private Set<Comment> comments = new HashSet<>();
 
     @ManyToMany
     private Set<Role> roles;

@@ -1,6 +1,8 @@
 package com.example.mobile.service;
 
 import com.example.mobile.dto.request.CommentRequest;
+import com.example.mobile.dto.response.CommentResponse;
+import com.example.mobile.dto.response.UserResponse;
 import com.example.mobile.entity.Comment;
 import com.example.mobile.entity.User;
 import com.example.mobile.repository.CommentRepository;
@@ -24,14 +26,20 @@ public class CommentService implements IComment {
     CommentRepository commentRepository;
    UserService userService;
 
+//    @Override
+//    public CommentResponse comment(CommentRequest commentRequest) {
+//        Comment comment = Comment.builder()
+//                .content(commentRequest.getContent())
+//                .
+//                .build();
+//
+//
+//        return commentRepository.save(comment);
+//    }
+
     @Override
     public Comment comment(CommentRequest commentRequest) {
-        int id = commentRequest.getUserId();
-        User user = userService.getUserById(id);
-        Comment comment = new Comment();
-        comment.setContent(commentRequest.getContent());
-        comment.setUser(user);
-        return commentRepository.save(comment);
+        return null;
     }
 
     @Override

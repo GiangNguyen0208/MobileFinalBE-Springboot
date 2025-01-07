@@ -21,5 +21,4 @@ public class Comment {
     @JoinColumn(name = "user_id")
     @JsonBackReference
     private User user;
-
 }

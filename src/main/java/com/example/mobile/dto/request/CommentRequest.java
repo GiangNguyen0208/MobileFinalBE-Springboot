@@ -13,6 +13,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class CommentRequest {
     private String content;
-
-    private int userId;
+    private String username;
+    private String shopName;
+    private String productName;
 }

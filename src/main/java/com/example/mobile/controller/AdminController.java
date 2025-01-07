@@ -1,12 +1,11 @@
 package com.example.mobile.controller;
 
-import com.example.mobile.dto.request.ShopCreationReq;
-import com.example.mobile.dto.request.ShopUpdateReq;
-import com.example.mobile.dto.request.UserCreationReq;
-import com.example.mobile.dto.request.UserUpdateRequest;
+import com.example.mobile.dto.request.*;
 import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.ShopResponse;
 import com.example.mobile.dto.response.UserResponse;
+import com.example.mobile.entity.User;
+import com.example.mobile.service.UserService;
 import com.example.mobile.service.imp.IShop;
 import com.example.mobile.service.imp.IUser;
 import lombok.AccessLevel;
@@ -55,6 +54,7 @@ public class AdminController {
     ShopResponse updateShop(@PathVariable("shopId") int shopId, @RequestBody ShopUpdateReq shopUpdateReq) {
         return shopService.shopUpdate(shopId, shopUpdateReq);
     }
+
     @DeleteMapping("/{shopId}")
     String deleteShop(@PathVariable("shopId") int shopId) {
         shopService.deleteShop(shopId);
@@ -69,23 +69,30 @@ public class AdminController {
         apiResponse.setResult(userService.createUser(userCreationReq));
         return apiResponse;
     }
+
     @GetMapping("/listUser")
     ApiResponse<List<UserResponse>> getListUser() {
         return ApiResponse.<List<UserResponse>>builder()
                 .result(userService.getListUser())
                 .build();
     }
+
     @GetMapping("/{userId}")
     UserResponse getUser(@PathVariable("userId") int userId) {
         return userService.findUserById(userId);
     }
+
     @PutMapping("/{userId}")
     UserResponse updateUser(@PathVariable("userId") int userId, @RequestBody UserUpdateRequest userUpdateRequest) {
         return userService.userUpdate(userId, userUpdateRequest);
     }
+
     @DeleteMapping("/{userId}")
     String deleteUser(@PathVariable("userId") int userId) {
         userService.deleteUser(userId);
         return "User has been deleted!";
     }
+
+
+
 }

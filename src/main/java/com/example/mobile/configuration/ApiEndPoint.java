@@ -28,12 +28,12 @@ public class ApiEndPoint {
 
 
 
+
     };
 
-    public static final String[] ADMIN_POST_ENDPOINTS = {
-            //Role
-//            "/api/v1/roles/create",
 
+    public static final String[] ADMIN_PUT_ENDPOINTS = {
+            "/api/v1/users/{userId}",
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
@@ -58,6 +58,7 @@ public class ApiEndPoint {
             "/api/v1/permissions/create",
 
             // Role
+            "/api/v1/admin/change-information-admin"
     };
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/v1/cart/view",
@@ -69,6 +70,9 @@ public class ApiEndPoint {
 
             // Role
             "/api/v1/roles/getAll",
+
+    };
+    public static final String[] PUBLIC_DELETE_ENDPOINTS = {
 
     };
 }
