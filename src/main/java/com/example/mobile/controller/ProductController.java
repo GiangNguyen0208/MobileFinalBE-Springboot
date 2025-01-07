@@ -33,9 +33,9 @@ public class ProductController {
     }
 
     @GetMapping("/listProductByCategory")
-    ApiResponse<List<ProductResponse>> getListProductByCategory() {
+    ApiResponse<List<ProductResponse>> getListProductByCategory(int id) {
         return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.getListProductByCategory())
+                .result(productService.getListProductByCategory(id))
                 .build();
     }
 
