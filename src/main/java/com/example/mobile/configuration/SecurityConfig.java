@@ -37,6 +37,7 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        // Public
                         .requestMatchers(HttpMethod.GET, ApiEndPoint.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, ApiEndPoint.PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.DELETE, ApiEndPoint.PUBLIC_DELETE_ENDPOINTS).permitAll()
