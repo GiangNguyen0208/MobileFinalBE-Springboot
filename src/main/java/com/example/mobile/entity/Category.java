@@ -27,6 +27,6 @@ public class Category {
     private Set<Product> productList = new HashSet<>();
 
     @ManyToOne
-    @JoinColumn(name = "shop_id")
+    @JoinColumn(name = "shop_id", referencedColumnName = "id")
     private Shop shop;
 }

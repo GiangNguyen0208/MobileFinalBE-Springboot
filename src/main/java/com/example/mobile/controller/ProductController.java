@@ -4,6 +4,7 @@ import com.example.mobile.dto.request.ProductCreationReq;
 import com.example.mobile.dto.request.ProductUpdateReq;
 import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.ProductResponse;
+import com.example.mobile.dto.response.ProductWithShop;
 import com.example.mobile.service.imp.IProduct;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -39,7 +40,7 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/byId/{productId}")
+    @GetMapping("/{productId}")
     ApiResponse<ProductResponse> ProductResponse(@PathVariable("productId") int productId) {
         return ApiResponse.<ProductResponse>builder()
                 .result(productService.findProductById(productId))
@@ -55,4 +56,10 @@ public class ProductController {
         return "Product has been deleted!";
     }
 
+
+    @GetMapping("/listProduct/shop/{shopName}")
+    ApiResponse<List<ProductWithShop>> getListByShopName(@PathVariable("shopName") String shopName) {
+        return ApiResponse.<List<ProductWithShop>>builder()
+                .result( productService.getListByShopName(shopName)).build();
+    }
 }

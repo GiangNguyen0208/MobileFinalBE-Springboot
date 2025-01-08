@@ -11,10 +11,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class VoucherResponse {
-
-
-
-    double priceMin;
-    double valueDiscount;
+public class CategoryResponse {
+    String name;
+    String shopName;
 }
