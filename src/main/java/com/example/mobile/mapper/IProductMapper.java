@@ -11,7 +11,6 @@ import org.mapstruct.MappingTarget;
 @Mapper(componentModel = "spring")
 public interface IProductMapper {
     Product toProduct(ProductCreationReq req);
-    ProductResponse toProductResponse(Product product);
     void updateProduct(@MappingTarget Product product, ProductUpdateReq req);
 
 }

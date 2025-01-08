@@ -33,10 +33,10 @@ public class ProductController {
                 .build();
     }
 
-    @GetMapping("/listProductByCategory")
-    ApiResponse<List<ProductResponse>> getListProductByCategory(int id) {
+    @GetMapping("/getByCategory/{categoryId}")
+    ApiResponse<List<ProductResponse>> getListProductByCategory(@PathVariable("categoryId") int categoryId) {
         return ApiResponse.<List<ProductResponse>>builder()
-                .result(productService.getListProductByCategory(id))
+                .result(productService.getListProductByCategory(categoryId))
                 .build();
     }
 

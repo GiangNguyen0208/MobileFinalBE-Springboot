@@ -17,6 +17,8 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductUpdateReq {
     String name;
+    private String description;;
     double price;
     int quantity;
+    int categoryId;
 }

@@ -14,10 +14,7 @@ import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IProductMapper;
 import com.example.mobile.mapper.IUserMapper;
-import com.example.mobile.repository.CategoryRepository;
-import com.example.mobile.repository.ProductRepository;
-import com.example.mobile.repository.RoleRepository;
-import com.example.mobile.repository.UserRepository;
+import com.example.mobile.repository.*;
 import com.example.mobile.service.imp.IImageProduct;
 import com.example.mobile.service.imp.IProduct;
 import lombok.AccessLevel;
@@ -36,6 +33,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class ProductService implements IProduct {
+    private final ImageProductRepository imageProductRepository;
     ProductRepository productRepository;
     IProductMapper productMapper;
     CategoryRepository categoryRepository;
@@ -47,9 +45,15 @@ public class ProductService implements IProduct {
         if (productRepository.existsByName(req.getName())) {
             throw new AddException(ErrorCode.USER_EXISTED);
         }
-        Product product = productMapper.toProduct(req);
-        return productMapper.toProductResponse(productRepository.save(product));
-
+        ProductResponse productResponse = ProductResponse.builder()
+                .name(req.getName())
+                .amount(req.getQuantity())
+                .price(req.getPrice())
+                .rating(req.getRating())
+                .des(req.getDescription())
+                .categoryId(req.getCategoryId())
+                .build();
+        return productResponse;
     }
 
     @Override
@@ -63,6 +67,7 @@ public class ProductService implements IProduct {
         for (Product p : productList) {
             ProductResponse productResponse = ProductResponse.builder()
                     .id(p.getId())
+                    .categoryId(p.getCategory().getId())
                     .name(p.getName())
                     .price(p.getPrice())
                     .des(p.getDescription())
@@ -94,9 +99,14 @@ public class ProductService implements IProduct {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
 
-        productMapper.updateProduct(product, req);   // Use MappingTarget to mapping data update from req (new info) into old info
-
-        return productMapper.toProductResponse(productRepository.save(product));
+        ProductResponse productResponse = ProductResponse.builder()
+                .categoryId(req.getCategoryId())
+                .des(req.getDescription())
+                .name(req.getName())
+                .price(req.getPrice())
+                .amount(req.getQuantity())
+                .build();
+        return productResponse;
     }
 
     @Override
@@ -111,11 +121,13 @@ public class ProductService implements IProduct {
                 .orElseThrow(() -> new RuntimeException("Category not found!"));;
         List<Product> productList = productRepository.findAllByCategory(category);
         for (Product product : productList) {
+            List<ImageProductResponse> imageProducts = imageProductService.showProductImage(product.getId());
             ProductResponse productResponse = ProductResponse.builder()
                     .name(product.getName())
                     .price(product.getPrice())
                     .des(product.getDescription())
                     .amount(product.getQuantity())
+                    .images(imageProducts)
                     .build();
             productResponseList.add(productResponse);
         }
@@ -126,6 +138,14 @@ public class ProductService implements IProduct {
     public ProductResponse findProductByName(String name) {
         Product product = productRepository.findByName(name)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
-        return productMapper.toProductResponse(product);
+        ProductResponse productResponse = ProductResponse.builder()
+                .name(product.getName())
+                .amount(product.getQuantity())
+                .price(product.getPrice())
+                .rating(product.getRating())
+                .des(product.getDescription())
+                .categoryId(product.getCategory().getId())
+                .build();
+        return productResponse;
     }
 }

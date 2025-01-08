@@ -14,6 +14,7 @@ import java.util.Set;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
     int id;
+    int categoryId;
     String name;
     Double price;
     String des;

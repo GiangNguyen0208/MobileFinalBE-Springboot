@@ -82,6 +82,7 @@ public class ApiEndPoint {
 
             // Product
             "/api/v1/products/listProduct",
+            "/api/v1/products/getByCategory/{categoryId}",
 
             // Cart
             "/api/v1/cart/view",

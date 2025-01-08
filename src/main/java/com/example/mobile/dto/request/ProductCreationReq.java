@@ -22,6 +22,8 @@ public class ProductCreationReq {
     String categoryName;
     String description;
     Double price;
+    double rating;
+    int categoryId;
     int quantity;
     FoodStatus status;
 }
