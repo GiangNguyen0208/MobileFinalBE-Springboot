@@ -21,4 +21,5 @@ public class ProductUpdateReq {
     double price;
     int quantity;
     int categoryId;
+    String status;
 }

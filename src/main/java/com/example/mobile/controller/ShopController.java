@@ -28,7 +28,7 @@ public class ShopController {
     ApiResponse<List<CategoryResponse>> getCategoryList(@PathVariable("shopId") int shopId) {
         return ApiResponse.<List<CategoryResponse>>builder()
                 .mesg("Get List Category")
-                .result(categoryService.getListCategory(shopId))
+                .result(categoryService.getListCategoryBýhopId(shopId))
                 .build();
     }
     @GetMapping("/{categoryId}/listProduct/")

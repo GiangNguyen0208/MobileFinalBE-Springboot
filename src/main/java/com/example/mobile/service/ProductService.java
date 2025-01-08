@@ -1,20 +1,18 @@
 package com.example.mobile.service;
 
-import com.example.mobile.constant.RolePlay;
 import com.example.mobile.dto.request.ProductCreationReq;
 import com.example.mobile.dto.request.ProductUpdateReq;
-import com.example.mobile.dto.request.UserCreationReq;
-import com.example.mobile.dto.request.UserUpdateRequest;
-import com.example.mobile.dto.response.CategoryResponse;
 import com.example.mobile.dto.response.ImageProductResponse;
 import com.example.mobile.dto.response.ProductResponse;
-import com.example.mobile.dto.response.UserResponse;
-import com.example.mobile.entity.*;
+import com.example.mobile.dto.response.ProductWithShop;
+import com.example.mobile.entity.Category;
+import com.example.mobile.entity.Product;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IProductMapper;
-import com.example.mobile.mapper.IUserMapper;
-import com.example.mobile.repository.*;
+import com.example.mobile.repository.CategoryRepository;
+import com.example.mobile.repository.ImageProductRepository;
+import com.example.mobile.repository.ProductRepository;
 import com.example.mobile.service.imp.IImageProduct;
 import com.example.mobile.service.imp.IProduct;
 import lombok.AccessLevel;
@@ -22,12 +20,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
@@ -36,18 +35,17 @@ public class ProductService implements IProduct {
     private final ImageProductRepository imageProductRepository;
     ProductRepository productRepository;
     IProductMapper productMapper;
-    CategoryRepository categoryRepository;
     IImageProduct imageProductService;
+    CategoryRepository categoryRepository;
 
     @Override
     public ProductResponse addProduct(ProductCreationReq req) {
-
         if (productRepository.existsByName(req.getName())) {
-            throw new AddException(ErrorCode.USER_EXISTED);
+            throw new AddException(ErrorCode.PRODUCT_EXISTED);
         }
         ProductResponse productResponse = ProductResponse.builder()
                 .name(req.getName())
-                .amount(req.getQuantity())
+                .quantity(req.getQuantity())
                 .price(req.getPrice())
                 .rating(req.getRating())
                 .des(req.getDescription())
@@ -71,10 +69,9 @@ public class ProductService implements IProduct {
                     .name(p.getName())
                     .price(p.getPrice())
                     .des(p.getDescription())
-                    .category(p.getCategory().getName())
-                    .amount(p.getQuantity())
+                    .categoryName(p.getCategory().getName())
+                    .quantity(p.getQuantity())
                     .rating(p.getRating())
-                    .images(imageProductService.showProductImage(p.getId()))
                     .build();
             productResponseList.add(productResponse);
         }
@@ -89,8 +86,7 @@ public class ProductService implements IProduct {
                 .name(p.getName())
                 .price(p.getPrice())
                 .des(p.getDescription())
-                .amount(p.getQuantity())
-                .images(imageProductService.showProductImage(p.getId()))
+                .quantity(p.getQuantity())
                 .build();
     }
 
@@ -104,7 +100,7 @@ public class ProductService implements IProduct {
                 .des(req.getDescription())
                 .name(req.getName())
                 .price(req.getPrice())
-                .amount(req.getQuantity())
+                .quantity(req.getQuantity())
                 .build();
         return productResponse;
     }
@@ -118,7 +114,7 @@ public class ProductService implements IProduct {
     public List<ProductResponse> getListProductByCategory(int id) {
         List<ProductResponse> productResponseList = new ArrayList<>();
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found!"));;
+                .orElseThrow(() -> new RuntimeException("Category not found!"));
         List<Product> productList = productRepository.findAllByCategory(category);
         for (Product product : productList) {
             List<ImageProductResponse> imageProducts = imageProductService.showProductImage(product.getId());
@@ -126,12 +122,16 @@ public class ProductService implements IProduct {
                     .name(product.getName())
                     .price(product.getPrice())
                     .des(product.getDescription())
-                    .amount(product.getQuantity())
-                    .images(imageProducts)
+                    .quantity(product.getQuantity())
                     .build();
             productResponseList.add(productResponse);
         }
         return productResponseList;
+    }
+
+    @Override
+    public List<ProductResponse> getListProductByCategory() {
+        return null;
     }
 
     @Override
@@ -140,7 +140,7 @@ public class ProductService implements IProduct {
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
         ProductResponse productResponse = ProductResponse.builder()
                 .name(product.getName())
-                .amount(product.getQuantity())
+                .quantity(product.getQuantity())
                 .price(product.getPrice())
                 .rating(product.getRating())
                 .des(product.getDescription())
@@ -148,4 +148,33 @@ public class ProductService implements IProduct {
                 .build();
         return productResponse;
     }
+
+    @Override
+    public List<ProductWithShop> getListByShopName(String shopName) {
+        // Lấy kết quả từ repository
+        List<Object[]> results = productRepository.findProductsByShopName(shopName);
+        List<ProductWithShop> productWithShopList = new ArrayList<>();
+
+        for (Object[] result : results) {
+            ProductWithShop productWithShop = getProductWithShop(result);
+            productWithShopList.add(productWithShop);
+        }
+        return productWithShopList;
+    }
+
+    private static ProductWithShop getProductWithShop(Object[] result) {
+        String productName = (String) result[0];
+        Double productPrice = (Double) result[1]; // product price
+        Integer productQuantity = (Integer) result[2]; // product quantity
+        String shopNameFromResult = (String) result[3]; // shop name
+
+        ProductWithShop productWithShop = new ProductWithShop();
+        productWithShop.setName(productName);
+        productWithShop.setPrice(productPrice);
+        productWithShop.setQuantity(productQuantity);
+        productWithShop.setShopName(shopNameFromResult);
+        return productWithShop;
+    }
+
+
 }
