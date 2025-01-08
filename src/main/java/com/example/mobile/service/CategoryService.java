@@ -33,12 +33,11 @@ public class CategoryService  implements ICategory {
     ProductRepository productRepository;
 
     @Override
-    public List<CategoryResponse> getListCategoryBýhopId(int shopID) {
+    public List<CategoryResponse> getListCategoryByShopId(int shopID) {
         List<CategoryResponse> categoryResponseList = new ArrayList<>();
         Shop shop = shopRepository.findById(shopID)
                 .orElseThrow(() -> new RuntimeException("Shop not found!"));
-
-        List<Category> listCategories = categoryRepository.findByShopAndDeletedFalse(shop);
+        List<Category> listCategories = categoryRepository.findAllByShop(shop);
         for (Category category : listCategories) {
             CategoryResponse categoryResponse = CategoryResponse.builder()
                     .id(category.getId())

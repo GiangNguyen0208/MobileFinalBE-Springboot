@@ -9,7 +9,7 @@ import com.example.mobile.entity.Category;
 import java.util.List;
 
 public interface ICategory {
-    List<CategoryResponse> getListCategoryBýhopId(int shopID);
+    List<CategoryResponse> getListCategoryByShopId(int shopID);
     List<CategoryResponse> getListCategory();
     CategoryResponse addCategory(CategoryCreationReq req);
     CategoryResponse findCategoryById(int id);

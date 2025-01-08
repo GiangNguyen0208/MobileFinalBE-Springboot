@@ -21,7 +21,8 @@ public interface IProduct {
     void deleteProduct(int id);
     List<ProductResponse> getListProductByCategory(int id);
 
-    List<ProductResponse> getListProductByCategory();
+    List<ProductResponse> getListProductByShopID(int shopId);
+
 
     ProductResponse findProductByName(String name);
 

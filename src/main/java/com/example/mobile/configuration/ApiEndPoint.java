@@ -90,7 +90,6 @@ public class ApiEndPoint {
             "/api/v1/products/findId/{productId}",
             "/api/v1/products/findName/{productName}",
             "/api/v1/products/listProduct",
-            "/api/v1/products/listProduct/shop/{shopName}",
             "/api/v1/products/listProductByCategory",
 
 
@@ -128,7 +127,7 @@ public class ApiEndPoint {
     };
     public static final String[] SHOP_GET_ENDPOINTS = {
             // Product
-
+            "/api/v1/shop/{shopId}/products",
             "/api/v1/products/{productId}",           // Cập nhật sản phẩm
 
             // Category

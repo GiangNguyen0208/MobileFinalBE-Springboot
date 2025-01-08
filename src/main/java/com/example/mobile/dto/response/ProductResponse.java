@@ -9,7 +9,6 @@ import lombok.experimental.FieldDefaults;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductResponse {
     int id;

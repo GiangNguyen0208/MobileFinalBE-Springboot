@@ -7,12 +7,14 @@ import com.example.mobile.dto.response.ProductResponse;
 import com.example.mobile.dto.response.ProductWithShop;
 import com.example.mobile.entity.Category;
 import com.example.mobile.entity.Product;
+import com.example.mobile.entity.Shop;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IProductMapper;
 import com.example.mobile.repository.CategoryRepository;
 import com.example.mobile.repository.ImageProductRepository;
 import com.example.mobile.repository.ProductRepository;
+import com.example.mobile.repository.ShopRepository;
 import com.example.mobile.service.imp.IImageProduct;
 import com.example.mobile.service.imp.IProduct;
 import lombok.AccessLevel;
@@ -26,12 +28,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class ProductService implements IProduct {
+    private final ShopRepository shopRepository;
     private final ImageProductRepository imageProductRepository;
     ProductRepository productRepository;
     IProductMapper productMapper;
@@ -117,7 +121,6 @@ public class ProductService implements IProduct {
                 .orElseThrow(() -> new RuntimeException("Category not found!"));
         List<Product> productList = productRepository.findAllByCategory(category);
         for (Product product : productList) {
-            List<ImageProductResponse> imageProducts = imageProductService.showProductImage(product.getId());
             ProductResponse productResponse = ProductResponse.builder()
                     .name(product.getName())
                     .price(product.getPrice())
@@ -129,10 +132,35 @@ public class ProductService implements IProduct {
         return productResponseList;
     }
 
-    @Override
-    public List<ProductResponse> getListProductByCategory() {
-        return null;
+    public List<ProductResponse> getListProductByShopID(int shopId) {
+        // Danh sách chứa kết quả ProductResponse
+        List<ProductResponse> productResponseList = new ArrayList<>();
+
+        // Lấy danh sách các sản phẩm từ repository theo shopId
+        List<Product> products = productRepository.findByShopId(shopId);
+
+        for (Product product : products) {
+            String categoryName = product.getCategory() != null ? product.getCategory().getName() : "Unknown";
+            Integer categoryId = product.getCategory() != null ? product.getCategory().getId() : null;
+
+            ProductResponse productResponse = ProductResponse.builder()
+                    .id(product.getId())
+                    .name(product.getName())
+                    .categoryId(categoryId)
+                    .categoryName(categoryName)
+                    .price(product.getPrice())
+                    .des(product.getDescription())
+                    .rating(product.getRating())
+                    .quantity(product.getQuantity())
+                    .build();
+
+            productResponseList.add(productResponse);
+        }
+
+        return productResponseList;
     }
+
+
 
     @Override
     public ProductResponse findProductByName(String name) {

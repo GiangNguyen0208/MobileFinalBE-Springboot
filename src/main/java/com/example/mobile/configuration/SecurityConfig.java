@@ -45,9 +45,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, ApiEndPoint.ADMIN_GET_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
                         .requestMatchers(HttpMethod.POST, ApiEndPoint.ADMIN_POST_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
                         // Shop
-                        .requestMatchers(HttpMethod.GET, ApiEndPoint.SHOP_GET_ENDPOINTS).hasRole(RolePlay.Shop.getRole())
-                        .requestMatchers(HttpMethod.POST, ApiEndPoint.SHOP_POST_ENDPOINTS).hasRole(RolePlay.Shop.getRole())
-                        .requestMatchers(HttpMethod.DELETE, ApiEndPoint.SHOP_DELETE_ENDPOINTS).hasRole(RolePlay.Shop.getRole())
+                        .requestMatchers(HttpMethod.GET, ApiEndPoint.SHOP_GET_ENDPOINTS).hasRole(RolePlay.SHOP.getRole())
+                        .requestMatchers(HttpMethod.POST, ApiEndPoint.SHOP_POST_ENDPOINTS).hasRole(RolePlay.SHOP.getRole())
+                        .requestMatchers(HttpMethod.DELETE, ApiEndPoint.SHOP_DELETE_ENDPOINTS).hasRole(RolePlay.SHOP.getRole())
                         // <<SPACE>>
                         .anyRequest().authenticated()
                 )
