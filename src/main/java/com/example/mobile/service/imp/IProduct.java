@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 public interface IProduct {
-    ProductResponse addProduct(ProductCreationReq req);
+    boolean addProduct(ProductCreationReq req);
 
     List<ProductResponse> getListProduct();
 

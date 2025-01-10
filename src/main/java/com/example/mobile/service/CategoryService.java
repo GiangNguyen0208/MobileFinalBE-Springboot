@@ -37,7 +37,7 @@ public class CategoryService  implements ICategory {
         List<CategoryResponse> categoryResponseList = new ArrayList<>();
         Shop shop = shopRepository.findById(shopID)
                 .orElseThrow(() -> new RuntimeException("Shop not found!"));
-        List<Category> listCategories = categoryRepository.findAllByShop(shop);
+        List<Category> listCategories = categoryRepository.findAllByShopAndDeletedFalse(shop);
         for (Category category : listCategories) {
             CategoryResponse categoryResponse = CategoryResponse.builder()
                     .id(category.getId())
@@ -86,7 +86,9 @@ public class CategoryService  implements ICategory {
 
     @Override
     public void deleteCategory(int id) {
-        categoryRepository.deleteById(id);
+        Category category = categoryRepository.findById(id).orElseThrow(()-> new RuntimeException("Category not found!"));
+        category.setDeleted(true);
+        categoryRepository.save(category);
     }
 
     @Override

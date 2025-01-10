@@ -7,8 +7,8 @@ import java.io.IOException;
 import java.util.List;
 
 public interface IImageProduct {
-    List<String> uploadImage(List<MultipartFile> files, int id) throws IOException;
-    byte[] downloadImage(String filename);
-    List<ImageProductResponse> showProductImage(int idProduct);
+    List<String> uploadImage(List<String> files, int id) throws IOException;
+//    String downloadImage(String filename);
+    List<String> showProductImage(int idProduct);
     void remove(int id);
 }

@@ -11,6 +11,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,8 +23,9 @@ import java.util.List;
 public class ProductController {
     IProduct productService;
     @PostMapping("/add")
-    ApiResponse<ProductResponse> addProduct(@RequestBody @Valid ProductCreationReq productCreationReq) {
-        ApiResponse<ProductResponse> apiResponse = new ApiResponse<>();
+    ApiResponse<Boolean> addProduct(@RequestBody ProductCreationReq productCreationReq) {
+        ApiResponse<Boolean> apiResponse = new ApiResponse<>();
+        apiResponse.setMesg("ADD FOOD STATUS");
         apiResponse.setResult(productService.addProduct(productCreationReq));
         return apiResponse;
     }
@@ -52,9 +54,9 @@ public class ProductController {
         return productService.productUpdate(productId, productUpdateReq);
     }
     @DeleteMapping("/{productId}")
-    String deleteProduct(@PathVariable("productId") int productId) {
+    ResponseEntity<Void> deleteProduct(@PathVariable("productId") int productId) {
         productService.deleteProduct(productId);
-        return "Product has been deleted!";
+        return ResponseEntity.noContent().build();
     }
 
 

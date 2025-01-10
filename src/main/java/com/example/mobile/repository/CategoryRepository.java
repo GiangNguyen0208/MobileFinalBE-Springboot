@@ -16,7 +16,7 @@ import java.util.List;
 public interface CategoryRepository extends JpaRepository<Category, Integer> {
     Optional<Category> findByName(String categoryName);
     boolean existsByName(String name);
-    List<Category> findAllByShop(Shop shop);
+    List<Category> findAllByShopAndDeletedFalse(Shop shop);
 
     @Query("SELECT c FROM categories c WHERE c.deleted = false")
     List<Category> findAllActiveCategories();

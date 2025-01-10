@@ -1,6 +1,7 @@
 package com.example.mobile.dto.request;
 
 import com.example.mobile.constant.FoodStatus;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.*;
@@ -21,7 +22,7 @@ public class ProductCreationReq {
     String description;
     Double price;
     double rating;
-    int categoryId;
     int quantity;
-    FoodStatus status;
+    int position;
+    String status;
 }

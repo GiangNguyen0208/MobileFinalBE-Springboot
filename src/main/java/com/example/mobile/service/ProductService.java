@@ -1,11 +1,14 @@
 package com.example.mobile.service;
 
+import com.example.mobile.constant.FoodStatus;
 import com.example.mobile.dto.request.ProductCreationReq;
 import com.example.mobile.dto.request.ProductUpdateReq;
+import com.example.mobile.dto.response.CategoryResponse;
 import com.example.mobile.dto.response.ImageProductResponse;
 import com.example.mobile.dto.response.ProductResponse;
 import com.example.mobile.dto.response.ProductWithShop;
 import com.example.mobile.entity.Category;
+import com.example.mobile.entity.ImageProduct;
 import com.example.mobile.entity.Product;
 import com.example.mobile.entity.Shop;
 import com.example.mobile.exception.AddException;
@@ -24,10 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import java.util.*;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,20 +44,36 @@ public class ProductService implements IProduct {
     CategoryRepository categoryRepository;
 
     @Override
-    public ProductResponse addProduct(ProductCreationReq req) {
-        if (productRepository.existsByName(req.getName())) {
-            throw new AddException(ErrorCode.PRODUCT_EXISTED);
+    public boolean addProduct(ProductCreationReq req) {
+        try {
+            if (productRepository.existsByName(req.getName())) {
+                return false;  // Trả về false nếu sản phẩm đã tồn tại
+            }
+
+            Category category = categoryRepository.findByName(req.getCategoryName())
+                    .orElseThrow(() -> new RuntimeException("Category not found!"));
+
+            Product product = new Product();
+            product.setName(req.getName());
+            product.setQuantity(req.getQuantity());
+            product.setPrice(req.getPrice());
+            product.setRating(req.getRating());
+            product.setDescription(req.getDescription());
+            product.setPosition(req.getPosition());
+            product.setCategory(category);
+            product.setStatus(FoodStatus.ON_SALE);
+
+            productRepository.save(product);
+
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
         }
-        ProductResponse productResponse = ProductResponse.builder()
-                .name(req.getName())
-                .quantity(req.getQuantity())
-                .price(req.getPrice())
-                .rating(req.getRating())
-                .des(req.getDescription())
-                .categoryId(req.getCategoryId())
-                .build();
-        return productResponse;
     }
+
+
+
 
     @Override
     public List<ProductResponse> getListProduct() {
@@ -68,12 +85,11 @@ public class ProductService implements IProduct {
         List<Product> productList = productRepository.findAll();
         for (Product p : productList) {
             ProductResponse productResponse = ProductResponse.builder()
-                    .id(p.getId())
                     .categoryId(p.getCategory().getId())
                     .name(p.getName())
                     .price(p.getPrice())
+                    .position(p.getPosition())
                     .des(p.getDescription())
-                    .categoryName(p.getCategory().getName())
                     .quantity(p.getQuantity())
                     .rating(p.getRating())
                     .build();
@@ -86,11 +102,22 @@ public class ProductService implements IProduct {
     public ProductResponse findProductById(int id) {
         Product p = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
+        List<ImageProduct> imageProductList = imageProductRepository.findAllImagesByProductId(id);
+        List<String> images = new ArrayList<>();
+        for (ImageProduct imageProduct : imageProductList) {
+            images.add(imageProduct.getLinkImage());
+        }
         return ProductResponse.builder()
                 .name(p.getName())
                 .price(p.getPrice())
                 .des(p.getDescription())
                 .quantity(p.getQuantity())
+                .categoryName(p.getCategory().getName())
+                .id(p.getId())
+                .status(p.getStatus())
+                .rating(p.getRating())
+                .categoryId(p.getCategory().getId())
+                .imageLink(images)
                 .build();
     }
 
@@ -99,18 +126,56 @@ public class ProductService implements IProduct {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
 
+        // Kiểm tra và chuyển đổi status từ String thành Enum
+        FoodStatus status = FoodStatus.valueOf(req.getStatus());
+
+        // Cập nhật giá trị các thuộc tính nếu có thay đổi (bỏ qua null hoặc giá trị không thay đổi)
+        if (req.getName() != null && !req.getName().isEmpty()) {
+            product.setName(req.getName());
+        }
+        if (req.getPrice() != 0) { // Kiểm tra giá trị mặc định là 0 (trong trường hợp không có thay đổi)
+            product.setPrice(req.getPrice());
+        }
+        if (req.getCategoryName() != null && !req.getCategoryName().isEmpty()) {
+            Category category = categoryRepository.findByName(req.getCategoryName())
+                    .orElseThrow(() -> new RuntimeException("Category not found!"));
+            product.setCategory(category);
+        }
+        if (req.getDescription() != null) {
+            product.setDescription(req.getDescription());
+        }
+        if (req.getQuantity() != 0) { // Kiểm tra số lượng mặc định là 0 (trong trường hợp không có thay đổi)
+            product.setQuantity(req.getQuantity());
+        }
+        if (req.getStatus() != null) {
+            product.setStatus(status);
+        }
+
+        // Lưu sản phẩm sau khi cập nhật
+        productRepository.save(product);
+
+        // Tạo ProductResponse với các thông tin đã được cập nhật
         ProductResponse productResponse = ProductResponse.builder()
-                .categoryId(req.getCategoryId())
-                .des(req.getDescription())
-                .name(req.getName())
-                .price(req.getPrice())
-                .quantity(req.getQuantity())
+                .id(product.getId())
+                .categoryId(product.getCategory().getId())
+                .categoryName(product.getCategory().getName())
+                .des(product.getDescription())
+                .status(status) // Truyền giá trị String của enum
+                .name(product.getName())
+                .price(product.getPrice())
+                .quantity(product.getQuantity())
                 .build();
+
         return productResponse;
     }
 
+
     @Override
     public void deleteProduct(int id) {
+        List<ImageProduct> imageProductList = imageProductRepository.findAllImagesByProductId(id);
+        for (ImageProduct imageProduct : imageProductList) {
+            imageProductRepository.deleteById(imageProduct.getId());
+        }
         productRepository.deleteById(id);
     }
 
@@ -119,7 +184,7 @@ public class ProductService implements IProduct {
         List<ProductResponse> productResponseList = new ArrayList<>();
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found!"));
-        List<Product> productList = productRepository.findAllByCategory(category);
+        List<Product> productList = productRepository.findAllByCategoryAndAndCategoryAndDeletedFalse(category);
         for (Product product : productList) {
             ProductResponse productResponse = ProductResponse.builder()
                     .name(product.getName())
@@ -133,32 +198,34 @@ public class ProductService implements IProduct {
     }
 
     public List<ProductResponse> getListProductByShopID(int shopId) {
-        // Danh sách chứa kết quả ProductResponse
-        List<ProductResponse> productResponseList = new ArrayList<>();
-
-        // Lấy danh sách các sản phẩm từ repository theo shopId
         List<Product> products = productRepository.findByShopId(shopId);
 
-        for (Product product : products) {
+        return products.stream().map(product -> {
             String categoryName = product.getCategory() != null ? product.getCategory().getName() : "Unknown";
             Integer categoryId = product.getCategory() != null ? product.getCategory().getId() : null;
 
-            ProductResponse productResponse = ProductResponse.builder()
+            // Lấy ảnh đầu tiên hoặc ảnh mặc định nếu không có ảnh
+            List<ImageProduct> imageLink = imageProductRepository.findAllImagesByProductId(product.getId());
+            List<String> images = new ArrayList<>();
+            for (ImageProduct imageProduct : imageLink) {
+                images.add(imageProduct.getLinkImage());
+            }
+            // Xây dựng ProductResponse
+            return ProductResponse.builder()
                     .id(product.getId())
+                    .categoryName(categoryName)
                     .name(product.getName())
                     .categoryId(categoryId)
-                    .categoryName(categoryName)
                     .price(product.getPrice())
                     .des(product.getDescription())
                     .rating(product.getRating())
                     .quantity(product.getQuantity())
+                    .imageLink(images)
+                    .status(FoodStatus.ON_SALE)
                     .build();
-
-            productResponseList.add(productResponse);
-        }
-
-        return productResponseList;
+        }).collect(Collectors.toList());
     }
+
 
 
 

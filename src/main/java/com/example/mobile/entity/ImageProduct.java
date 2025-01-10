@@ -17,10 +17,7 @@ public class ImageProduct {
 
     String name;
     String type;
-
-    @Lob
-    @Column(columnDefinition = "LONGBLOB")
-    byte[] linkImage;
+    String linkImage;
 
     @ManyToOne
     @JoinColumn(name = "product_id")

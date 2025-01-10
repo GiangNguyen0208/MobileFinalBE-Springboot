@@ -9,7 +9,6 @@ public class ApiEndPoint {
             "/api/v1/users/listUser",
 
             // product crud
-            "/api/v1/products/add",
             "/api/v1/products/listProduct",
             "/api/v1/products/{productId}",
             "/api/v1/products/listProductByCategory",
@@ -87,7 +86,7 @@ public class ApiEndPoint {
             "/api/v1/roles/getAll",
 
             // search product
-            "/api/v1/products/findId/{productId}",
+            "/api/v1/products/{productId}",
             "/api/v1/products/findName/{productName}",
             "/api/v1/products/listProduct",
             "/api/v1/products/listProductByCategory",
@@ -121,6 +120,7 @@ public class ApiEndPoint {
 
     public static final String[] SHOP_POST_ENDPOINTS = {
             //Role
+            "/api/v1/products/add",
 
             // Product upload image
             "/api/v1/product/images/upload/*",
@@ -132,6 +132,7 @@ public class ApiEndPoint {
 
             // Category
             "/api/v1/shop/{shopID}/categories",      // Lấy danh sách category của shop
+            "/api/v1/categories/{categoryId}",
 
             // Image
             "/api/v1/product/images/show-list/{productId}",  // Lấy danh sách hình ảnh của sản phẩm
@@ -139,7 +140,8 @@ public class ApiEndPoint {
     };
 
     public static final String[] SHOP_DELETE_ENDPOINTS = {
-            "/api/v1/product/images/{idImage}"
+            "/api/v1/product/images/{idImage}",
+            "/api/v1/products/{productId}",
     };
 
 }
