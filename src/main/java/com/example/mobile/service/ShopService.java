@@ -74,4 +74,9 @@ public class ShopService implements IShop {
             return shopMapper.toShopResponse(shop);
 
     }
+
+    @Override
+    public List<Integer> getOpenShopIds() {
+        return shopRepository.findOpenShopIds();
+    }
 }

@@ -1,11 +1,17 @@
 package com.example.mobile.service.imp;
 
-import com.example.mobile.dto.request.CommentRequest;
-import com.example.mobile.entity.Comment;
+import com.example.mobile.dto.request.CommentCreationReq;
+import com.example.mobile.dto.request.CommentUpdateReq;
+import com.example.mobile.dto.response.CommentResponse;
 
 import java.util.List;
 
 public interface IComment {
-    public Comment comment (CommentRequest commentRequest);
-    public List<Comment>showAllComment();
+    CommentResponse addComment(CommentCreationReq req);
+    CommentResponse commentUpdate(int id, CommentUpdateReq req);
+    void deleteComment(int id);
+    List<CommentResponse> getListCommentByShopId(int shopId);
+    List<CommentResponse> getListCommentByUserId(int userId);
+    List<CommentResponse> getListCommentByProductId(int productId);
+    CommentResponse findById(int id);
 }

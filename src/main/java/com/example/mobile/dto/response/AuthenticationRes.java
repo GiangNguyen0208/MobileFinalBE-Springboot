@@ -9,7 +9,9 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AuthenticationRes {
+    int userId;
     String token;
     boolean authenticated;
     String clientType;
+    int shopId;
 }

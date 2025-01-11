@@ -26,9 +26,9 @@ public class VoucherService implements IVoucher {
     @Override
     public VoucherResponse addVoucher(VoucherCreationReq req) {
 
-        if (voucherRepository.existsById(req.getId())) {
-            throw new AddException(ErrorCode.VOUCHER_EXISTED);
-        }
+//        if (voucherRepository.existsById(req.getId())) {
+//            throw new AddException(ErrorCode.VOUCHER_EXISTED);
+//        }
         Voucher voucher = voucherMapper.toVoucher(req);
         return voucherMapper.toVoucherResponse(voucherRepository.save(voucher));
 

@@ -34,63 +34,45 @@ public class ImageProductService implements IImageProduct {
     ProductRepository productRepository;
 
     @Override
-    public List<String> uploadImage(List<MultipartFile> files, int productId) throws IOException {
-        // Kiểm tra xem sản phẩm có tồn tại hay không
+    public List<String> uploadImage(List<String> images, int productId) throws IOException {
         Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
-
-        // Duyệt qua danh sách file và lưu từng ảnh
         List<String> uploadedImages = new ArrayList<>();
-        for (MultipartFile file : files) {
-            if (file.isEmpty()) {
-                throw new RuntimeException("File is empty: " + file.getOriginalFilename());
-            }
-
-            // Lưu ảnh vào cơ sở dữ liệu
-            ImageProduct imageProduct = imageProductRepository.save(
-                    ImageProduct.builder()
-                            .name(file.getOriginalFilename())
-                            .type(file.getContentType())
-                            .linkImage(ImageUpload.compressImage(file.getBytes()))
-                            .product(product)
-                            .build()
-            );
-
-            // Thêm kết quả vào danh sách
-            if (imageProduct != null) {
-                uploadedImages.add("Uploaded: " + file.getOriginalFilename());
-            } else {
-                uploadedImages.add("Failed to upload: " + file.getOriginalFilename());
-            }
+        for (String image : images) {
+            ImageProduct imageProduct = ImageProduct.builder()
+                    .linkImage(image)
+                    .product(product)
+                    .build();
+            imageProductRepository.save(imageProduct);
+            uploadedImages.add(image);
         }
-
         return uploadedImages;
     }
 
 
-    @Override
-    public byte[] downloadImage(String filename) {
-        ImageProduct imageProduct = imageProductRepository.findByName(filename)
-                .orElseThrow(() -> new RuntimeException("Image not found with filename: " + filename));
-        return ImageUpload.decompressImage(imageProduct.getLinkImage());
-    }
+
+
+
+//    @Override
+//    public String downloadImage(String filename) {
+//        ImageProduct imageProduct = imageProductRepository.findByName(filename)
+//                .orElseThrow(() -> new RuntimeException("Image not found with filename: " + filename));
+//        return ImageUpload.decompressImage(imageProduct.getLinkImage());
+//    }
 
     @Override
-    public List<ImageProductResponse> showProductImage(int idProduct) {
+    public List<String> showProductImage(int idProduct) {
         Product product = productRepository.findById(idProduct)
                 .orElseThrow(() -> new RuntimeException("Product not found with ID: " + idProduct));
-        List<ImageProduct> images = imageProductRepository.findAllByProduct(product);
-        List<ImageProductResponse> listResponseImages = new ArrayList<>();
+        List<ImageProduct> images = imageProductRepository.findAllImagesByProductId(idProduct);
+        List<String> imagesResponse = new ArrayList<>();
+
         for (ImageProduct imageProduct : images) {
-            ImageProductResponse imageProductResponse = ImageProductResponse.builder()
-                    .imageName(imageProduct.getName())
-                    .imageUrl(Base64.getUrlEncoder().encodeToString(ImageUpload.decompressImage(imageProduct.getLinkImage())))
-                    .type(imageProduct.getType())
-                    .build();
-            listResponseImages.add(imageProductResponse);
+            imagesResponse.add(imageProduct.getLinkImage());
         }
-        return listResponseImages;
+        return imagesResponse;
     }
+
 
     @Override
     public void remove(int id) {
