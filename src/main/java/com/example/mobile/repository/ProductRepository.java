@@ -14,7 +14,7 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
     boolean existsByName(String productName);
     Optional<Product> findByName(String productName);
 
-    List<Product> findAllByCategoryAndAndCategoryAndDeletedFalse(Category category);
+    List<Product> findAllByCategoryAndDeletedFalse(Category category);
 
     @Query(value = "SELECT * FROM products ORDER BY category_id ASC, id ASC", nativeQuery = true)
     List<Product> findAllProductsByCategoryAndId();
