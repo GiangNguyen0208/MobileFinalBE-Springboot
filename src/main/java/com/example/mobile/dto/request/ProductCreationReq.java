@@ -1,11 +1,14 @@
 package com.example.mobile.dto.request;
 
+import com.example.mobile.constant.FoodStatus;
+import com.example.mobile.dto.response.ImageProductResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.awt.*;
+import java.util.List;
 
 
 @Data
@@ -19,7 +22,7 @@ public class ProductCreationReq {
     int categoryId;
     String description;
     Double price;
+    Double rating;
     int quantity;
-    double rating;
-    String status;
+    FoodStatus status;
 }

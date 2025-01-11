@@ -10,17 +10,11 @@ import java.util.Map;
 
 public interface IProduct {
     ProductResponse addProduct(ProductCreationReq req);
-
     List<ProductResponse> getListProduct();
-
     ProductResponse findProductById(int id);
-
     ProductResponse productUpdate(int id, ProductUpdateReq req);
-
     void deleteProduct(int id);
-
-    List<ProductResponse> getListProductByCategory();
-
+    List<ProductResponse> getListProductByCategory(int id);
     ProductResponse findProductByName(String name);
 
     List<ProductWithShop> getListByShopName(String shopName);

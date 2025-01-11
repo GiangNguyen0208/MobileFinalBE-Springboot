@@ -12,9 +12,9 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShopResponse {
     private int id;
-
     private String name;
-
+    private double rating;
     private String address;
+    private String image;
 
 }

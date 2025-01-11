@@ -28,6 +28,8 @@ public class Shop {
 
     private double rating;
 
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;

@@ -33,7 +33,7 @@ public class ApiEndPoint {
             "/api/v1/notifications/update/{notificationId}",
             "/api/v1/notifications/delete/{notificationId}",
 
-            "/api/v1/admin/shop/add", "/api/v1/admin/shop/list", "/api/v1/admin/shop/id/{shopId}", "/api/v1/admin/shop/name/{shopName}", "/api/v1/admin/shop/update/{shopId}", "/api/v1/admin/shop/delete/{shopId}",
+            "/api/v1/admin/shop/add",  "/api/v1/admin/shop/id/{shopId}", "/api/v1/admin/shop/name/{shopName}", "/api/v1/admin/shop/update/{shopId}", "/api/v1/admin/shop/delete/{shopId}",
             // admin/user
             "/api/v1/admin/user/add", "/api/v1/admin/user/list", "/api/v1/admin/user/id/{userId}", "/api/v1/admin/user/name/{userName}", "/api/v1/admin/user/update/{userId}", "/api/v1/admin/user/delete/{userId}",
 
@@ -46,8 +46,35 @@ public class ApiEndPoint {
 //            "/api/v1/roles/create",
 
 
-
+            // Shop upload image
+//            "/api/v1/shop/images/upload/*",
     };
+
+
+    public static final String[] SHOP_POST_ENDPOINTS = {
+            //Role
+
+            // Product upload image
+            "/api/v1/product/images/upload/*",
+    };
+    public static final String[] SHOP_GET_ENDPOINTS = {
+            // Product
+
+            "/api/v1/products/{productId}",           // Cập nhật sản phẩm
+
+            // Category
+            "/api/v1/shop//{categoryId}/listProduct/",
+              // Lấy danh sách category của shop
+
+            // Image
+            "/api/v1/product/images/show-list/{productId}",  // Lấy danh sách hình ảnh của sản phẩm
+            "/api/v1/product/images/show/{filename}",       // Lấy hình ảnh của sản phẩm theo tên file
+    };
+
+    public static final String[] SHOP_DELETE_ENDPOINTS = {
+            "/api/v1/product/images/{idImage}"
+    };
+
 
     public static final String[] PUBLIC_POST_ENDPOINTS  = {
             // Login vs Register
@@ -69,9 +96,14 @@ public class ApiEndPoint {
             // Permission
             "/api/v1/permissions/create",
 
+            // Role
+            "/api/v1/roles",
 
+
+            "/api/v1/comments/add",
 
     };
+
 
     public static final String[] PUBLIC_GET_ENDPOINTS = {
             "/api/v1/cart/view",
@@ -95,6 +127,7 @@ public class ApiEndPoint {
             "/api/v1/vouchers/listVoucher",
             "/api/v1/vouchers/findId/{voucherId}",
 
+
             "/api/v1/categories/listCategory",
             "/api/v1/categories/findId/{categoryId}",
             "/api/v1/categories/findName/{categoryName}",
@@ -104,17 +137,23 @@ public class ApiEndPoint {
             "/api/v1/notifications/findTitle/{notificationTitle}",
             "/api/v1/notifications/listNotification/{shopId}",
 
-            "/api/v1/comments/add",
+
             "/api/v1/comments/delete/{commentId}",
             "/api/v1/comments/update/{commentId}",
             "/api/v1/comments/list/shop/{shopId}",
             "/api/v1/comments/list/user/{userId}",
             "/api/v1/comments/list/product/{productId}",
 
+
+            "/api/v1/shop/{shopID}/categories",
+            "/api/v1/admin/shop/list",
+            "/api/v1/shop/list/{categoryName}",
     };
 
     public static final String[] PUBLIC_DELETE_ENDPOINTS = {
 
+            "/api/v1/roles/{role}",
+            "/api/v1/product/images/{productId}",
 
     };
 

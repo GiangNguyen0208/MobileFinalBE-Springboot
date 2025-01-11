@@ -9,8 +9,9 @@ import com.example.mobile.entity.Category;
 import java.util.List;
 
 public interface ICategory {
-    CategoryResponse addCategory(CategoryCreationReq req);
+    List<CategoryResponse> getListCategory(int shopID);
     List<CategoryResponse> getListCategory();
+    CategoryResponse addCategory(CategoryCreationReq req);
     CategoryResponse findCategoryById(int id);
     CategoryResponse categoryUpdate(int id, CategoryUpdateReq req);
     void deleteCategory(int id);
