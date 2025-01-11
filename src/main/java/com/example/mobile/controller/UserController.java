@@ -51,6 +51,7 @@ public class UserController {
         userService.deleteUser(userId);
         return "User has been deleted!";
     }
+
     @GetMapping("/categories")
     ApiResponse<List<CategoryResponse>> getCategoryList() {
         return ApiResponse.<List<CategoryResponse>>builder()
@@ -58,4 +59,6 @@ public class UserController {
                 .result(categoryService.getListCategory())
                 .build();
     }
+
+
 }

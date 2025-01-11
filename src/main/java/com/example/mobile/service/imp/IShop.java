@@ -8,6 +8,8 @@ import com.example.mobile.entity.Shop;
 import java.util.List;
 
 public interface IShop {
+    List<Integer> getOpenShopIds();
+
     ShopResponse createShop(ShopCreationReq req);
 
     List<ShopResponse> getListShop();

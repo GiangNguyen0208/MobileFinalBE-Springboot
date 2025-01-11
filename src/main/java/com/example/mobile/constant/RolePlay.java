@@ -4,7 +4,7 @@ public enum RolePlay {
     USER("USER"),
     ADMIN("ADMIN"),
     SHIPPER("SHIPPER"),
-    Shop("Shop");
+    SHOP("Shop");
 
     private final String role;
 

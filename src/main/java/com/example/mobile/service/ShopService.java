@@ -76,8 +76,7 @@ public class ShopService implements IShop {
     }
 
     @Override
-    public List<ShopResponse> findDistinctByCategoryList_Name(String categoryName) {
-        return shopRepository.findDistinctByCategoryList_Name(categoryName).stream()
-                .map(shopMapper::toShopResponse).toList();
+    public List<Integer> getOpenShopIds() {
+        return shopRepository.findOpenShopIds();
     }
 }

@@ -9,6 +9,7 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -50,10 +51,10 @@ public class CategoryController {
                 .result(categoryService.categoryUpdate(categoryId,categoryUpdateReq)).build();
     }
 
-    @DeleteMapping("/delete/{categoryId}")
-    String deleteCategory(@PathVariable("categoryId") int categoryId) {
+    @DeleteMapping("/{categoryId}")
+    ResponseEntity<Void> deleteCategory(@PathVariable("categoryId") int categoryId) {
         categoryService.deleteCategory(categoryId);
-        return "Category has been deleted!";
+        return ResponseEntity.noContent().build();
     }
 
 }

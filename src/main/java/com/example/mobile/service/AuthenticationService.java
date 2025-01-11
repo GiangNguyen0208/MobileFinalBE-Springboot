@@ -5,11 +5,14 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.StringJoiner;
 
 import com.example.mobile.entity.Role;
+import com.example.mobile.entity.Shop;
 import com.example.mobile.entity.User;
 import com.example.mobile.repository.RoleRepository;
+import com.example.mobile.repository.ShopRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -50,6 +53,7 @@ import org.springframework.util.CollectionUtils;
 public class AuthenticationService implements IAuthentication {
     RoleRepository roleRepository;
     UserRepository userRepository;
+    ShopRepository shopRepository;
     @NonFinal
     @Value("${jwt.signerKey}")
     private String SIGNER_KEY;
@@ -58,6 +62,7 @@ public class AuthenticationService implements IAuthentication {
     public AuthenticationRes authentication(AuthenticationReq req) {
         var user = userRepository.findByUsername(req.getUsername().toLowerCase())
                 .orElseThrow(() -> new AddException(ErrorCode.USER_NOT_EXISTED));
+        List<Shop> shop = shopRepository.findOpenShopsByUserId(user.getId());
         PasswordEncoder passwordEncode = new BCryptPasswordEncoder(10);
         boolean authenticated = passwordEncode.matches(req.getPassword().toLowerCase(), user.getPassword());
 
@@ -68,9 +73,11 @@ public class AuthenticationService implements IAuthentication {
         var role = getRoleUser(user);
 
         return AuthenticationRes.builder()
+                .userId(user.getId())
                 .token(token)
                 .authenticated(true)
                 .clientType(role)
+                .shopId(shop.getFirst().getId())
                 .build();
     }
 

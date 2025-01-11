@@ -2,6 +2,7 @@ package com.example.mobile.controller;
 
 import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.ImageProductResponse;
+import com.example.mobile.service.ImageProductService;
 import com.example.mobile.service.imp.IImageProduct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +21,7 @@ public class ImageProductController {
     private final IImageProduct imageProductService;
     @PostMapping("/upload/{productId}")
     public ApiResponse<List<String>> uploadImageProduct(
-            @RequestParam("image") List<MultipartFile> files,
+            @RequestParam("image") List<String> files,
             @PathVariable("productId") int id) throws IOException {
         if (files.isEmpty()) {
             throw new RuntimeException("File is empty!");
@@ -31,28 +32,27 @@ public class ImageProductController {
                 .mesg("Upload Image Status")
                 .result(uploadImages)
                 .build();
+
     }
-
-
     // Get List Image Product
     @GetMapping("/show-list/{productId}")
-    ApiResponse<List<ImageProductResponse>> downloadImageProduct(@PathVariable("productId") int productId) {
-        List<ImageProductResponse> imageData = imageProductService.showProductImage(productId);
-        return ApiResponse.<List<ImageProductResponse>>builder()
+    ApiResponse<List<String>> downloadImageProduct(@PathVariable("productId") int productId) {
+        List<String> imageData = imageProductService.showProductImage(productId);
+        return ApiResponse.<List<String>>builder()
                 .mesg("Show List Image Product")
                 .result(imageData)
                 .build();
     }
 
     // Get Image Product
-    @GetMapping("/show/{filename}")
-    ApiResponse<byte[]> downloadImageProduct(@PathVariable("filename") String filename) {
-        byte[] imageData = imageProductService.downloadImage(filename);
-        return ApiResponse.<byte[]>builder()
-                .mesg("Show Image Product")
-                .result(imageData)
-                .build();
-    }
+//    @GetMapping("/show/{filename}")
+//    ApiResponse<byte[]> downloadImageProduct(@PathVariable("filename") String filename) {
+//        byte[] imageData = imageProductService.downloadImage(filename);
+//        return ApiResponse.<byte[]>builder()
+//                .mesg("Show Image Product")
+//                .result(imageData)
+//                .build();
+//    }
 
     // Delete
     @DeleteMapping("/{idImage}")

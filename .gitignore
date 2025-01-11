@@ -13,11 +13,15 @@ target/
 .springBeans
 .sts4-cache
 
+
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
+
+# Bỏ qua file cấu hình ứng dụng
+/src/main/**/application.yml
 
 ### NetBeans ###
 /nbproject/private/
@@ -31,5 +35,6 @@ build/
 
 ### VS Code ###
 .vscode/
-application.yml
+src/main/resources/application.yml
+
 yarn.lock
