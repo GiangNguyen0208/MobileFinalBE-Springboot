@@ -78,9 +78,9 @@ public class UserService implements IUser {
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
-    public User getUserById(int id){
-        return userRepository.findUserById(id);
-    }
+//    public User getUserById(int id){
+//        return userRepository.findUserById(id);
+//    }
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
