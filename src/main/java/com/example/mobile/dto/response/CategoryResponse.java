@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,9 +15,11 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CategoryResponse {
     int id;
+    int idShop;
+    int idProduct;
     String name;
     double rating;
-    String imageLink;
     String shopName;
     String status;
+    List<String> imageLink;
 }
