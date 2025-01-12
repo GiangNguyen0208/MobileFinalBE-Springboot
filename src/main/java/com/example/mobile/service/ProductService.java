@@ -84,6 +84,11 @@ public class ProductService implements IProduct {
 
         List<Product> productList = productRepository.findAll();
         for (Product p : productList) {
+            List<String> images = new ArrayList<>();
+            List<ImageProduct> imageProductList = imageProductRepository.findAllImagesByProductId(p.getId());
+            for (ImageProduct image : imageProductList) {
+                images.add(image.getLinkImage());
+            }
             ProductResponse productResponse = ProductResponse.builder()
                     .id(p.getId())
                     .categoryId(p.getCategory().getId())
@@ -93,6 +98,7 @@ public class ProductService implements IProduct {
                     .des(p.getDescription())
                     .quantity(p.getQuantity())
                     .rating(p.getRating())
+                    .imageLink(images)
                     .build();
             productResponseList.add(productResponse);
         }
@@ -187,11 +193,19 @@ public class ProductService implements IProduct {
                 .orElseThrow(() -> new RuntimeException("Category not found!"));
         List<Product> productList = productRepository.findAllByCategoryAndDeletedFalse(category);
         for (Product product : productList) {
+            List<ImageProduct> imageProductList = imageProductRepository.findAllImagesByProductId(product.getId());
+            List<String> images = new ArrayList<>();
+            for (ImageProduct imageProduct : imageProductList) {
+                images.add(imageProduct.getLinkImage());
+            }
             ProductResponse productResponse = ProductResponse.builder()
                     .name(product.getName())
                     .price(product.getPrice())
                     .des(product.getDescription())
                     .quantity(product.getQuantity())
+                    .rating(product.getRating())
+                    .status(product.getStatus())
+                    .imageLink(images)
                     .build();
             productResponseList.add(productResponse);
         }
