@@ -1,11 +1,14 @@
 package com.example.mobile.dto.request;
 
+import com.example.mobile.constant.FoodStatus;
+import com.example.mobile.dto.response.ImageProductResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.util.Date;
+import java.util.List;
 
 @Data
 @Builder
@@ -15,7 +18,10 @@ import java.util.Date;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductUpdateReq {
     String name;
+    String categoryName;
+    private String description;;
     double price;
     int quantity;
+    int categoryId;
     String status;
 }

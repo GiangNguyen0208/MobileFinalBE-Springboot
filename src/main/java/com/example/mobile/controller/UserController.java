@@ -3,7 +3,9 @@ package com.example.mobile.controller;
 import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
 import com.example.mobile.dto.response.ApiResponse;
+import com.example.mobile.dto.response.CategoryResponse;
 import com.example.mobile.dto.response.UserResponse;
+import com.example.mobile.service.imp.ICategory;
 import com.example.mobile.service.imp.IUser;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -21,6 +23,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class UserController {
+    ICategory categoryService;
     IUser userService;
 
     @PostMapping("/register")
@@ -48,4 +51,14 @@ public class UserController {
         userService.deleteUser(userId);
         return "User has been deleted!";
     }
+
+    @GetMapping("/categories")
+    ApiResponse<List<CategoryResponse>> getCategoryList() {
+        return ApiResponse.<List<CategoryResponse>>builder()
+                .mesg("Get List Category")
+                .result(categoryService.getListCategory())
+                .build();
+    }
+
+
 }

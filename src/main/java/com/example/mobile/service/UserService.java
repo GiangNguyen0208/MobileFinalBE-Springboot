@@ -44,9 +44,7 @@ public class UserService implements IUser {
 
         HashSet<Role> roles = new HashSet<>();
         roleRepository.findById(RolePlay.USER.getRole()).ifPresent(roles::add);
-
         user.setRoles(roles);
-
         try {
             user = userRepository.save(user);
         } catch (DataIntegrityViolationException exception) {
@@ -86,6 +84,11 @@ public class UserService implements IUser {
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    public User getUserById(int id) {
+        User user = userRepository.findUserById(id);
+        return user;
     }
 
 }

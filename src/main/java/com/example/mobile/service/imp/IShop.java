@@ -7,6 +7,8 @@ import com.example.mobile.dto.response.ShopResponse;
 import java.util.List;
 
 public interface IShop {
+    List<Integer> getOpenShopIds();
+
     ShopResponse createShop(ShopCreationReq req);
 
     List<ShopResponse> getListShop();

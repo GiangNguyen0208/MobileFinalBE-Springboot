@@ -43,4 +43,7 @@ public class Product {
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Cart> carts = new HashSet<>();
 
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch =  FetchType.LAZY)
+    private Set<ImageProduct> images = new HashSet<>();
+
 }

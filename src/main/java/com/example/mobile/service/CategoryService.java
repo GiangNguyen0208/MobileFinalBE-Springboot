@@ -1,18 +1,13 @@
 package com.example.mobile.service;
 
+import com.example.mobile.configuration.ImageUpload;
 import com.example.mobile.dto.request.CategoryCreationReq;
 import com.example.mobile.dto.request.CategoryUpdateReq;
-import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.CategoryResponse;
-import com.example.mobile.entity.Category;
-import com.example.mobile.entity.Notification;
-import com.example.mobile.entity.Shop;
-import com.example.mobile.entity.Voucher;
-import com.example.mobile.exception.AddException;
-import com.example.mobile.exception.ErrorCode;
+import com.example.mobile.dto.response.ProductResponse;
+import com.example.mobile.entity.*;
 import com.example.mobile.mapper.ICategoryMapper;
-import com.example.mobile.repository.CategoryRepository;
-import com.example.mobile.repository.ShopRepository;
+import com.example.mobile.repository.*;
 import com.example.mobile.service.imp.ICategory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,16 +15,62 @@ import lombok.experimental.FieldDefaults;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
-public class CategoryService implements ICategory {
+public class CategoryService  implements ICategory {
+    private final ImageProductRepository imageProductRepository;
+    ShopRepository shopRepository;
     ICategoryMapper categoryMapper;
     CategoryRepository categoryRepository;
-    ShopRepository shopRepository;
+    ProductRepository productRepository;
+
+    @Override
+    public List<CategoryResponse> getListCategoryByShopId(int shopID) {
+        List<CategoryResponse> categoryResponseList = new ArrayList<>();
+        Shop shop = shopRepository.findById(shopID)
+                .orElseThrow(() -> new RuntimeException("Shop not found!"));
+        List<Category> listCategories = categoryRepository.findAllByShopAndDeletedFalse(shop);
+        for (Category category : listCategories) {
+            CategoryResponse categoryResponse = CategoryResponse.builder()
+                    .id(category.getId())
+                    .name(category.getName())
+                    .status(category.getStatus())
+                    .build();
+            categoryResponseList.add(categoryResponse);
+        }
+        return  categoryResponseList;
+    }
+
+    @Override
+    public List<CategoryResponse> getListCategory() {
+        List<Category> categories = categoryRepository.findAllActiveCategories();
+        List<CategoryResponse> categoryResponses = new ArrayList<>();
+        for (Category category : categories) {
+            List<Product> productList = productRepository.findAllByCategoryAndDeletedFalse(category);
+            List<String> images = new ArrayList<>();
+            for (Product product : productList) {
+                List<ImageProduct> listImageProductList = imageProductRepository.findAllImagesByProductId(product.getId());
+                for (ImageProduct imageProduct : listImageProductList) {
+                    images.add(imageProduct.getLinkImage());
+                }
+            }
+            CategoryResponse response = CategoryResponse.builder()
+                    .id(category.getId())
+                    .idShop(category.getShop().getId())
+                    .name(category.getName())
+                    .status(category.getStatus())
+                    .imageLink(images)
+                    .build();
+            categoryResponses.add(response);
+        }
+        return categoryResponses;
+    }
 
     @Override
     public CategoryResponse addCategory(CategoryCreationReq req) {
@@ -37,11 +78,6 @@ public class CategoryService implements ICategory {
         Category category = categoryMapper.toCategory(req);
         category.setShop(shop);
         return categoryMapper.toCategoryResponse(categoryRepository.save(category));
-    }
-
-    @Override
-    public List<CategoryResponse> getListCategory() {
-        return categoryRepository.findAll().stream().map(categoryMapper::toCategoryResponse).toList();
     }
 
     @Override
@@ -58,7 +94,9 @@ public class CategoryService implements ICategory {
 
     @Override
     public void deleteCategory(int id) {
-        categoryRepository.deleteById(id);
+        Category category = categoryRepository.findById(id).orElseThrow(()-> new RuntimeException("Category not found!"));
+        category.setDeleted(true);
+        categoryRepository.save(category);
     }
 
     @Override

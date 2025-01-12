@@ -21,14 +21,14 @@ import java.util.List;
 public class RoleController {
     IRole roleService;
 
-    @PostMapping("/create")
+    @PostMapping
     ApiResponse<RoleRes> create(@RequestBody RoleReq req) {
         return ApiResponse.<RoleRes>builder()
                 .result(roleService.create(req))
                 .build();
     }
 
-    @GetMapping("/getAll")
+    @GetMapping
     ApiResponse<List<RoleRes>> getAll() {
         return ApiResponse.<List<RoleRes>>builder()
                 .result(roleService.getAll())

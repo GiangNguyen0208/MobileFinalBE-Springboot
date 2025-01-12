@@ -39,7 +39,6 @@ public class ApplicationInitConfig {
         log.info("Initializing application.....");
         return args -> {
             if (userRepository.findByUsername(ADMIN_USER_NAME).isEmpty()) {
-
                 Role adminRole = roleRepository.save(Role.builder()
                         .name(RolePlay.ADMIN.getRole())
                         .description("Admin role")

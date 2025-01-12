@@ -44,7 +44,7 @@ public class RoleService implements IRole {
     }
 
     @Override
-    public void delete(String role) {
-        roleRepository.deleteById(role);
+    public void delete(String roleName) {
+        roleRepository.deleteById(roleName);
     }
 }

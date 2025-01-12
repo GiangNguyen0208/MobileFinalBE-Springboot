@@ -37,12 +37,18 @@ public class SecurityConfig {
         httpSecurity
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
+                        // Public
                         .requestMatchers(HttpMethod.GET, ApiEndPoint.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, ApiEndPoint.PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.DELETE, ApiEndPoint.PUBLIC_DELETE_ENDPOINTS).permitAll()
-                        // Admin and other endpoints that require authentication
+                        // Admin
                         .requestMatchers(HttpMethod.GET, ApiEndPoint.ADMIN_GET_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
                         .requestMatchers(HttpMethod.POST, ApiEndPoint.ADMIN_POST_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
+                        // Shop
+                        .requestMatchers(HttpMethod.GET, ApiEndPoint.SHOP_GET_ENDPOINTS).hasRole(RolePlay.SHOP.getRole())
+                        .requestMatchers(HttpMethod.POST, ApiEndPoint.SHOP_POST_ENDPOINTS).hasRole(RolePlay.SHOP.getRole())
+                        .requestMatchers(HttpMethod.DELETE, ApiEndPoint.SHOP_DELETE_ENDPOINTS).hasRole(RolePlay.SHOP.getRole())
+                        // <<SPACE>>
                         .anyRequest().authenticated()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2
@@ -50,6 +56,7 @@ public class SecurityConfig {
                                                 .jwtAuthenticationConverter(customJwtAuthentication()))
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 );
+
 
         return httpSecurity.build();
     }
