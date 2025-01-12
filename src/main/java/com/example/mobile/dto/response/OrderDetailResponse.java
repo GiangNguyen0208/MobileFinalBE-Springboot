@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-
-
 @Data
 @Builder
 @AllArgsConstructor
@@ -13,10 +11,9 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class OrderDetailResponse {
-    int id;
-    double totalPrice;
-    int quantity;
-    int user;
-    int product;
+    private Integer id;
+    private Integer productId;
+    private Double price;
+    private Integer quantity;
+    private Double amount;
 }
-

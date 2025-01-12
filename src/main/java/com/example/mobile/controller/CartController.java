@@ -56,6 +56,32 @@ public class CartController {
         }
     }
 
+    @PutMapping("/update")
+    public ApiResponse<?> updateCart(@RequestBody CartItemReq item) {
+        ApiResponse<CartItemResponse> response = ApiResponse.<CartItemResponse>builder().build();
+        try {
+            // Log dữ liệu đầu vào để xem có gì bất thường không
+            System.out.println("Adding to cart: " + item);
+
+            // Thêm sản phẩm vào giỏ hàng
+            CartItemResponse cartItemResponse = cartService.addToCart(item);
+            response.setResult(cartItemResponse);
+            response.setMesg("Add to Cart Successfully!");
+            return response;
+        } catch (RuntimeException e) {
+            System.out.println("RuntimeException: " + e.getMessage());  // Log thêm chi tiết lỗi
+            response.setMesg("Error: " + e.getMessage());
+            response.setCode(400);  // Mã lỗi 400 cho lỗi thông thường
+            return response;
+        } catch (Exception e) {
+            System.out.println("Exception: " + e.getMessage());  // Log thêm chi tiết lỗi
+
+            response.setMesg("Unexpected Error Occurred!");
+            response.setCode(500);  // Mã lỗi 500 cho lỗi không xác định
+            return response;
+        }
+    }
+
 
 
 
@@ -86,7 +112,7 @@ public class CartController {
     public ApiResponse<List<CartItemResponse>> viewCart() {
         try {
             // Gọi service để lấy danh sách giỏ hàng của người dùng
-            ApiResponse<List<CartItemResponse>> response = cartService.viewCart(1);
+            ApiResponse<List<CartItemResponse>> response = cartService.viewCart();
             return response;
         } catch (Exception e) {
             // Xử lý lỗi nếu có
@@ -102,7 +128,7 @@ public class CartController {
     public ApiResponse<String> clearCart() {
         try {
             // Gọi service để xóa giỏ hàng
-            ApiResponse<String> response = cartService.clearCart(1);
+            ApiResponse<String> response = cartService.clearCart();
             return response;
         } catch (Exception e) {
             // Xử lý lỗi nếu có

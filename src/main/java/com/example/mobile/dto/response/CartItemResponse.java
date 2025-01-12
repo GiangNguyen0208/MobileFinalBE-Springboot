@@ -14,6 +14,7 @@ public class CartItemResponse {
     int idUser;
     String name;
     String des;
+    String image;
     double price;
     double rating;
     int quantity;

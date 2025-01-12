@@ -1,37 +1,21 @@
 package com.example.mobile.entity;
 
-import com.example.mobile.constant.MethodType;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
-
-@Entity(name = "payment_methods")
-@Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-@ToString
+@Getter
+@Setter
+@Entity
+@Table(name = "paymentmethod")
 public class PaymentMethod {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @Column(name = "id", nullable = false)
+    private Integer id;
 
-    @Enumerated(EnumType.STRING)
-    private MethodType methodType;
+    @Lob
+    @Column(name = "type")
+    private String type;
 
-    private Date createAt;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    @OneToMany(mappedBy = "paymentMethod")
-    private Set<Order> orderSet = new HashSet<>();
-
-    @OneToMany(mappedBy = "paymentMethod")
-    private Set<Transaction> transactionSet = new HashSet<>();
 }
-

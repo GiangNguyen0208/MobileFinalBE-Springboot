@@ -60,11 +60,5 @@ public class User {
     private Set<Cart> carts = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
-    private Set<PaymentMethod> paymentMethodSet = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
-    private Set<Transaction> transactionSet = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
     private Set<Licenses> licensesSet = new HashSet<>();
 }
