@@ -64,7 +64,7 @@ public class ApiEndPoint {
             "/api/v1/admin/addShop",
 
             // Add, Deleted Cart
-            "/api/v1/cart/add/",
+            "/api/v1/cart/add",
             "/api/v1/cart/clear/",
 
             // Permission

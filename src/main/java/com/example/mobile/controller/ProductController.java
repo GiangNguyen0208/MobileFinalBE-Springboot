@@ -6,6 +6,7 @@ import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.CategoryResponse;
 import com.example.mobile.dto.response.ProductResponse;
 import com.example.mobile.dto.response.ProductWithShop;
+import com.example.mobile.service.ProductService;
 import com.example.mobile.service.imp.IProduct;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
@@ -21,7 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class ProductController {
-    IProduct productService;
+    ProductService productService;
     @PostMapping("/add")
     ApiResponse<Boolean> addProduct(@RequestBody ProductCreationReq productCreationReq) {
         ApiResponse<Boolean> apiResponse = new ApiResponse<>();

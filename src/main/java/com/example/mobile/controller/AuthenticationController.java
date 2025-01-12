@@ -2,10 +2,7 @@ package com.example.mobile.controller;
 
 import java.text.ParseException;
 
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.mobile.dto.request.AuthenticationReq;
 import com.example.mobile.dto.request.IntrospectReq;
@@ -28,6 +25,7 @@ public class AuthenticationController {
     IAuthentication authenticationService;
 
     @PostMapping("/token")
+    @ResponseBody
     public ApiResponse<AuthenticationRes> authenticate(@RequestBody AuthenticationReq req) {
         var result = authenticationService.authentication(req);
         return ApiResponse.<AuthenticationRes>builder()

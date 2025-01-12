@@ -85,6 +85,7 @@ public class ProductService implements IProduct {
         List<Product> productList = productRepository.findAll();
         for (Product p : productList) {
             ProductResponse productResponse = ProductResponse.builder()
+                    .id(p.getId())
                     .categoryId(p.getCategory().getId())
                     .name(p.getName())
                     .price(p.getPrice())
@@ -184,7 +185,7 @@ public class ProductService implements IProduct {
         List<ProductResponse> productResponseList = new ArrayList<>();
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found!"));
-        List<Product> productList = productRepository.findAllByCategoryAndAndCategoryAndDeletedFalse(category);
+        List<Product> productList = productRepository.findAllByCategoryAndDeletedFalse(category);
         for (Product product : productList) {
             ProductResponse productResponse = ProductResponse.builder()
                     .name(product.getName())

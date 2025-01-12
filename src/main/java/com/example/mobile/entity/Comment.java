@@ -1,12 +1,7 @@
 package com.example.mobile.entity;
 
-<<<<<<< HEAD
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
-import lombok.*;
 
-@Entity(name = "comment")
-=======
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -16,7 +11,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity(name = "comments")
->>>>>>> 21130338
 @Data
 @Builder
 @AllArgsConstructor

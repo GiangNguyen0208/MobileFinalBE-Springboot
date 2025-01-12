@@ -77,7 +77,7 @@ public class AuthenticationService implements IAuthentication {
                 .token(token)
                 .authenticated(true)
                 .clientType(role)
-                .shopId(shop.getFirst().getId())
+             //   .shopId(shop.getFirst().getId())
                 .build();
     }
 

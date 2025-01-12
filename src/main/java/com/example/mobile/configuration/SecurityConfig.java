@@ -89,7 +89,6 @@ public class SecurityConfig {
     public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         @Override
         public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException, ServletException {
-            // Log the request and authentication exception for debugging
             System.out.println("Authentication failed: " + authException.getMessage());
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
         }

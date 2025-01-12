@@ -60,7 +60,7 @@ public ResponseEntity<ApiResponse> handleDatabaseException(DataAccessException e
         ApiResponse<String> response = new ApiResponse<>();
         response.setMesg(ex.getMessage());
         response.setResult("Error");
-        return response;
+        return response;  // Trả về ApiResponse thay vì ResponseEntity
     }
 
     @ExceptionHandler(value = JwtException.class)
