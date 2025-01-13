@@ -5,7 +5,7 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -21,5 +21,8 @@ public class OrderResponse {
     private Double amount;
     private String status;
     private Instant createAt;
-    private List<OrderDetailResponse> orderDetails;
+    private Integer userId;
+    private String username;
+    private String fullname;
+    private Set<OrderDetailResponse> orderDetails;
 }
