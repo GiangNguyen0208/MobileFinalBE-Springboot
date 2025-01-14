@@ -8,43 +8,125 @@ import com.example.mobile.entity.*;
 import com.example.mobile.mapper.IOrderDetailMapper;
 import com.example.mobile.mapper.IOrderMapper;
 import com.example.mobile.repository.*;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
+@Slf4j
 public class OrderService {
+    private final ImageProductRepository imageProductRepository;
 
-    @Autowired
-    private OrderRepository orderRepository;
+    OrderRepository orderRepository;
+     ProductRepository productRepository;
+     VoucherRepository voucherRepository;
+     PaymentMethodRepository paymentMethodRepository;
+     UserRepository userRepository;
+     IOrderMapper orderMapper;
+     IOrderDetailMapper orderDetailMapper;
+     CartRepository cartRepository;
+     OrderDetailRepository orderDetailRepository;
 
-    @Autowired
-    private ProductRepository productRepository;
+    public List<OrderDetailResponse> viewDetail(int orderId) {
+        List<Orderdetail> orderDetails = orderDetailRepository.findAllByOrderId(orderId);
 
-    @Autowired
-    private VoucherRepository voucherRepository;
+        if (orderDetails.isEmpty()) {
+            throw new RuntimeException("No Orderdetails found for orderId: " + orderId);
+        }
 
-    @Autowired
-    private PaymentMethodRepository paymentMethodRepository;
+        List<OrderDetailResponse> responseList = new ArrayList<>();
 
-    @Autowired
-    private UserRepository userRepository;
+        for (Orderdetail orderDetail : orderDetails) {
+            List<ImageProduct> imageProductList = imageProductRepository.findAllImagesByProductId(orderDetail.getProduct().getId());
+            List<String> images = new ArrayList<>();
+            for (ImageProduct image : imageProductList) {
+                images.add(image.getLinkImage());
+            }
 
-    @Autowired
-    private IOrderMapper orderMapper;
+            String image = (images.isEmpty()) ? null : images.get(0);
 
-    @Autowired
-    private IOrderDetailMapper orderDetailMapper;
+            OrderDetailResponse response = OrderDetailResponse.builder()
+                    .id(orderDetail.getId())
+                    .orderId(orderDetail.getOrder() != null ? orderDetail.getOrder().getId() : null)
+                    .productId(orderDetail.getProduct() != null ? orderDetail.getProduct().getId() : null)
+                    .image(image)
+                    .productName(orderDetail.getProduct() != null ? orderDetail.getProduct().getName() : null)
+                    .price(orderDetail.getPrice())
+                    .amount(orderDetail.getAmount())
+                    .quantity(orderDetail.getQuantity())
+                    .build();
 
-    @Autowired
-    private CartRepository cartRepository;
+            responseList.add(response);
+        }
+
+        return responseList;
+    }
+
+
+
+
+    public Boolean updateOrderStatus(int orderId) {
+        Order order = orderRepository.findById(orderId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with orderId: " + orderId));
+        order.setStatus("DONE");
+        orderRepository.save(order);
+        return true;
+    }
+
+    public List<OrderResponse> getListOrderHistory() {
+        String status = "DONE";
+        List<Order> orderList = orderRepository.findByStatus(status);
+        List<OrderResponse> orderResponseList = new ArrayList<>();
+        for (Order o : orderList) {
+            OrderResponse orderResponse = OrderResponse.builder()
+                    .id(o.getId())
+                    .userId(o.getUser().getId())
+                    .username(o.getUser().getUsername())
+                    .fullname(o.getUser().getFirstname() + " " + o.getUser().getLastname())
+                    .voucherId(o.getVoucher() != null ? o.getVoucher().getId() : null)
+                    .discount(o.getVoucher() != null ? o.getVoucher().getValueDiscount() : 0)
+                    .totalProduct(o.getTotalProduct())
+                    .amount(o.getAmount())
+                    .status(o.getStatus())
+                    .createAt(o.getCreateAt())
+                    .build();
+            orderResponseList.add(orderResponse);
+        }
+        return orderResponseList;
+    }
+
+    public List<OrderResponse> getListOrderShip() {
+        String status = "PENDING";
+        List<Order> orderList =  orderRepository.findByStatus(status);
+        List<OrderResponse> orderResponseList = new ArrayList<>();
+        for (Order o : orderList) {
+            OrderResponse orderResponse = OrderResponse.builder()
+                    .id(o.getId())
+                    .userId(o.getUser().getId())
+                    .username(o.getUser().getUsername())
+                    .fullname(o.getUser().getFirstname() + " " + o.getUser().getLastname())
+                    .voucherId(o.getVoucher() != null ? o.getVoucher().getId() : null)
+                    .discount(o.getVoucher() != null ? o.getVoucher().getValueDiscount() : 0)
+                    .totalProduct(o.getTotalProduct())
+                    .amount(o.getAmount())
+                    .status(o.getStatus())
+                    .createAt(o.getCreateAt())
+                    .build();
+            orderResponseList.add(orderResponse);
+        }
+        return orderResponseList;
+    }
 
     private User getCurrentUser() {
         String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();

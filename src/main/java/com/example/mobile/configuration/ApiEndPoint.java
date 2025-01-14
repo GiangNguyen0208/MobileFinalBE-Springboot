@@ -19,7 +19,6 @@ public class ApiEndPoint {
             "/api/v1/vouchers/{voucherId}",
 
 
-
             // Get List User
             "/api/v1/users/getAllUser",
 
@@ -112,12 +111,22 @@ public class ApiEndPoint {
             "/api/v1/comments/list/user/{userId}",
             "/api/v1/comments/list/product/{productId}",
 
+            // Order
+            "/api/v1/orders/history", // Get List Order History
+            "/api/v1/orders/shipping", // Get List Order Shipping
+            "/api/v1/orders/detail/{orderId}" // Detail Order
+
+
     };
 
     public static final String[] PUBLIC_DELETE_ENDPOINTS = {
             "/api/v1/roles/{role}",
             "/api/v1/product/images/{productId}"
     };
+    public static final String[] PUBLIC_PUT_ENDPOINTS = {
+            "/api/v1/orders/update/{orderId}"
+    };
+
 
     public static final String[] SHOP_POST_ENDPOINTS = {
             //Role

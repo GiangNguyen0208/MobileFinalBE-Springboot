@@ -41,6 +41,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, ApiEndPoint.PUBLIC_GET_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, ApiEndPoint.PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.DELETE, ApiEndPoint.PUBLIC_DELETE_ENDPOINTS).permitAll()
+                        .requestMatchers(HttpMethod.PUT, ApiEndPoint.PUBLIC_PUT_ENDPOINTS).permitAll()
                         // Admin
                         .requestMatchers(HttpMethod.GET, ApiEndPoint.ADMIN_GET_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
                         .requestMatchers(HttpMethod.POST, ApiEndPoint.ADMIN_POST_ENDPOINTS).hasRole(RolePlay.ADMIN.getRole())
