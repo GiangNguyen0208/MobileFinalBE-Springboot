@@ -12,4 +12,5 @@ public interface IVoucher {
     VoucherResponse findVoucherById(int id);
     VoucherResponse voucherUpdate(int id, VoucherUpdateReq req);
     void deleteVoucher(int id);
+    List<VoucherResponse> getListVoucherByShopId(int id);
 }

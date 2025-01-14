@@ -19,6 +19,12 @@ public class Voucher {
 
     private double priceMin;
 
+    private String code;
+
+    @ManyToOne
+    @JoinColumn(name = "shop_id", nullable = false)
+    private Shop shop;
+
     private double valueDiscount;
 
     @OneToMany(mappedBy = "voucher")

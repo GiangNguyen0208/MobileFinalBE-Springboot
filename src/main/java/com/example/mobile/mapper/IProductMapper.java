@@ -21,8 +21,7 @@ public interface IProductMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "price", source = "price")
     @Mapping(target = "des", source = "description")
-    @Mapping(target = "amount", source = "quantity")
-    @Mapping(target = "images", source = "images")
+    @Mapping(target = "quantity", source = "quantity")
     ProductResponse toProductResponse(Product product);
     void updateProduct(@MappingTarget Product product, ProductUpdateReq req);
 

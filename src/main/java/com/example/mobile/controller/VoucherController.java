@@ -5,10 +5,13 @@ import com.example.mobile.dto.request.VoucherUpdateReq;
 import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.VoucherResponse;
 import com.example.mobile.service.imp.IVoucher;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +36,13 @@ public class VoucherController {
                 .build();
     }
 
+    @GetMapping("/list/shop/{shopId}")
+    ApiResponse<List<VoucherResponse>> getListVoucherByShopId(@PathVariable("shopId") int shopId) {
+        return ApiResponse.<List<VoucherResponse>>builder()
+                .result(voucherService.getListVoucherByShopId(shopId))
+                .build();
+    }
+
     @GetMapping("/findId/{voucherId}")
     VoucherResponse getUser(@PathVariable("voucherId") int voucherId) {
         return voucherService.findVoucherById(voucherId);
@@ -47,8 +57,15 @@ public class VoucherController {
     }
 
     @DeleteMapping("/delete/{voucherId}")
-    String deleteVoucher(@PathVariable("voucherId") int voucherId) {
-        voucherService.deleteVoucher(voucherId);
-        return "Voucher has been deleted!";
+    public ResponseEntity<String> deleteVoucher(@PathVariable("voucherId") int voucherId) {
+        try {
+            voucherService.deleteVoucher(voucherId); // Xóa voucher
+            return ResponseEntity.ok("Voucher has been deleted!"); // Trả về 200 OK
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Voucher not found!"); // Trả về 404
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the voucher."); // Trả về 500
+        }
     }
+
 }

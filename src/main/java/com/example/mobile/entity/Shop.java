@@ -39,4 +39,7 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop")
     private List<Notification> notificationList;
+
+    @OneToMany(mappedBy = "shop")
+    private List<Voucher> voucherList;
 }

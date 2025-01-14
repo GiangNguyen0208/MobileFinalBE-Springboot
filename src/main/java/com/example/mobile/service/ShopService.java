@@ -56,8 +56,10 @@ public class ShopService implements IShop {
         Shop shop = shopRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Product not found!"));
 
-        shopMapper.updateShop(shop, req);   // Use MappingTarget to mapping data update from req (new info) into old info
 
+        shop.setName(req.getName());
+        shop.setAddress(req.getAddress());
+        shop.setImage(req.getImage());
         return shopMapper.toShopResponse(shopRepository.save(shop));
     }
 
@@ -73,6 +75,11 @@ public class ShopService implements IShop {
                     .orElseThrow(() -> new RuntimeException("Shop not found!"));
             return shopMapper.toShopResponse(shop);
 
+    }
+
+    @Override
+    public List<ShopResponse> findDistinctByCategoryList_Name(String categoryName) {
+        return List.of();
     }
 
     @Override
