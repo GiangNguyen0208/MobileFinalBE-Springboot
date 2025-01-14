@@ -46,9 +46,7 @@ public class UserService implements IUser {
 
         HashSet<Role> roles = new HashSet<>();
         roleRepository.findById(RolePlay.USER.getRole()).ifPresent(roles::add);
-
         user.setRoles(roles);
-
         try {
             user = userRepository.save(user);
         } catch (DataIntegrityViolationException exception) {
