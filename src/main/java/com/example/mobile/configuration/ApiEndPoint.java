@@ -22,7 +22,8 @@ public class ApiEndPoint {
 
             // Get List User
             "/api/v1/users/getAllUser",
-
+            "/api/v1/admin/user/getAllUser",
+            "/api/v1/admin/user/id/{userId}",
             "/api/v1/categories/add",
             "/api/v1/categories/update/{categoryId}",
             "/api/v1/categories/delete/{categoryId}",

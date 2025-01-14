@@ -72,13 +72,24 @@ public class AuthenticationService implements IAuthentication {
         var token = generateToken(user);
         var role = getRoleUser(user);
 
-        return AuthenticationRes.builder()
-                .userId(user.getId())
-                .token(token)
-                .authenticated(true)
-                .clientType(role)
-                .shopId(shop.getFirst().getId())
-                .build();
+        AuthenticationRes authenticationRes;
+        if (role.equalsIgnoreCase("Shop")) {
+            authenticationRes = AuthenticationRes.builder()
+                    .userId(user.getId())
+                    .token(token)
+                    .authenticated(true)
+                    .clientType(role)
+                    .shopId(shop.getFirst().getId())
+                    .build();
+        } else {
+            authenticationRes = AuthenticationRes.builder()
+                    .userId(user.getId())
+                    .token(token)
+                    .authenticated(true)
+                    .clientType(role)
+                    .build();
+        }
+        return authenticationRes;
     }
 
     private String getRoleUser(User user) {
