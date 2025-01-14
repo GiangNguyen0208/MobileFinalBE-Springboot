@@ -57,6 +57,7 @@ public class SecurityConfig {
                         .authenticationEntryPoint(new JwtAuthenticationEntryPoint())
                 );
 
+
         return httpSecurity.build();
     }
 

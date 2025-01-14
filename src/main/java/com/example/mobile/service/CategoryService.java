@@ -7,10 +7,7 @@ import com.example.mobile.dto.response.CategoryResponse;
 import com.example.mobile.dto.response.ProductResponse;
 import com.example.mobile.entity.*;
 import com.example.mobile.mapper.ICategoryMapper;
-import com.example.mobile.repository.CategoryRepository;
-import com.example.mobile.repository.ProductRepository;
-import com.example.mobile.repository.ShopRepository;
-import com.example.mobile.repository.UserRepository;
+import com.example.mobile.repository.*;
 import com.example.mobile.service.imp.ICategory;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +24,7 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class CategoryService  implements ICategory {
+    private final ImageProductRepository imageProductRepository;
     ShopRepository shopRepository;
     ICategoryMapper categoryMapper;
     CategoryRepository categoryRepository;
@@ -54,10 +52,20 @@ public class CategoryService  implements ICategory {
         List<Category> categories = categoryRepository.findAllActiveCategories();
         List<CategoryResponse> categoryResponses = new ArrayList<>();
         for (Category category : categories) {
+            List<Product> productList = productRepository.findAllByCategoryAndDeletedFalse(category);
+            List<String> images = new ArrayList<>();
+            for (Product product : productList) {
+                List<ImageProduct> listImageProductList = imageProductRepository.findAllImagesByProductId(product.getId());
+                for (ImageProduct imageProduct : listImageProductList) {
+                    images.add(imageProduct.getLinkImage());
+                }
+            }
             CategoryResponse response = CategoryResponse.builder()
                     .id(category.getId())
+                    .idShop(category.getShop().getId())
                     .name(category.getName())
                     .status(category.getStatus())
+                    .imageLink(images)
                     .build();
             categoryResponses.add(response);
         }

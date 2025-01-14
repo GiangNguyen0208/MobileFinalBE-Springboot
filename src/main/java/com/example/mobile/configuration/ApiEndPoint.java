@@ -81,6 +81,7 @@ public class ApiEndPoint {
             "/api/v1/products/findName/{productName}",
             "/api/v1/products/listProduct",
             "/api/v1/products/listProductByCategory",
+            "/api/v1/products/getByCategory/{categoryId}",
 
             "/api/v1/vouchers/list/shop/{shopId}",
             "/api/v1/vouchers/listVoucher",
