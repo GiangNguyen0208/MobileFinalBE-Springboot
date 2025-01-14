@@ -18,4 +18,6 @@ public class ShopResponse {
     private String address;
     private String status;
 
+    private String image;
+
 }
