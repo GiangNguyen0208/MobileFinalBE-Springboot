@@ -17,5 +17,10 @@ public interface CartRepository extends JpaRepository<Cart, Integer> {
     @Modifying
     void deleteAllByUserId(@Param("userId") int userId);
 
+    @Modifying
+    @Query("DELETE FROM carts ci WHERE ci.product.id IN :productIds")
+    void deleteAllByProductIds(@Param("productIds") List<Integer> productIds);
+
     List<Cart> findAllByUserId(@Param("userId") int userId);
+
 }

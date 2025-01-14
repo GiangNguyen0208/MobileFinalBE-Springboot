@@ -16,11 +16,5 @@ public class OrderDetailReq {
     private Integer productId;
 
     @NotNull
-    private Double price;
-
-    @NotNull
     private Integer quantity;
-
-    @NotNull
-    private Double amount;
 }
