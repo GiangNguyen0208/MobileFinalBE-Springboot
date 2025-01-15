@@ -1,5 +1,7 @@
 package com.example.mobile.entity;
 
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -19,6 +21,13 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+
+    private String content;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    @JsonBackReference
+    private User user;
     private double rating;
 
     private String imgUrl;
@@ -33,11 +42,8 @@ public class Comment {
     @JoinColumn(name = "shop_id")
     private Shop shop;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
     private LocalDateTime createdAt;
+
 }

@@ -4,16 +4,13 @@ import com.example.mobile.constant.StatusShop;
 import com.example.mobile.dto.request.CartItemReq;
 import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
-import com.example.mobile.dto.response.CartItemResponse;
 import com.example.mobile.dto.response.UserResponse;
-import com.example.mobile.entity.Product;
 import com.example.mobile.entity.Role;
 import com.example.mobile.entity.Shop;
 import com.example.mobile.entity.User;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IUserMapper;
-import com.example.mobile.repository.ProductRepository;
 import com.example.mobile.repository.RoleRepository;
 import com.example.mobile.repository.UserRepository;
 import com.example.mobile.service.imp.IUser;
@@ -25,20 +22,20 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import java.util.Date;
+
 import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 @Slf4j
 public class UserService implements IUser {
-    UserRepository userRepository;
-    RoleRepository roleRepository;
-    IUserMapper userMapper;
-    PasswordEncoder passwordEncoder;
+
+     UserRepository userRepository;
+     RoleRepository roleRepository;
+     IUserMapper userMapper;
+     PasswordEncoder passwordEncoder;
     @Override
     public UserResponse createUser(UserCreationReq req) {
         User user = userMapper.toUser(req);
@@ -82,7 +79,9 @@ public class UserService implements IUser {
 
         return userMapper.toUserResponse(userRepository.save(user));
     }
-
+//    public User getUserById(int id){
+//        return userRepository.findUserById(id);
+//    }
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);

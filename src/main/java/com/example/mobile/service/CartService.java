@@ -1,125 +1,152 @@
 package com.example.mobile.service;
 
-import com.example.mobile.constant.FoodStatus;
 import com.example.mobile.dto.request.CartItemReq;
+import com.example.mobile.dto.response.ApiResponse;
 import com.example.mobile.dto.response.CartItemResponse;
+import com.example.mobile.entity.Cart;
+import com.example.mobile.entity.ImageProduct;
 import com.example.mobile.entity.Product;
 import com.example.mobile.entity.User;
+import com.example.mobile.repository.CartRepository;
+import com.example.mobile.repository.ImageProductRepository;
 import com.example.mobile.repository.ProductRepository;
 import com.example.mobile.repository.UserRepository;
-import com.example.mobile.service.imp.ICart;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
-import lombok.AccessLevel;
-import lombok.RequiredArgsConstructor;
-import lombok.experimental.FieldDefaults;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.transaction.Transactional;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@Slf4j
-public class CartService implements ICart {
-    ProductRepository productRepository;
-    UserRepository userRepository;
-    @Override
-    public List<CartItemReq> addToCart(CartItemReq cartSelected, List<CartItemReq> cart) {
-        Optional<CartItemReq> existingItem = cart.stream()
-                .filter(item ->
-                        Objects.equals(item.getProductId(), cartSelected.getProductId()) &&
-                                Objects.equals(item.getUserId(), cartSelected.getUserId())
-                )
-                .findFirst();
-        if (existingItem.isPresent()) {
-            existingItem.get().setQuantity(existingItem.get().getQuantity() + cartSelected.getQuantity());
-        } else {
-            cart.add(cartSelected);
-        }
-        return cart;
-    }
-    @Override
-    public CartItemResponse increaseQuantity(int productId, List<CartItemReq> cart) {
-        for (CartItemReq item : cart) {
-            if (item.getProductId() == productId) {
-                item.setQuantity(item.getQuantity() + 1);
-                Product product = productRepository.findById(productId)
-                        .orElseThrow(() -> new RuntimeException("Product not found!"));
-                return buildCartItemResponse(item, product);
-            }
-        }
-        throw new RuntimeException("Product not found in cart!");
+public class CartService {
+    private final ProductRepository productRepository;
+    private final UserRepository userRepository;
+    private final CartRepository cartRepository;
+    private final ImageProductRepository imageProductRepository;
 
+    public CartService(ProductRepository productRepository, UserRepository userRepository, CartRepository cartRepository, ImageProductRepository imageProductRepository) {
+        this.productRepository = productRepository;
+        this.userRepository = userRepository;
+        this.cartRepository = cartRepository;
+        this.imageProductRepository = imageProductRepository;
     }
 
-    @Override
-    public CartItemResponse decreaseQuantity(int productId, List<CartItemReq> cart) {
-        for (CartItemReq item : cart) {
-            if (item.getProductId() == productId) {
-                if (item.getQuantity() > 1) {
-                    item.setQuantity(item.getQuantity() - 1);
-                } else {
-                    cart.remove(item); // Xóa sản phẩm khỏi giỏ hàng nếu số lượng là 1
-                }
-                Product product = productRepository.findById(productId)
-                        .orElseThrow(() -> new RuntimeException("Product not found!"));
-                return buildCartItemResponse(item, product);
-            }
-        }
-        throw new RuntimeException("Product not found in cart!");
+    private User getCurrentUser() {
+        String username = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
     }
 
-    private CartItemResponse buildCartItemResponse(CartItemReq item, Product product) {
+    public CartItemResponse addToCart(CartItemReq cartSelected) {
+        Product product = productRepository.findById(cartSelected.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + cartSelected.getProductId()));
+
+        User user = getCurrentUser();
+
+        Cart cart = cartRepository.findByUser_IdAndProduct_Id(user.getId(), cartSelected.getProductId())
+                .orElse(new Cart());
+
+        cart.setUser(user);
+        cart.setProduct(product);
+        cart.setQuantity(cartSelected.getQuantity());
+        cart.setTotalPrice(product.getPrice() * cart.getQuantity());
+
+        cartRepository.save(cart);
+
+        List<ImageProduct> imageProducts = imageProductRepository.findAllImagesByProductId(cartSelected.getProductId());
+
         return CartItemResponse.builder()
-                .idUser(item.getUserId())
-                .idProduct(item.getProductId())
+                .idUser(user.getId())
+                .idProduct(product.getId())
                 .name(product.getName())
-                .des("x" + item.getQuantity() + " " + product.getName())
+                .image(!imageProducts.isEmpty() ? imageProducts.getFirst().getLinkImage() : null)
+                .des(null)
                 .price(product.getPrice())
-                .quantity(item.getQuantity())
-                .totalPrice(product.getPrice() * item.getQuantity())
+                .quantity(cart.getQuantity())
+                .totalPrice(cart.getTotalPrice())
+                .rating(product.getRating())
                 .build();
     }
 
-    @Override
-    public List<CartItemResponse> viewCart(List<CartItemReq> cart) {
-        List<CartItemResponse> cartDetail = new ArrayList<>();
-        for (CartItemReq item: cart) {
-            Product product = productRepository.findById(item.getProductId())
-                    .orElseThrow(() -> new RuntimeException(("Product not found!")));
-            User user = userRepository.findById(item.getUserId())
-                    .orElseThrow(() -> new RuntimeException(("Product not found!")));
-            String description =  "x" +item.getQuantity()+ " " + product.getName();
-            CartItemResponse cartItemResponse = CartItemResponse.builder()
-                    .idUser(product.getId())
-                    .idProduct(user.getId())
+    public CartItemResponse updateCart(CartItemReq cartSelected) {
+        Product product = productRepository.findById(cartSelected.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found with ID: " + cartSelected.getProductId()));
+
+        User user = getCurrentUser();
+
+        Cart cart = cartRepository.findByUser_IdAndProduct_Id(user.getId(), cartSelected.getProductId())
+                .orElseThrow(() -> new RuntimeException("Product not found in cart"));
+
+        cart.setQuantity(cartSelected.getQuantity());
+        cart.setTotalPrice(product.getPrice() * cart.getQuantity());
+
+        cartRepository.save(cart);
+
+
+        List<ImageProduct> imageProducts = imageProductRepository.findAllImagesByProductId(cartSelected.getProductId());
+
+        return CartItemResponse.builder()
+                .idUser(user.getId())
+                .idProduct(product.getId())
+                .name(product.getName())
+                .image(!imageProducts.isEmpty() ? imageProducts.getFirst().getLinkImage() : null)
+                .des(null)
+                .price(product.getPrice())
+                .quantity(cart.getQuantity())
+                .totalPrice(cart.getTotalPrice())
+                .rating(product.getRating())
+                .build();
+    }
+
+    public void removeFromCart(int productId) {
+        User user = getCurrentUser();
+
+        Cart cart = cartRepository.findByUser_IdAndProduct_Id(user.getId(), productId)
+                .orElseThrow(() -> new RuntimeException("Product not found in cart"));
+
+        cartRepository.delete(cart);
+    }
+
+    public ApiResponse<List<CartItemResponse>> viewCart() {
+        User user = getCurrentUser();
+
+        List<Cart> cartList = cartRepository.findAllByUserId(user.getId());
+        List<CartItemResponse> cartItemResponses = new ArrayList<>();
+        for (Cart cart : cartList) {
+            Product product = cart.getProduct();
+
+            List<ImageProduct> imageProducts = imageProductRepository.findAllImagesByProductId(product.getId());
+
+            cartItemResponses.add(CartItemResponse.builder()
+                    .idProduct(product.getId())
+                    .idUser(cart.getUser().getId())
+                    .image(!imageProducts.isEmpty() ? imageProducts.getFirst().getLinkImage() : null)
                     .name(product.getName())
-                    .des("You has bought: " + description)
+                    .des("x" + cart.getQuantity() + " " + product.getName())
                     .price(product.getPrice())
-                    .quantity(item.getQuantity())
-                    .totalPrice(product.getPrice()* item.getQuantity())
-                    .build();
-            cartDetail.add(cartItemResponse);
+                    .quantity(cart.getQuantity())
+                    .totalPrice(cart.getTotalPrice())
+                    .rating(product.getRating())
+                    .build());
         }
-        return cartDetail;
+
+        return ApiResponse.<List<CartItemResponse>>builder()
+                .result(cartItemResponses)
+                .mesg("View Cart Successfully!")
+                .build();
     }
 
-    @Override
-    public List<CartItemResponse> clearCart(List<CartItemReq> cart) {
-        if (cart == null || cart.isEmpty()) {
-            throw new RuntimeException("Cart is already empty.");
-        }
-        cart.clear();
-        List<CartItemResponse> clearedCartResponse = new ArrayList<>();
-        clearedCartResponse.add(CartItemResponse.builder()
-                .des("Cart has been cleared successfully.")
-                .build());
-        return clearedCartResponse;
-    }
+    @Transactional
+    public ApiResponse<String> clearCart() {
+        User user = getCurrentUser();
 
+        cartRepository.deleteAllByUserId(user.getId());
+
+        return ApiResponse.<String>builder()
+                .result("Success")
+                .mesg("Cart has been cleared successfully.")
+                .build();
+    }
 }

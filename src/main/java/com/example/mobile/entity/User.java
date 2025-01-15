@@ -1,11 +1,10 @@
 package com.example.mobile.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity(name = "users")
 @Data
@@ -39,6 +38,9 @@ public class User {
     private boolean deleted;
 
     private Date createAt;
+    @OneToMany(mappedBy = "user")
+    @JsonManagedReference
+    private Set<Comment> comments = new HashSet<>();
 
     @ManyToMany
     private Set<Role> roles;
@@ -56,12 +58,6 @@ public class User {
     // Mối quan hệ 1:N với Cart
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Cart> carts = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
-    private Set<PaymentMethod> paymentMethodSet = new HashSet<>();
-
-    @OneToMany(mappedBy = "user")
-    private Set<Transaction> transactionSet = new HashSet<>();
 
     @OneToMany(mappedBy = "user")
     private Set<Licenses> licensesSet = new HashSet<>();

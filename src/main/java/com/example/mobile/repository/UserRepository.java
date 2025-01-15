@@ -11,10 +11,13 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
+
     boolean existsByUsername(String username);
     Optional<User> findByUsername(String username);
 
     @Query("SELECT u FROM users u WHERE u.id = :id")
     User findUserById(@Param("id") int id);
+
+    Optional<User> findByIdAndRole_Name(int id, String roleName);
 
 }
