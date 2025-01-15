@@ -15,7 +15,5 @@ public class CommentCreationReq {
     int productId;
     int userId;
     double rating;
-    String imgUrl;
     String message;
-
 }

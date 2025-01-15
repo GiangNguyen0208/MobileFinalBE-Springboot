@@ -47,6 +47,8 @@ public class ApiEndPoint {
     };
 
     public static final String[] PUBLIC_POST_ENDPOINTS = {
+            "/api/v1/comments/add",
+
             // search product
             "/api/v1/products/{productName}",
 
@@ -68,8 +70,6 @@ public class ApiEndPoint {
 
             // Permission
             "/api/v1/permissions/create",
-
-            "/api/v1/comments/add",
 
     };
 
@@ -107,7 +107,7 @@ public class ApiEndPoint {
             "/api/v1/notifications/findTitle/{notificationTitle}",
             "/api/v1/notifications/listNotification/{shopId}",
 
-            "/api/v1/comments/add",
+
             "/api/v1/comments/delete/{commentId}",
             "/api/v1/comments/update/{commentId}",
             "/api/v1/comments/list/shop/{shopId}",

@@ -42,6 +42,9 @@ public class CommentService implements IComment {
         User user = userRepository.findUserById(req.getUserId());
         Product product = productRepository.findById(req.getProductId()).orElseThrow(()-> new RuntimeException("product not found"));
         Shop shop = shopRepository.findById(req.getShopId()).orElseThrow();
+        comment.setRating(req.getRating());
+        comment.setMessage(req.getMessage());
+        comment.setContent(req.getMessage());
         comment.setUser(user);
         comment.setProduct(product);
         comment.setShop(shop);
