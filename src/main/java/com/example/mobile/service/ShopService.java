@@ -70,12 +70,14 @@ public class ShopService implements IShop {
         shop.setName(req.getName());
         shop.setAddress(req.getAddress());
         shop.setStatus(StatusShop.valueOf(req.getStatus()));
-        shopRepository.save(shop);
-
         shop.setName(req.getName());
         shop.setAddress(req.getAddress());
         shop.setImage(req.getImage());
-        return shopMapper.toShopResponse(shopRepository.save(shop));
+        shopRepository.save(shop);
+    }
+
+    @Override
+    public void shopUpdateOpen(int id, ShopUpdateReq req) {
 
     }
 

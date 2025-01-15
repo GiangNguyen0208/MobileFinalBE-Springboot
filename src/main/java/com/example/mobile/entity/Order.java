@@ -40,9 +40,8 @@ public class Order {
     @Column(name = "amount", nullable = false)
     private Double amount;
 
-    @ColumnDefault("PENDING")
-    @Lob
-    @Column(name = "status")
+    @ColumnDefault("'PENDING'")
+    @Column(name = "status", columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'")
     private String status;
 
     @Column(name = "create_at")
