@@ -13,10 +13,11 @@ public interface IShop {
 
     List<ShopResponse> getListShop();
 
+    List<ShopResponse> getListShopClosed();
     ShopResponse findShopById(int id);
 
-    ShopResponse shopUpdate(int id, ShopUpdateReq req);
-
+    void shopUpdate(int id, ShopUpdateReq req);
+    void shopUpdateOpen(int id, ShopUpdateReq req);
     void deleteShop(int id);
 
     ShopResponse findShopByName(String name);

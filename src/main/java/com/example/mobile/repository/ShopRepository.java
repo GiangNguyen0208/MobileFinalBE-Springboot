@@ -13,9 +13,15 @@ import java.util.Optional;
 public interface ShopRepository extends JpaRepository<Shop, Integer> {
     boolean existsByName(String name);
     Optional<Shop> findByName(String name);
-    List<Shop> findByStatus(String status);
+
+    @Query("SELECT s FROM shops s WHERE s.status = 'CLOSE'")
+    List<Shop> findAllByStatusClose();
+
     @Query("SELECT s.id FROM shops s WHERE s.status = 'OPEN'")
     List<Integer> findOpenShopIds();
+
+    @Query("SELECT s FROM shops s WHERE s.status = 'OPEN'")
+    List<Shop> findAllByStatusOpen();
 
     @Query("SELECT s FROM shops s WHERE s.status = 'OPEN' AND s.user.id = :userId")
     List<Shop> findOpenShopsByUserId(@Param("userId") int userId);
