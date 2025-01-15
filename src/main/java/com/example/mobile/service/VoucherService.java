@@ -2,10 +2,13 @@ package com.example.mobile.service;
 import com.example.mobile.dto.request.VoucherCreationReq;
 import com.example.mobile.dto.request.VoucherUpdateReq;
 import com.example.mobile.dto.response.VoucherResponse;
+import com.example.mobile.entity.Category;
+import com.example.mobile.entity.Shop;
 import com.example.mobile.entity.Voucher;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
 import com.example.mobile.mapper.IVoucherMapper;
+import com.example.mobile.repository.ShopRepository;
 import com.example.mobile.repository.VoucherRepository;
 import com.example.mobile.service.imp.IVoucher;
 import lombok.AccessLevel;
@@ -22,14 +25,18 @@ import java.util.List;
 public class VoucherService implements IVoucher {
     VoucherRepository voucherRepository;
     IVoucherMapper voucherMapper;
+    ShopRepository shopRepository;
 
     @Override
     public VoucherResponse addVoucher(VoucherCreationReq req) {
 
-//        if (voucherRepository.existsById(req.getId())) {
-//            throw new AddException(ErrorCode.VOUCHER_EXISTED);
-//        }
+        if (voucherRepository.existsByCode(req.getCode())) {
+            throw new AddException(ErrorCode.VOUCHER_EXISTED);
+        }
+        Shop shop = shopRepository.findById(req.getShopId())
+                .orElseThrow(() -> new RuntimeException("Category not found!"));
         Voucher voucher = voucherMapper.toVoucher(req);
+        voucher.setShop(shop);
         return voucherMapper.toVoucherResponse(voucherRepository.save(voucher));
 
     }
@@ -62,6 +69,12 @@ public class VoucherService implements IVoucher {
     @Override
     public void deleteVoucher(int id) {
         voucherRepository.deleteById(id);
+    }
+
+    @Override
+    public List<VoucherResponse> getListVoucherByShopId(int id) {
+        return voucherRepository.getVouchersByShopId(id).stream()
+                .map(voucherMapper::toVoucherResponse).toList();
     }
 
 }

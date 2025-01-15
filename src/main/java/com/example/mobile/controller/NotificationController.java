@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -61,9 +63,18 @@ public class NotificationController {
     }
 
     @DeleteMapping("/delete/{notificationId}")
-    String deleteNotification(@PathVariable("notificationId") int notificationId) {
-        notificationService.deleteNotification(notificationId);
-        return "Notification has been deleted!";
+    public ResponseEntity<String> deleteNotification(@PathVariable("notificationId") int notificationId) {
+        try {
+            // Gọi service để xóa thông báo
+            notificationService.deleteNotification(notificationId);
+            // Trả về phản hồi thành công
+            return ResponseEntity.ok("Notification has been deleted!");
+        } catch (Exception e) {
+            // Ghi log lỗi nếu cần thiết
+            e.printStackTrace();
+            // Trả về phản hồi lỗi
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("An error occurred while deleting the notification.");
+        }
     }
-
 }

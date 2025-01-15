@@ -72,15 +72,11 @@ public class ShopService implements IShop {
         shop.setStatus(StatusShop.valueOf(req.getStatus()));
         shopRepository.save(shop);
 
-    }
+        shop.setName(req.getName());
+        shop.setAddress(req.getAddress());
+        shop.setImage(req.getImage());
+        return shopMapper.toShopResponse(shopRepository.save(shop));
 
-    @Override
-    public void shopUpdateOpen(int id, ShopUpdateReq req) {
-        Shop shop = shopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Shop not Found"));
-        shop.setStatus(StatusShop.OPEN);
-
-        shopRepository.save(shop);
     }
 
 
@@ -95,6 +91,11 @@ public class ShopService implements IShop {
                     .orElseThrow(() -> new RuntimeException("Shop not found!"));
             return shopMapper.toShopResponse(shop);
 
+    }
+
+    @Override
+    public List<ShopResponse> findDistinctByCategoryList_Name(String categoryName) {
+        return List.of();
     }
 
     @Override
