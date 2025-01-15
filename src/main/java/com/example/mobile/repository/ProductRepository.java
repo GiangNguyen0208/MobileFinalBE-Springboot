@@ -27,6 +27,9 @@ public interface ProductRepository extends JpaRepository<Product, Integer> {
             "JOIN c.shop s " +
             "WHERE s.name = :shopName")
     List<Object[]> findProductsByShopName(@Param("shopName") String shopName);
+
+    List<Product> findAllByNameContains(String productName);
+
 }
 
 

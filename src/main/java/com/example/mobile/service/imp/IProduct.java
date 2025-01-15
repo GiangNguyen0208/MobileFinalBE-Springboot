@@ -5,6 +5,7 @@ import com.example.mobile.dto.request.ProductUpdateReq;
 import com.example.mobile.dto.response.CategoryResponse;
 import com.example.mobile.dto.response.ProductResponse;
 import com.example.mobile.dto.response.ProductWithShop;
+import com.example.mobile.entity.Product;
 
 import java.util.List;
 import java.util.Map;
@@ -27,4 +28,6 @@ public interface IProduct {
     ProductResponse findProductByName(String name);
 
     List<ProductWithShop> getListByShopName(String shopName);
+
+    List<ProductResponse> findAllByNameContains(String productName);
 }

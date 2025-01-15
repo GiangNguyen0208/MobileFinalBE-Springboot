@@ -1,5 +1,6 @@
 package com.example.mobile.dto.response;
 
+import com.example.mobile.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -15,11 +16,14 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
+    int id;
     String firstname;
     String lastname;
-    Date createAt;
+    String avatar;
     String phone;
-    String username;
     String email;
-    String password;
+    String address;
+
+
+
 }

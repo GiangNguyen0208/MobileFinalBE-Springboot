@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class LocationController {
-
      LocationService locationService;
+
     @PostMapping("/save-location")
     public ApiResponse<Location> saveLocation (@RequestBody LocationRequest locationRequest){
         ApiResponse<Location> api = new ApiResponse<>();
