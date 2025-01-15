@@ -15,7 +15,7 @@ public class ShopResponse {
     private String name;
     private double rating;
     private String address;
-    private String status
+    private String status;
     private String image;
 
 }

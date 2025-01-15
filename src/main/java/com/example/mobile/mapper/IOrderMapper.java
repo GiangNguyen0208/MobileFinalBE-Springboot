@@ -6,7 +6,7 @@ import com.example.mobile.dto.request.OrderReq;
 import com.example.mobile.dto.response.OrderDetailResponse;
 import com.example.mobile.dto.response.OrderResponse;
 import com.example.mobile.entity.Order;
-import com.example.mobile.entity.OrderDetail;
+import com.example.mobile.entity.Orderdetail;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -23,10 +23,10 @@ public interface IOrderMapper {
     OrderResponse toResponse(Order order);
 
     @Mapping(source = "productId", target = "product.id")
-    OrderDetail toEntity(OrderDetailReq orderDetailRequest);
+    Orderdetail toEntity(OrderDetailReq orderDetailRequest);
 
-    OrderDetailResponse toResponse(OrderDetail orderdetail);
+    OrderDetailResponse toResponse(Orderdetail orderdetail);
 
-    List<OrderDetailResponse> toResponseList(List<OrderDetail> orderdetails);
+    List<OrderDetailResponse> toResponseList(List<Orderdetail> orderdetails);
 
 }

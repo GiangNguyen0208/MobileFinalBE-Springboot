@@ -21,15 +21,19 @@ public class Order {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "voucherId")
+    @JoinColumn(name = "voucher_id")
     private Voucher voucher;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "payment_method_id")
+    private PaymentMethod paymentMethod;
 
     @ColumnDefault("0")
     @Column(name = "discount")
     private Double discount;
 
     @ColumnDefault("0")
-    @Column(name = "totalProduct")
+    @Column(name = "total_product")
     private Integer totalProduct;
 
     @NotNull
@@ -37,13 +41,17 @@ public class Order {
     private Double amount;
 
     @ColumnDefault("'PENDING'")
-    @Column(name = "status", columnDefinition = "VARCHAR(255) DEFAULT 'PENDING'")
+    @Column(name = "status", columnDefinition = "VARCHAR(20) DEFAULT 'PENDING'")
     private String status;
 
-    @Column(name = "createAt")
+    @Column(name = "create_at")
     private Instant createAt;
 
-    @OneToMany(mappedBy = "order")
-    private Set<OrderDetail> orderdetails = new LinkedHashSet<>();
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Orderdetail> orderdetails = new LinkedHashSet<>();
 
 }
