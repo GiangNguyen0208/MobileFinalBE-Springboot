@@ -11,8 +11,13 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductWithShop {
+    int id;
+    double rating;
     String name;
     Double price;
     int quantity;
+    String description;
     String shopName;
+    String categoryName;
+
 }

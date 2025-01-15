@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class NotificationResponse {
+    int id;
     String shopName;
     String title; // Tiêu đề thông báo
     String message; // Nội dung thông báo

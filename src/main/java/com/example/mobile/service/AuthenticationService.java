@@ -149,7 +149,7 @@ public class AuthenticationService implements IAuthentication {
         } else {
             throw  new RuntimeException("ROLE IS NOT VALID");
         }
-        
+
         return stringJoiner.toString();
     }
 }

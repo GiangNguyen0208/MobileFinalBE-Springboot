@@ -12,7 +12,8 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class VoucherCreationReq {
+    int shopId;
+    String code;
     double priceMin;
     double valueDiscount;
-
 }
