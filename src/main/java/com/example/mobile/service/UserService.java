@@ -93,7 +93,7 @@ public class UserService implements IUser {
     public void updateUser(int id, UserUpdateRequest req) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found!"));
-        user.setFirstname(req.getFirstname());
+//        user.setFirstname(req.getFirstname());
         user.setLastname(req.getLastname());
         user.setPhone(req.getPhone());
         user.setEmail(req.getEmail());
