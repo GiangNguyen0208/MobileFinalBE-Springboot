@@ -15,4 +15,5 @@ public interface IUserMapper {
     @Mapping(target = "firstname", ignore = true)   // No mapping field firstname
     UserResponse toUserResponse(User user);
     void updateUser(@MappingTarget User user, UserUpdateRequest req);
+
 }

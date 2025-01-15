@@ -79,6 +79,9 @@ public class ApiEndPoint {
             "/api/v1/cart/increase/{productId}",
             "/api/v1/cart/decrease/{productId}",
 
+            "/api/v1/users/findId/{userId}",
+            "/api/v1/users/{userId}",
+
             // Permission
             "/api/v1/permissions/getAll",
 

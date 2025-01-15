@@ -15,12 +15,16 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserResponse {
+    int id;
     String firstname;
     String lastname;
-    Date createAt;
+    String avatar;
     String phone;
     String username;
     String email;
     String password;
     String address;
+
+
+
 }

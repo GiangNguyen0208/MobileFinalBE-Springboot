@@ -14,13 +14,10 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserUpdateRequest {
-    String firstname;
+    String avatar;
     String lastname;
-    String email;
+    String firstName;
     String phone;
+    String email;
     String address;
-    Date createAt;
-
-    @Size(min = 8, message = "Password must be at least 8 characters!")
-    String password;
 }

@@ -1,9 +1,6 @@
 package com.example.mobile.controller;
 
-import com.example.mobile.dto.response.ApiResponse;
-import com.example.mobile.dto.response.CategoryResponse;
-import com.example.mobile.dto.response.ProductResponse;
-import com.example.mobile.dto.response.ProductWithShop;
+import com.example.mobile.dto.response.*;
 import com.example.mobile.entity.Category;
 import com.example.mobile.service.imp.ICategory;
 import com.example.mobile.service.imp.IProduct;
@@ -59,6 +56,11 @@ public class ShopController {
                 .mesg("List of Open Shops")
                 .result(openShopIds)
                 .build();
+    }
+
+    @GetMapping("/id/{shopId}")
+    ShopResponse getShopById(@PathVariable("shopId") int shopId) {
+        return shopService.findShopById(shopId);
     }
 
 }

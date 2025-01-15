@@ -52,8 +52,7 @@ public class User {
     @OneToMany(mappedBy = "user")
     private Set<Shop> shopList = new HashSet<>();
 
-    @OneToMany(mappedBy = "user")
-    private  Set<Location> locations = new HashSet<>();
+    private  String address ;
 
     // Mối quan hệ 1:N với Cart
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)

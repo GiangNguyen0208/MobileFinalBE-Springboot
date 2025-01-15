@@ -66,4 +66,10 @@ public class ProductController {
         return ApiResponse.<List<ProductWithShop>>builder()
                 .result( productService.getListByShopName(shopName)).build();
     }
+
+    @GetMapping("/findName/{productName}")
+    ApiResponse<List<ProductResponse>> getListByByNameContains(@PathVariable("productName") String productName) {
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result( productService.findAllByNameContains(productName)).build();
+    }
 }

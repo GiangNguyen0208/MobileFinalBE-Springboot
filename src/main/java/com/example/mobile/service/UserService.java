@@ -73,10 +73,12 @@ public class UserService implements IUser {
     public UserResponse userUpdate(int id, UserUpdateRequest req) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found!"));
-
-        userMapper.updateUser(user, req);   // Use MappingTarget to mapping data update from req (new info) into old info
-        user.setPassword(passwordEncoder.encode(req.getPassword()));
-
+        user.setFirstname(req.getFirstName());
+        user.setLastname(req.getLastname());
+        user.setAvatar(req.getAvatar());
+        user.setPhone(req.getPhone());
+        user.setEmail(req.getEmail());
+        user.setAddress(req.getAddress());
         return userMapper.toUserResponse(userRepository.save(user));
     }
 //    public User getUserById(int id){

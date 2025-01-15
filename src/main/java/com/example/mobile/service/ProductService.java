@@ -273,6 +273,37 @@ public class ProductService implements IProduct {
         return productWithShopList;
     }
 
+    @Override
+    public List<ProductResponse> findAllByNameContains(String productName) {
+        List<ProductResponse> productResponseList = new ArrayList<>();
+        List<Product> products = productRepository.findAllByNameContains(productName);
+
+        return products.stream().map(product -> {
+            String categoryName = product.getCategory() != null ? product.getCategory().getName() : "Unknown";
+            Integer categoryId = product.getCategory() != null ? product.getCategory().getId() : null;
+
+            // Lấy ảnh đầu tiên hoặc ảnh mặc định nếu không có ảnh
+            List<ImageProduct> imageLink = imageProductRepository.findAllImagesByProductId(product.getId());
+            List<String> images = new ArrayList<>();
+            for (ImageProduct imageProduct : imageLink) {
+                images.add(imageProduct.getLinkImage());
+            }
+            // Xây dựng ProductResponse
+            return ProductResponse.builder()
+                    .id(product.getId())
+                    .categoryName(categoryName)
+                    .name(product.getName())
+                    .categoryId(product.getCategory().getId())
+                    .price(product.getPrice())
+                    .des(product.getDescription())
+                    .rating(product.getRating())
+                    .quantity(product.getQuantity())
+                    .imageLink(images)
+                    .status(FoodStatus.ON_SALE)
+                    .build();
+        }).collect(Collectors.toList());
+    }
+
     private static ProductWithShop getProductWithShop(Object[] result) {
         String productName = (String) result[0];
         Double productPrice = (Double) result[1]; // product price
