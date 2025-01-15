@@ -10,7 +10,6 @@ public class ApiEndPoint {
 
             // product crud
             "/api/v1/products/listProduct",
-            "/api/v1/products/{productId}",
             "/api/v1/products/listProductByCategory",
 
             //voucher crud
@@ -156,9 +155,11 @@ public class ApiEndPoint {
             "/api/v1/notifications/delete/{notificationId}",
     };
     public static final String[] SHOP_GET_ENDPOINTS = {
+
+            "/api/v1/shop/id/{shopId}",
+
             // Product
             "/api/v1/shop/{shopId}/products",
-            "/api/v1/products/{productId}",           // Cập nhật sản phẩm
 
             // Category
             "/api/v1/shop/{shopID}/categories",      // Lấy danh sách category của shop

@@ -38,6 +38,9 @@ public class UserService implements IUser {
      PasswordEncoder passwordEncoder;
     @Override
     public UserResponse createUser(UserCreationReq req) {
+        if (req.getFirstname() == null) {
+            req.setFirstname(null);
+        }
         User user = userMapper.toUser(req);
         user.setPassword(passwordEncoder.encode(req.getPassword()));
 
@@ -50,7 +53,6 @@ public class UserService implements IUser {
             throw new AddException(ErrorCode.USER_EXISTED);
         }
         return userMapper.toUserResponse(user);
-
     }
 
     @Override
