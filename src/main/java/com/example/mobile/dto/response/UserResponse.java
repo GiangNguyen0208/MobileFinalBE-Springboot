@@ -1,6 +1,5 @@
 package com.example.mobile.dto.response;
 
-import com.example.mobile.entity.User;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
@@ -21,7 +20,9 @@ public class UserResponse {
     String lastname;
     String avatar;
     String phone;
+    String username;
     String email;
+    String password;
     String address;
 
 

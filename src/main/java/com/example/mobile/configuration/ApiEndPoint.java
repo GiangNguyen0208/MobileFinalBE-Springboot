@@ -18,6 +18,11 @@ public class ApiEndPoint {
             // Get List User
             "/api/v1/users/getAllUser",
 
+            "/api/v1/admin/user/getAllUser",
+            "/api/v1/admin/user/id/{userId}",
+            "/api/v1/categories/add",
+            "/api/v1/categories/update/{categoryId}",
+            "/api/v1/categories/delete/{categoryId}",
 
 
 
@@ -84,6 +89,7 @@ public class ApiEndPoint {
             "/api/v1/products/findName/{productName}",
             "/api/v1/products/listProduct",
             "/api/v1/products/listProductByCategory",
+            "/api/v1/products/getByCategory/{categoryId}",
 
             "/api/v1/vouchers/list/shop/{shopId}",
             "/api/v1/vouchers/listVoucher",
