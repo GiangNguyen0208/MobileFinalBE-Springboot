@@ -191,6 +191,7 @@ public class ProductService implements IProduct {
         List<ProductResponse> productResponseList = new ArrayList<>();
         Category category = categoryRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Category not found!"));
+
         List<Product> productList = productRepository.findAllByCategoryAndDeletedFalse(category);
         for (Product product : productList) {
             List<ImageProduct> imageProductList = imageProductRepository.findAllImagesByProductId(product.getId());

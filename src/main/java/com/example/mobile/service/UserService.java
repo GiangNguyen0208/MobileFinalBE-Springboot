@@ -1,9 +1,12 @@
 package com.example.mobile.service;
 import com.example.mobile.constant.RolePlay;
+import com.example.mobile.constant.StatusShop;
+import com.example.mobile.dto.request.CartItemReq;
 import com.example.mobile.dto.request.UserCreationReq;
 import com.example.mobile.dto.request.UserUpdateRequest;
 import com.example.mobile.dto.response.UserResponse;
 import com.example.mobile.entity.Role;
+import com.example.mobile.entity.Shop;
 import com.example.mobile.entity.User;
 import com.example.mobile.exception.AddException;
 import com.example.mobile.exception.ErrorCode;
@@ -82,6 +85,18 @@ public class UserService implements IUser {
     @Override
     public void deleteUser(int id) {
         userRepository.deleteById(id);
+    }
+
+    @Override
+    public void updateUser(int id, UserUpdateRequest req) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found!"));
+        user.setFirstname(req.getFirstname());
+        user.setLastname(req.getLastname());
+        user.setPhone(req.getPhone());
+        user.setEmail(req.getEmail());
+        userRepository.save(user);
+
     }
 
     public User getUserById(int id) {

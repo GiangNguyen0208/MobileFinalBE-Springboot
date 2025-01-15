@@ -11,10 +11,11 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ShopUpdateReq {
-    private int id;
+
 
     private String name;
-
+    String image;
     private String address;
+    private String status;
 
 }

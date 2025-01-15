@@ -28,6 +28,8 @@ public class Shop {
 
     private double rating;
 
+    private String image;
+
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
@@ -37,4 +39,7 @@ public class Shop {
 
     @OneToMany(mappedBy = "shop")
     private List<Notification> notificationList;
+
+    @OneToMany(mappedBy = "shop")
+    private List<Voucher> voucherList;
 }

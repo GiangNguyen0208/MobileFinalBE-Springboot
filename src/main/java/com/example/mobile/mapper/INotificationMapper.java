@@ -15,6 +15,7 @@ import org.mapstruct.Named;
 public interface INotificationMapper {
 
     Notification toNotification(NotificationCreationReq req);
+    @Mapping(target = "id", source = "id")
     @Mapping(target = "shopName", source = "shop.name")
     NotificationResponse toCategoryResponse(Notification notification);
     void updateNotification(@MappingTarget Notification notification, NotificationUpdateReq req);

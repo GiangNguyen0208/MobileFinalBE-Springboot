@@ -39,6 +39,12 @@ public class AdminController {
                 .result(shopService.getListShop())
                 .build();
     }
+    @GetMapping("/shop/listClosed")
+    ApiResponse<List<ShopResponse>> getListShopClosed() {
+        return ApiResponse.<List<ShopResponse>>builder()
+                .result(shopService.getListShopClosed())
+                .build();
+    }
 
     @GetMapping("/shop/id/{shopId}")
     ShopResponse getShopById(@PathVariable("shopId") int shopId) {
@@ -51,10 +57,19 @@ public class AdminController {
     }
 
     @PutMapping("/shop/update/{shopId}")
-    ShopResponse updateShop(@PathVariable("shopId") int shopId, @RequestBody ShopUpdateReq shopUpdateReq) {
-        return shopService.shopUpdate(shopId, shopUpdateReq);
+    ApiResponse<Void> updateShop(@PathVariable("shopId") int shopId, @RequestBody ShopUpdateReq shopUpdateReq) {
+        shopService.shopUpdate(shopId, shopUpdateReq);
+        return  ApiResponse.<Void>builder()
+                .mesg("đã cập nhật")
+                .build();
     }
-
+    @PutMapping("/shop/updateOpen/{shopId}")
+    ApiResponse<Void> updateShopOpen(@PathVariable("shopId") int shopId, @RequestBody ShopUpdateReq shopUpdateReq) {
+        shopService.shopUpdateOpen(shopId, shopUpdateReq);
+        return  ApiResponse.<Void>builder()
+                .mesg("đã mở lại shop")
+                .build();
+    }
     @DeleteMapping("/shop/delete/{shopId}")
     String deleteShop(@PathVariable("shopId") int shopId) {
         shopService.deleteShop(shopId);
@@ -82,9 +97,13 @@ public class AdminController {
     }
 
     @PutMapping("/user/update/{userId}")
-    UserResponse updateUser(@PathVariable("userId") int userId, @RequestBody UserUpdateRequest userUpdateRequest) {
-        return userService.userUpdate(userId, userUpdateRequest);
+    ApiResponse<Void>  updateUser(@PathVariable("userId") int userId, @RequestBody UserUpdateRequest userUpdateRequest) {
+        userService.updateUser(userId, userUpdateRequest);
+        return ApiResponse.<Void>builder()
+                .mesg("đã cập nhật")
+                .build();
     }
+
 
     @DeleteMapping("/user/delete/{userId}")
     String deleteUser(@PathVariable("userId") int userId) {

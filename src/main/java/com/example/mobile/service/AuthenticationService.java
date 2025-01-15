@@ -71,6 +71,7 @@ public class AuthenticationService implements IAuthentication {
 
         var token = generateToken(user);
         var role = getRoleUser(user);
+
         AuthenticationRes authenticationRes;
         if (role.equalsIgnoreCase("Shop")) {
             authenticationRes = AuthenticationRes.builder()
@@ -148,7 +149,7 @@ public class AuthenticationService implements IAuthentication {
         } else {
             throw  new RuntimeException("ROLE IS NOT VALID");
         }
-        
+
         return stringJoiner.toString();
     }
 }

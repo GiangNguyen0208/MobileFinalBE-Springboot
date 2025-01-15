@@ -12,9 +12,9 @@ import lombok.experimental.FieldDefaults;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class VoucherResponse {
-
-
-
+    int id;
+    String shopName;
+    String code;
     double priceMin;
     double valueDiscount;
 }

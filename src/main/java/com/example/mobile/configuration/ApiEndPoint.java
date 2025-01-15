@@ -22,6 +22,8 @@ public class ApiEndPoint {
             // Get List User
             "/api/v1/users/getAllUser",
 
+            "/api/v1/admin/user/getAllUser",
+            "/api/v1/admin/user/id/{userId}",
             "/api/v1/categories/add",
             "/api/v1/categories/update/{categoryId}",
             "/api/v1/categories/delete/{categoryId}",
@@ -30,10 +32,10 @@ public class ApiEndPoint {
             "/api/v1/notifications/update/{notificationId}",
             "/api/v1/notifications/delete/{notificationId}",
 
-            "/api/v1/admin/shop/add", "/api/v1/admin/shop/list", "/api/v1/admin/shop/id/{shopId}", "/api/v1/admin/shop/name/{shopName}", "/api/v1/admin/shop/update/{shopId}", "/api/v1/admin/shop/delete/{shopId}",
+
+            "/api/v1/admin/shop/add", "/api/v1/admin/shop/list", "/api/v1/admin/shop/name/{shopName}", "/api/v1/admin/shop/delete/{shopId}",
             // admin/user
             "/api/v1/admin/user/add", "/api/v1/admin/user/list", "/api/v1/admin/user/id/{userId}", "/api/v1/admin/user/name/{userName}", "/api/v1/admin/user/update/{userId}", "/api/v1/admin/user/delete/{userId}",
-
 
 
     };
@@ -43,10 +45,9 @@ public class ApiEndPoint {
 //            "/api/v1/roles/create",
 
 
-
     };
 
-    public static final String[] PUBLIC_POST_ENDPOINTS  = {
+    public static final String[] PUBLIC_POST_ENDPOINTS = {
             // search product
             "/api/v1/products/{productName}",
 
@@ -69,7 +70,7 @@ public class ApiEndPoint {
             // Permission
             "/api/v1/permissions/create",
 
-
+            "/api/v1/comments/add",
 
     };
 
@@ -91,7 +92,7 @@ public class ApiEndPoint {
             "/api/v1/products/listProductByCategory",
             "/api/v1/products/getByCategory/{categoryId}",
 
-
+            "/api/v1/vouchers/list/shop/{shopId}",
             "/api/v1/vouchers/listVoucher",
             "/api/v1/vouchers/findId/{voucherId}",
 
@@ -114,9 +115,11 @@ public class ApiEndPoint {
             // Order
             "/api/v1/orders/history", // Get List Order History
             "/api/v1/orders/shipping", // Get List Order Shipping
-            "/api/v1/orders/detail/{orderId}" // Detail Order
+            "/api/v1/orders/detail/{orderId}", // Detail Order
 
 
+            "/api/v1/users/categories",
+            "/api/v1/admin/shop/id/{shopId}",
     };
 
     public static final String[] PUBLIC_DELETE_ENDPOINTS = {
@@ -129,11 +132,25 @@ public class ApiEndPoint {
 
 
     public static final String[] SHOP_POST_ENDPOINTS = {
+            "/api/v1/admin/shop/update/{shopId}",
+
             //Role
             "/api/v1/products/add",
 
+            "/api/v1/vouchers/add",
+            "/api/v1/vouchers/update/{voucherId}",
+            "/api/v1/vouchers/delete/{voucherId}",
+
             // Product upload image
             "/api/v1/product/images/upload/*",
+
+            "/api/v1/categories/add",
+            "/api/v1/categories/update/{categoryId}",
+            "/api/v1/categories/delete/{categoryId}",
+
+            "/api/v1/notifications/add",
+            "/api/v1/notifications/update/{notificationId}",
+            "/api/v1/notifications/delete/{notificationId}",
     };
     public static final String[] SHOP_GET_ENDPOINTS = {
             // Product

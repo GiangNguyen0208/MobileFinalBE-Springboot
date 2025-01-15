@@ -1,5 +1,7 @@
 package com.example.mobile.service;
 
+import com.example.mobile.constant.FoodStatus;
+import com.example.mobile.constant.StatusShop;
 import com.example.mobile.dto.request.ShopCreationReq;
 import com.example.mobile.dto.request.ShopUpdateReq;
 import com.example.mobile.dto.response.ShopResponse;
@@ -41,7 +43,17 @@ public class ShopService implements IShop {
         log.info("Username: {}", authentication.getName());
         authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
 
-        return shopRepository.findAll().stream()
+        return shopRepository.findAllByStatusOpen().stream()
+                .map(shopMapper::toShopResponse).toList();
+    }
+
+    @Override
+    public List<ShopResponse> getListShopClosed() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Username: {}", authentication.getName());
+        authentication.getAuthorities().forEach(grantedAuthority -> log.info(grantedAuthority.getAuthority()));
+
+        return shopRepository.findAllByStatusClose().stream()
                 .map(shopMapper::toShopResponse).toList();
     }
 
@@ -52,13 +64,19 @@ public class ShopService implements IShop {
     }
 
     @Override
-    public ShopResponse shopUpdate(int id, ShopUpdateReq req) {
+    public void shopUpdate(int id, ShopUpdateReq req) {
         Shop shop = shopRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found!"));
+                .orElseThrow(() -> new RuntimeException("Shop not Found"));
+        shop.setName(req.getName());
+        shop.setAddress(req.getAddress());
+        shop.setStatus(StatusShop.valueOf(req.getStatus()));
+        shopRepository.save(shop);
 
-        shopMapper.updateShop(shop, req);   // Use MappingTarget to mapping data update from req (new info) into old info
-
+        shop.setName(req.getName());
+        shop.setAddress(req.getAddress());
+        shop.setImage(req.getImage());
         return shopMapper.toShopResponse(shopRepository.save(shop));
+
     }
 
 
@@ -73,6 +91,11 @@ public class ShopService implements IShop {
                     .orElseThrow(() -> new RuntimeException("Shop not found!"));
             return shopMapper.toShopResponse(shop);
 
+    }
+
+    @Override
+    public List<ShopResponse> findDistinctByCategoryList_Name(String categoryName) {
+        return List.of();
     }
 
     @Override
