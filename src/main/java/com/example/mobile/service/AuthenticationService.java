@@ -71,6 +71,7 @@ public class AuthenticationService implements IAuthentication {
 
         var token = generateToken(user);
         var role = getRoleUser(user);
+
         AuthenticationRes authenticationRes;
         if (role.equalsIgnoreCase("Shop")) {
             authenticationRes = AuthenticationRes.builder()
@@ -88,7 +89,6 @@ public class AuthenticationService implements IAuthentication {
                     .clientType(role)
                     .build();
         }
-
         return authenticationRes;
     }
 

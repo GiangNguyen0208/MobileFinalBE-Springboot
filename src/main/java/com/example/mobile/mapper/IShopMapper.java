@@ -15,6 +15,8 @@ public interface IShopMapper {
     Shop toShop(ShopCreationReq req);
     @Mapping(target = "image", source = "image")
     @Mapping(target = "rating", source = "rating")
+    @Mapping(target = "address", source = "address")
     ShopResponse toShopResponse(Shop shop);
     void updateShop(@MappingTarget Shop shop, ShopUpdateReq req);
+
 }

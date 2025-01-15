@@ -16,5 +16,6 @@ public class ShopUpdateReq {
     private String name;
     String image;
     private String address;
+    private String status;
 
 }
