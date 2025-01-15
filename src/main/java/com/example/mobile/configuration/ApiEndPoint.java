@@ -71,6 +71,8 @@ public class ApiEndPoint {
             "/api/v1/permissions/create",
 
             "/api/v1/comments/add",
+            "/api/v1/comments/delete/{commentId}",
+            "/api/v1/comments/update/{commentId}",
 
     };
 
@@ -94,6 +96,7 @@ public class ApiEndPoint {
             "/api/v1/products/listProduct",
             "/api/v1/products/listProductByCategory",
             "/api/v1/products/getByCategory/{categoryId}",
+            "/api/v1/products/listProduct/shop/{shopId}",
 
             "/api/v1/vouchers/list/shop/{shopId}",
             "/api/v1/vouchers/listVoucher",
@@ -108,9 +111,7 @@ public class ApiEndPoint {
             "/api/v1/notifications/findTitle/{notificationTitle}",
             "/api/v1/notifications/listNotification/{shopId}",
 
-            "/api/v1/comments/add",
-            "/api/v1/comments/delete/{commentId}",
-            "/api/v1/comments/update/{commentId}",
+
             "/api/v1/comments/list/shop/{shopId}",
             "/api/v1/comments/list/user/{userId}",
             "/api/v1/comments/list/product/{productId}",

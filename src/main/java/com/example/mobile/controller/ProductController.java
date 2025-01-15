@@ -61,10 +61,10 @@ public class ProductController {
     }
 
 
-    @GetMapping("/listProduct/shop/{shopName}")
-    ApiResponse<List<ProductWithShop>> getListByShopName(@PathVariable("shopName") String shopName) {
-        return ApiResponse.<List<ProductWithShop>>builder()
-                .result( productService.getListByShopName(shopName)).build();
+    @GetMapping("/listProduct/shop/{shopId}")
+    ApiResponse<List<ProductResponse>> getListByShopId(@PathVariable("shopId") int shopId) {
+        return ApiResponse.<List<ProductResponse>>builder()
+                .result( productService.getListProductByShopID(shopId)).build();
     }
 
     @GetMapping("/findName/{productName}")
