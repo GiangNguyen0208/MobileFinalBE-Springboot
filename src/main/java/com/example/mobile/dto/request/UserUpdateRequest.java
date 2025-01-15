@@ -16,7 +16,9 @@ import java.util.Date;
 public class UserUpdateRequest {
     String firstname;
     String lastname;
+    String email;
     String phone;
+    String address;
     Date createAt;
 
     @Size(min = 8, message = "Password must be at least 8 characters!")

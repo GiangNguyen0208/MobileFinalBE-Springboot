@@ -16,5 +16,8 @@ public class ShopResponse {
     private String name;
 
     private String address;
+    private String status;
+
+    private String image;
 
 }
