@@ -10,7 +10,7 @@ import java.util.List;
 public interface IShop {
     List<Integer> getOpenShopIds();
 
-    ShopResponse createShop(ShopCreationReq req);
+    void createShop(ShopCreationReq req);
 
     List<ShopResponse> getListShop();
 
