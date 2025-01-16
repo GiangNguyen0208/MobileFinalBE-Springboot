@@ -29,12 +29,13 @@ public class ShopService implements IShop {
     IShopMapper shopMapper;
 
     @Override
-    public ShopResponse createShop(ShopCreationReq req) {
-        if (shopRepository.existsByName(req.getName())) {
-            throw new AddException(ErrorCode.SHOP_EXISTED);
-        }
-        Shop shop = shopMapper.toShop(req);
-        return shopMapper.toShopResponse(shopRepository.save(shop));
+    public void createShop(ShopCreationReq req) {
+        Shop shop = new Shop();
+        shop.setName(req.getName());
+        shop.setAddress(req.getAddress());
+        shop.setStatus(StatusShop.valueOf(req.getStatus()));
+        shop.setImage(req.getImage());
+        shopRepository.save(shop); // Lưu vào database
     }
 
     @Override

@@ -27,12 +27,12 @@ public class AdminController {
 
     // Shop endpoints
     @PostMapping("/shop/add")
-    ApiResponse<ShopResponse> createShop(@RequestBody @Valid ShopCreationReq shopCreationReq) {
-        ApiResponse<ShopResponse> apiResponse = new ApiResponse<>();
-        apiResponse.setResult(shopService.createShop(shopCreationReq));
-        return apiResponse;
+    ApiResponse<Void> createShop(@RequestBody @Valid ShopCreationReq shopCreationReq) {
+        shopService.createShop(shopCreationReq);
+        return  ApiResponse.<Void>builder()
+                .mesg("đã cập nhật")
+                .build();
     }
-
     @GetMapping("/shop/list")
     ApiResponse<List<ShopResponse>> getListShop() {
         return ApiResponse.<List<ShopResponse>>builder()

@@ -16,5 +16,8 @@ public class ShopCreationReq {
     private String name;
 
     private String address;
+    private double rating;
+    private String status;
+    private String image;
 
 }

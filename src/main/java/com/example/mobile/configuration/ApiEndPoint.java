@@ -33,9 +33,9 @@ public class ApiEndPoint {
             "/api/v1/notifications/delete/{notificationId}",
 
 
-            "/api/v1/admin/shop/add", "/api/v1/admin/shop/list", "/api/v1/admin/shop/name/{shopName}", "/api/v1/admin/shop/delete/{shopId}",
+           "/api/v1/admin/shop/list", "/api/v1/admin/shop/name/{shopName}", "/api/v1/admin/shop/delete/{shopId}",
             // admin/user
-            "/api/v1/admin/user/add", "/api/v1/admin/user/list", "/api/v1/admin/user/id/{userId}", "/api/v1/admin/user/name/{userName}", "/api/v1/admin/user/update/{userId}", "/api/v1/admin/user/delete/{userId}",
+             "/api/v1/admin/user/list", "/api/v1/admin/user/id/{userId}", "/api/v1/admin/user/name/{userName}", "/api/v1/admin/user/update/{userId}", "/api/v1/admin/user/delete/{userId}",
 
 
     };
@@ -50,7 +50,8 @@ public class ApiEndPoint {
     public static final String[] PUBLIC_POST_ENDPOINTS = {
             // search product
             "/api/v1/products/{productName}",
-
+            "/api/v1/admin/shop/add",
+            "/api/v1/admin/user/add",
             // Login vs Register
             "/api/v1/users/register",
             "/api/v1/auth/token",
